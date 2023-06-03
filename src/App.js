@@ -4,11 +4,8 @@ import Routing from "./routing";
 function App() {
     return (
 
-        <div className="App">
-            <header className="App-header">
-
-            </header>
-            <main>
+        <div>
+            <main className="bg-light">
                 <Routing />
             </main>
         </div>

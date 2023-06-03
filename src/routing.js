@@ -1,13 +1,13 @@
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import Home from "./components/home/Home";
-import OtherPage from "./components/home/OtherPage";
+import Schedule from "./components/Schedule/Schedule";
 
 function Routing() {
     return (
         <Router>
             <Routes>
                 <Route path="/" element={<Home />}/>
-                <Route path="/other-page" element={<OtherPage />}/>
+                <Route path="/schedule" element={<Schedule />}/>
             </Routes>
         </Router>
     );
