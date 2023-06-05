@@ -1,11 +1,11 @@
 import './App.css';
 import Routing from "./routing";
-import Navbar from "./components/navbar/Navbar";
+import Header from "./components/Header/Header";
 
 function App() {
     return (
-
         <div>
+            <Header />
             <main className="bg-light">
                 <Routing />
             </main>

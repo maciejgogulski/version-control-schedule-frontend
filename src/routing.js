@@ -1,7 +1,7 @@
 import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
-import Home from "./components/home/Home";
+import Home from "./components/Home/Home";
 import Schedule from "./components/Schedule/Schedule";
-import Navbar from "./components/navbar/Navbar";
+import Navbar from "./components/Navbar/Navbar";
 
 function Routing() {
     return (
