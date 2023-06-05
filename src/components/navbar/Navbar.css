@@ -1,0 +1,12 @@
+.nav-item a {
+    color: white;
+    text-decoration: none;
+}
+
+.active {
+    background-color: ghostwhite;
+}
+.active a
+{
+    color: cornflowerblue;
+}
