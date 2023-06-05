@@ -1,12 +1,21 @@
 import React from "react";
 
 class ScheduleBlockListElement extends React.Component {
+
+    handleClick = () => {
+        const { block, onClick } = this.props;
+        onClick(block);
+    };
+
     render() {
+        const { block, isSelected } = this.props;
         return (
-            <div className="container bg-light rounded m-3 px-5 py-3 shadow border-start border-primary border-5">
+            <div className={`container ${isSelected ? "bg-primary text-light" : "bg-light text-primary"} rounded m-3 px-5 py-3 shadow border-start border-primary border-5`}
+                 onClick={this.handleClick}
+            >
                 <div>
-                    <h4>Bezpieczeństwo i ochrona danych - laboratorium</h4>
-                    <p className="text-warning">11:15 - 12:45</p>
+                    <h4>{block.name}</h4>
+                    <p className="text-warning">{block.startDate + ' - ' + block.endDate}</p>
                 </div>
                 <div className="row">
                     <div className="col-md-6">

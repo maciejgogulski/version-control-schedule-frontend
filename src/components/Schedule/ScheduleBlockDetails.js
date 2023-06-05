@@ -2,11 +2,17 @@ import React from "react";
 
 class ScheduleBlockDetails extends React.Component {
     render() {
+        const { block } = this.props;
+
+        if (!block) {
+            return null;
+        }
+
         return (
             <div className="container">
                 <div className="container bg-light rounded m-3 px-5 py-3 shadow border-top border-primary border-5">
                     <div>
-                        <h4>Bezpieczeństwo i ochrona danych - laboratorium</h4>
+                        <h4>{block.name}</h4>
                     </div>
                     <hr className="my-1"/>
                     <div className="row">
@@ -15,7 +21,7 @@ class ScheduleBlockDetails extends React.Component {
                         </div>
 
                         <div className="col-md-6">
-                            <p>26 września 2023 11:15</p>
+                            <p>{block.startDate}</p>
                         </div>
                     </div>
 
@@ -25,7 +31,7 @@ class ScheduleBlockDetails extends React.Component {
                         </div>
 
                         <div className="col-md-6">
-                            <p>26 września 2023 12:45</p>
+                            <p>{block.endDate}</p>
                         </div>
                     </div>
 
