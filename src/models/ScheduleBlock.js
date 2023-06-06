@@ -1,6 +1,6 @@
 export default class ScheduleBlock {
     id
-    scheduleTag
+    scheduleTagId
     name
     startDate
     endDate

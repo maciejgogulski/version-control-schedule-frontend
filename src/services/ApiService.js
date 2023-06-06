@@ -5,8 +5,8 @@ export default class ApiService {
     async sendRequest(endpoint,
                       method,
                       params = [],
-                      body = null,
-                      headers = []
+                      body = "",
+                      headers = {}
     ) {
         try {
             let paramString = "";
@@ -24,13 +24,23 @@ export default class ApiService {
                 })
             }
 
+            if (body === "") {
+                return await fetch(
+                    this.backendUrl + endpoint + paramString,
+                    {
+                        method: method,
+                        headers: headers,
+                    },
+                );
+            }
+
             return await fetch(
                 this.backendUrl + endpoint + paramString,
                 {
                     method: method,
+                    headers: headers,
+                    body: body
                 },
-                headers,
-                body
             );
         } catch (error) {
             console.error('Error:', error);

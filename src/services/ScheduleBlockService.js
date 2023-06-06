@@ -27,13 +27,15 @@ export default class ScheduleBlockService {
     }
 
     async addScheduleBlock(block) {
-        const jsonBlock = JSON.stringify(json(block));
-
+        const jsonBlock = JSON.stringify(block);
         return await this.apiService.sendRequest(
             this.scheduleBlockUrl,
             "POST",
             [],
-            jsonBlock
+            jsonBlock,
+            {
+                'Content-Type': 'application/json',
+            }
         )
     }
 }
