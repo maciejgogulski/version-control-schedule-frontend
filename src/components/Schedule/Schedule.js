@@ -17,7 +17,7 @@ class Schedule extends React.Component {
         // Fetch schedule blocks from the service
         const scheduleBlockService = new ScheduleBlockService();
         const tagId = 5;
-        const day = '2023-06-06 00:00:00';
+        const day = '2023-06-13 00:00:00';
         const response = await scheduleBlockService.getScheduleBlocksByDay(tagId, day);
         const data = await response.json();
 

@@ -1,21 +1,39 @@
+import ApiService from "./ApiService";
+import {json} from "react-router-dom";
+
 export default class ScheduleBlockService {
-    backendUrl = 'http://localhost:8080';
+
+    scheduleBlockUrl = '/schedule-block'
+
+    apiService = new ApiService();
 
     async getScheduleBlocksByDay(tagId, day) {
-        const params = {
-            scheduleTagId: tagId,
-            day: day
-        }
+        const params = [
+            {
+                key: "scheduleTagId",
+                value: tagId,
+            },
+            {
+                key: "day",
+                value: day,
+            }
+        ]
 
-        try {
-            return await fetch(
-                this.backendUrl + '/schedule-block/by-day?scheduleTagId=' + params.scheduleTagId + '&day=' + params.day,
-                {
-                    method: 'GET',
-                }
-            );
-        } catch (error) {
-            console.error('Error:', error);
-        }
+        return await this.apiService.sendRequest(
+            this.scheduleBlockUrl + "/by-day",
+            "GET",
+            params
+        )
+    }
+
+    async addScheduleBlock(block) {
+        const jsonBlock = JSON.stringify(json(block));
+
+        return await this.apiService.sendRequest(
+            this.scheduleBlockUrl,
+            "POST",
+            [],
+            jsonBlock
+        )
     }
 }
