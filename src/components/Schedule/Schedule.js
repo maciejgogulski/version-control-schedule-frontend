@@ -1,14 +1,31 @@
 import React from "react";
 import ScheduleBlockListElement from "./ScheduleBlockListElement";
 import ScheduleBlockDetails from "./ScheduleBlockDetails";
+import ScheduleBlockService from "../../services/ScheduleBlockService";
 
 class Schedule extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            selectedBlock: null // Initialize selectedBlock to null
+            selectedBlock: null,
+            scheduleBlocks: [],
         };
+    }
+
+    async componentDidMount() {
+        // Fetch schedule blocks from the service
+        const scheduleBlockService = new ScheduleBlockService();
+        const tagId = 5;
+        const day = '2023-06-06 00:00:00';
+        const response = await scheduleBlockService.getScheduleBlocksByDay(tagId, day);
+        const data = await response.json();
+
+        if (response.ok) {
+            this.setState({ scheduleBlocks: data });
+        } else {
+            console.error('Error:', data);
+        }
     }
 
     handleBlockClick = (block) => {
@@ -16,14 +33,7 @@ class Schedule extends React.Component {
     };
 
     render() {
-        const scheduleBlocks = [
-            {id: 1, name: 'Bezpieczeństwo i ochrona danych - laboratorium', startDate: '11:15', endDate: '12:45'},
-            {id: 2, name: 'Bezpieczeństwo i ochrona danych - wykład', startDate: '13:00', endDate: '14:30'},
-            {id: 3, name: 'Programowanie urządzeń przenośnych - laboratorium', startDate: '14:45', endDate: '16:15'},
-            {id: 4, name: 'Programowanie urządzeń przenośnych - wykład', startDate: '16:30', endDate: '18:00'},
-        ];
-
-        const {selectedBlock} = this.state;
+        const { selectedBlock, scheduleBlocks } = this.state;
 
         return (
             <div className="container">
