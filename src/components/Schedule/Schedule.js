@@ -5,6 +5,8 @@ import ScheduleBlockService from "../../services/ScheduleBlockService";
 import { Button } from "react-bootstrap";
 import ScheduleBlockForm from "./ScheduleBlockForm";
 import {parseFromServerFormat} from "../../util/DateTimeParser";
+import {format, parseISO} from "date-fns";
+import DatePickerModal from "./DatePickerModal";
 
 class Schedule extends React.Component {
 
@@ -13,7 +15,9 @@ class Schedule extends React.Component {
         this.state = {
             selectedBlock: null,
             scheduleBlocks: [],
-            showBlockForm: false
+            showBlockForm: false,
+            showDayPicker: false,
+            pickedDay: new Date()
         };
     }
 
@@ -24,7 +28,7 @@ class Schedule extends React.Component {
     fetchScheduleBlocks = async () => {
         const scheduleBlockService = new ScheduleBlockService();
         const tagId = 5;
-        const day = '2023-06-13 00:00:00';
+        const day = format(this.state.pickedDay, "yyyy-MM-dd HH:mm:ss");
         const response = await scheduleBlockService.getScheduleBlocksByDay(tagId, day);
         const data = await response.json();
 
@@ -51,8 +55,22 @@ class Schedule extends React.Component {
         this.setState({showBlockForm: false})
     };
 
+    handlePickDayClick = () => {
+        this.setState({showDayPicker: true})
+    }
+
+    handlePickDayClose = () => {
+        this.setState({showDayPicker: false})
+    }
+
     handleFormSubmit = async () => {
         await this.fetchScheduleBlocks();
+    };
+
+    handleDayPick = (day) => {
+        this.setState({ pickedDay: parseISO(day) }, () => {
+            this.fetchScheduleBlocks();
+        });
     };
 
         render() {
@@ -63,6 +81,10 @@ class Schedule extends React.Component {
                 <ScheduleBlockForm show={this.state.showBlockForm}
                                    onClose={this.handleCloseBlockForm}
                                    onFormSubmit={this.handleFormSubmit}/>
+                <DatePickerModal show={this.state.showDayPicker}
+                                 onDayPick={this.handleDayPick}
+                                 onClose={this.handlePickDayClose}
+                />
                 <div className="row">
                     <div className="col-md-6 px-4">
                         <div>
@@ -71,6 +93,11 @@ class Schedule extends React.Component {
                             <Button variant="primary"
                                     onClick={this.handleBlockFormButtonClick}>
                                 Dodaj blok
+                            </Button>
+
+                            <Button variant="secondary"
+                                    onClick={this.handlePickDayClick}>
+                               Wybierz dzień
                             </Button>
                         </div>
 
