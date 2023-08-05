@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+import React, {useState} from "react";
+import {Button, Form, Modal} from "react-bootstrap";
 import ScheduleBlockService from "../../services/ScheduleBlockService";
 import ScheduleBlock from "../../models/ScheduleBlock";
+import { parseToServerFormat } from "../../util/DateTimeParser";
 
 function ScheduleBlockForm(props) {
     const [name, setName] = useState("");
@@ -30,11 +31,9 @@ function ScheduleBlockForm(props) {
         block.name = name;
 
         // Parse startDate and endDate to the desired format
-        const parsedStartDate = new Date(startDate).toISOString().slice(0, 19).replace("T", " ");
-        const parsedEndDate = new Date(endDate).toISOString().slice(0, 19).replace("T", " ");
 
-        block.startDate = parsedStartDate;
-        block.endDate = parsedEndDate;
+        block.startDate = parseToServerFormat(startDate);
+        block.endDate = parseToServerFormat(endDate);
 
         await scheduleBlockService.addScheduleBlock(block);
 

@@ -19,7 +19,7 @@ export default class ApiService {
 
                     // Check if it's the last iteration
                     if (index === params.length - 1) {
-                        paramString = paramString.slice(0, -1); // Remove the last character '&'
+                        paramString = paramString.slice(0, -1);
                     }
                 })
             }
