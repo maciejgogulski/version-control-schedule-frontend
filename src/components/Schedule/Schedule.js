@@ -2,10 +2,10 @@ import React from "react";
 import ScheduleBlockListElement from "./ScheduleBlockListElement";
 import ScheduleBlockDetails from "./ScheduleBlockDetails";
 import ScheduleBlockService from "../../services/ScheduleBlockService";
-import { Button } from "react-bootstrap";
+import {Button} from "react-bootstrap";
 import ScheduleBlockForm from "./ScheduleBlockForm";
 import {parseFromServerFormat} from "../../util/DateTimeParser";
-import {format, parseISO} from "date-fns";
+import {addDays, format, nextDay, parseISO, subDays} from "date-fns";
 import DatePickerModal from "./DatePickerModal";
 
 class Schedule extends React.Component {
@@ -37,7 +37,7 @@ class Schedule extends React.Component {
                 block.startDate = parseFromServerFormat(block.startDate);
                 block.endDate = parseFromServerFormat(block.endDate);
             })
-            this.setState({ scheduleBlocks: data });
+            this.setState({scheduleBlocks: data});
         } else {
             console.error('Error:', data);
         }
@@ -63,18 +63,30 @@ class Schedule extends React.Component {
         this.setState({showDayPicker: false})
     }
 
+    handlePreviousDayClick = () => {
+        this.setState({pickedDay: subDays(this.state.pickedDay, 1), selectedBlock: null}, () => {
+            this.fetchScheduleBlocks();
+        })
+    }
+
+    handleNextDayClick = () => {
+        this.setState({pickedDay: addDays(this.state.pickedDay, 1), selectedBlock: null}, () => {
+            this.fetchScheduleBlocks();
+        })
+    }
+
     handleFormSubmit = async () => {
         await this.fetchScheduleBlocks();
     };
 
     handleDayPick = (day) => {
-        this.setState({ pickedDay: parseISO(day) }, () => {
+        this.setState({pickedDay: parseISO(day), selectedBlock: null}, () => {
             this.fetchScheduleBlocks();
         });
     };
 
-        render() {
-        const { selectedBlock, scheduleBlocks } = this.state;
+    render() {
+        const {selectedBlock, scheduleBlocks} = this.state;
 
         return (
             <div className="container">
@@ -90,15 +102,27 @@ class Schedule extends React.Component {
                         <div>
                             <h2>Plan Rok_3_Semestr_6_2022/23_ST</h2>
 
-                            <Button variant="primary"
-                                    onClick={this.handleBlockFormButtonClick}>
-                                Dodaj blok
-                            </Button>
+                            <div className="container">
+                                <Button variant="primary" className="me-2"
+                                        onClick={this.handleBlockFormButtonClick}>
+                                    Dodaj blok
+                                </Button>
 
-                            <Button variant="secondary"
-                                    onClick={this.handlePickDayClick}>
-                               Wybierz dzień
-                            </Button>
+                                <Button variant="outline-secondary" className="me-2"
+                                        onClick={this.handlePreviousDayClick}>
+                                    &lt;&lt;
+                                </Button>
+
+                                <Button variant="secondary" className="me-2"
+                                        onClick={this.handlePickDayClick}>
+                                    {format(this.state.pickedDay, "dd-MM-yyyy")}
+                                </Button>
+
+                                <Button variant="outline-secondary" className="me-2"
+                                        onClick={this.handleNextDayClick}>
+                                    &gt;&gt;
+                                </Button>
+                            </div>
                         </div>
 
                         <div>
@@ -123,8 +147,8 @@ class Schedule extends React.Component {
                     </div>
                 </div>
             </div>
-            );
-        }
+        );
+    }
 }
 
 export default Schedule;
