@@ -5,7 +5,7 @@ import ScheduleBlockService from "../../services/ScheduleBlockService";
 import {Button} from "react-bootstrap";
 import ScheduleBlockForm from "./ScheduleBlockForm";
 import {parseFromServerFormat} from "../../util/DateTimeParser";
-import {addDays, format, nextDay, parseISO, subDays} from "date-fns";
+import {addDays, format, parseISO, subDays} from "date-fns";
 import DatePickerModal from "./DatePickerModal";
 
 class Schedule extends React.Component {
@@ -86,14 +86,16 @@ class Schedule extends React.Component {
     };
 
     render() {
-        const {selectedBlock, scheduleBlocks} = this.state;
+        const {selectedBlock, scheduleBlocks, pickedDay, showBlockForm, showDayPicker} = this.state;
 
         return (
             <div className="container">
-                <ScheduleBlockForm show={this.state.showBlockForm}
+                <ScheduleBlockForm show={showBlockForm}
+                                   pickedDay={pickedDay}
                                    onClose={this.handleCloseBlockForm}
                                    onFormSubmit={this.handleFormSubmit}/>
-                <DatePickerModal show={this.state.showDayPicker}
+                <DatePickerModal show={showDayPicker}
+                                 pickedDay={pickedDay}
                                  onDayPick={this.handleDayPick}
                                  onClose={this.handlePickDayClose}
                 />
@@ -115,7 +117,7 @@ class Schedule extends React.Component {
 
                                 <Button variant="secondary" className="me-2"
                                         onClick={this.handlePickDayClick}>
-                                    {format(this.state.pickedDay, "dd-MM-yyyy")}
+                                    {format(pickedDay, "dd-MM-yyyy")}
                                 </Button>
 
                                 <Button variant="outline-secondary" className="me-2"

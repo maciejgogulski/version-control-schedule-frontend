@@ -1,13 +1,14 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button, Form, Modal} from "react-bootstrap";
 import ScheduleBlockService from "../../services/ScheduleBlockService";
 import ScheduleBlock from "../../models/ScheduleBlock";
 import { parseToServerFormat } from "../../util/DateTimeParser";
+import {format} from "date-fns";
 
 function ScheduleBlockForm(props) {
     const [name, setName] = useState("");
-    const [startDate, setStartDate] = useState("");
-    const [endDate, setEndDate] = useState("");
+    const [startDate, setStartDate] = useState(format(props.pickedDay, "yyyy-MM-dd HH:mm:ss"));
+    const [endDate, setEndDate] = useState(format(props.pickedDay, "yyyy-MM-dd HH:mm:ss"));
 
     const handleNameChange = (e) => {
         setName(e.target.value);
@@ -45,6 +46,11 @@ function ScheduleBlockForm(props) {
         props.onClose();
         props.onFormSubmit();
     };
+
+    useEffect(() => {
+        setStartDate(format(props.pickedDay, "yyyy-MM-dd HH:mm:ss"));
+        setEndDate(format(props.pickedDay, "yyyy-MM-dd HH:mm:ss"));
+    }, [props.pickedDay]);
 
     return (
         <Modal show={props.show} onHide={props.onClose}>

@@ -1,8 +1,9 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button, Form, Modal} from "react-bootstrap";
+import {format} from "date-fns";
 
 function DatePickerModal(props) {
-    const [pickedDate, setPickedDate] = useState("");
+    const [pickedDate, setPickedDate] = useState(format(props.pickedDay, "yyyy-MM-dd"));
 
     const handleStartDateChange = (e) => {
         setPickedDate(e.target.value);
@@ -13,6 +14,10 @@ function DatePickerModal(props) {
         props.onDayPick(pickedDate);
         props.onClose();
     };
+
+    useEffect(() => {
+        setPickedDate(format(props.pickedDay, "yyyy-MM-dd"));
+    }, [props.pickedDay]);
 
     return (
         <Modal show={props.show} onHide={props.onClose}>
