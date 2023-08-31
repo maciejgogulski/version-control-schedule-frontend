@@ -1,0 +1,31 @@
+{
+  "app_name": "App Name",
+  "navigation": {
+    "main_page": "Home",
+    "schedules": "Schedules",
+    "addressee_groups": "Addressee groups",
+    "users": "Users"
+  },
+  "buttons": {
+    "create_block": "Create block",
+    "close": "Close",
+    "pick_date": "Pick a date"
+  },
+  "entities": {
+    "schedule": {
+      "title" : "Schedule",
+      "picking_date": "Pick a date"
+    },
+    "block": {
+      "title": "Block",
+      "details": "Block details",
+      "creating_new_block": "Creating new block",
+      "name": "Name",
+      "start_date": "Start date",
+      "end_date": "End date",
+      "addressees": "Addressees",
+      "addressee_groups": "Addressee groups",
+      "persons": "Persons"
+    }
+  }
+}

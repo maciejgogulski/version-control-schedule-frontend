@@ -1,8 +1,10 @@
 import React from "react";
+import {withTranslation} from "react-i18next";
 
 class ScheduleBlockDetails extends React.Component {
     render() {
-        const { block } = this.props;
+        const { block, t } = this.props;
+
 
         if (!block) {
             return null;
@@ -17,7 +19,7 @@ class ScheduleBlockDetails extends React.Component {
                     <hr className="my-1"/>
                     <div className="row">
                         <div className="col-md-6">
-                            <p>Data rozpoczęcia:</p>
+                            <p>{t('entities.block.start_date')}:</p>
                         </div>
 
                         <div className="col-md-6">
@@ -27,7 +29,7 @@ class ScheduleBlockDetails extends React.Component {
 
                     <div className="row">
                         <div className="col-md-6">
-                            <p>Data zakończenia:</p>
+                            <p>{t('entities.block.end_date')}:</p>
                         </div>
 
                         <div className="col-md-6">
@@ -78,17 +80,17 @@ class ScheduleBlockDetails extends React.Component {
 
                 <div className="container bg-light rounded m-3 px-5 py-3 shadow">
                     <div>
-                        <h4>Adresaci</h4>
+                        <h4>{t('entities.block.addressees')}</h4>
                     </div>
                     <hr className="my-1"/>
                     <div className="row">
                         <div className="col-md-6">
-                            <h5>Grupy</h5>
+                            <h5>{t('entities.block.addressee_groups')}</h5>
                             <hr className="my-1"/>
                         </div>
 
                         <div className="col-md-6">
-                            <h5>Osoby</h5>
+                            <h5>{t('entities.block.persons')}</h5>
                             <hr className="my-1"/>
                         </div>
                     </div>
@@ -139,4 +141,4 @@ class ScheduleBlockDetails extends React.Component {
     }
 }
 
-export default ScheduleBlockDetails;
+export default withTranslation()(ScheduleBlockDetails);

@@ -1,0 +1,31 @@
+{
+  "app_name": "Nazwa Aplikacji",
+  "navigation": {
+    "main_page": "Strona główna",
+    "schedules": "Plany",
+    "addressee_groups": "Grupy adresatów",
+    "users": "Użytkownicy"
+  },
+  "buttons": {
+    "create_block": "Utwórz blok",
+    "close": "Zamknij",
+    "pick_date": "Wybierz datę"
+  },
+  "entities": {
+    "schedule": {
+      "title": "Plan",
+      "picking_date": "Wybór daty"
+    },
+    "block": {
+      "title": "Blok",
+      "details": "Szczegóły bloku",
+      "creating_new_block": "Tworzenie nowego bloku",
+      "name": "Nazwa",
+      "start_date": "Data rozpoczęcia",
+      "end_date": "Data zakończenia",
+      "addressees": "Adresaci",
+      "addressee_groups": "Grupy",
+      "persons": "Osoby"
+    }
+  }
+}

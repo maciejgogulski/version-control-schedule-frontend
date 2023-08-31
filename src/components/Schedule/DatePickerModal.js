@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {Button, Form, Modal} from "react-bootstrap";
 import {format} from "date-fns";
+import {useTranslation} from "react-i18next";
 
 function DatePickerModal(props) {
+    const { t } = useTranslation();
     const [pickedDate, setPickedDate] = useState(format(props.pickedDay, "yyyy-MM-dd"));
 
     const handleStartDateChange = (e) => {
@@ -22,7 +24,7 @@ function DatePickerModal(props) {
     return (
         <Modal show={props.show} onHide={props.onClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Wybór daty</Modal.Title>
+                <Modal.Title>{t('entities.schedule.picking_date')}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
@@ -37,12 +39,11 @@ function DatePickerModal(props) {
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="primary" onClick={handleSubmit}>
-                   Wybierz datę
+                    {t('buttons.pick_date')}
                 </Button>
                 <Button variant="secondary" onClick={props.onClose}>
-                    Zamknij
+                    {t('buttons.close')}
                 </Button>
-                {/* Add additional buttons or actions if needed */}
             </Modal.Footer>
         </Modal>
     );

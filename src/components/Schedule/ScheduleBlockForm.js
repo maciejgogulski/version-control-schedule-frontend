@@ -4,8 +4,11 @@ import ScheduleBlockService from "../../services/ScheduleBlockService";
 import ScheduleBlock from "../../models/ScheduleBlock";
 import { parseToServerFormat } from "../../util/DateTimeParser";
 import {format} from "date-fns";
+import {useTranslation} from "react-i18next";
 
 function ScheduleBlockForm(props) {
+    const { t } = useTranslation();
+
     const [name, setName] = useState("");
     const [startDate, setStartDate] = useState(format(props.pickedDay, "yyyy-MM-dd HH:mm:ss"));
     const [endDate, setEndDate] = useState(format(props.pickedDay, "yyyy-MM-dd HH:mm:ss"));
@@ -55,12 +58,12 @@ function ScheduleBlockForm(props) {
     return (
         <Modal show={props.show} onHide={props.onClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Tworzenie nowego bloku</Modal.Title>
+                <Modal.Title>{t('entities.block.creating_new_block')}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
                     <Form.Group controlId="name">
-                        <Form.Label>Nazwa</Form.Label>
+                        <Form.Label>{t('entities.block.name')}:</Form.Label>
                         <Form.Control
                             type="text"
                             value={name}
@@ -68,7 +71,7 @@ function ScheduleBlockForm(props) {
                         />
                     </Form.Group>
                     <Form.Group controlId="startDate">
-                        <Form.Label>Data rozpoczęcia</Form.Label>
+                        <Form.Label>{t('entities.block.start_date')}:</Form.Label>
                         <Form.Control
                             type="datetime-local"
                             value={startDate}
@@ -76,7 +79,7 @@ function ScheduleBlockForm(props) {
                         />
                     </Form.Group>
                     <Form.Group controlId="endDate">
-                        <Form.Label>Data zakończenia</Form.Label>
+                        <Form.Label>{t('entities.block.end_date')}:</Form.Label>
                         <Form.Control
                             type="datetime-local"
                             value={endDate}
@@ -87,12 +90,11 @@ function ScheduleBlockForm(props) {
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="primary" onClick={handleSubmit}>
-                    Dodaj blok
+                    {t('buttons.create_block')}
                 </Button>
                 <Button variant="secondary" onClick={props.onClose}>
-                    Zamknij
+                    {t('buttons.close')}
                 </Button>
-                {/* Add additional buttons or actions if needed */}
             </Modal.Footer>
         </Modal>
     );

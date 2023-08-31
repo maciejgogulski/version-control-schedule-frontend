@@ -7,6 +7,7 @@ import ScheduleBlockForm from "./ScheduleBlockForm";
 import {parseFromServerFormat} from "../../util/DateTimeParser";
 import {addDays, format, parseISO, subDays} from "date-fns";
 import DatePickerModal from "./DatePickerModal";
+import {withTranslation} from "react-i18next";
 
 class Schedule extends React.Component {
 
@@ -86,6 +87,7 @@ class Schedule extends React.Component {
     };
 
     render() {
+        const {t} = this.props;
         const {selectedBlock, scheduleBlocks, pickedDay, showBlockForm, showDayPicker} = this.state;
 
         return (
@@ -102,12 +104,12 @@ class Schedule extends React.Component {
                 <div className="row">
                     <div className="col-md-6 px-4">
                         <div>
-                            <h2>Plan Rok_3_Semestr_6_2022/23_ST</h2>
+                            <h2>{t('entities.schedule.title')} Rok_3_Semestr_6_2022/23_ST</h2>
 
                             <div className="container">
                                 <Button variant="primary" className="me-2"
                                         onClick={this.handleBlockFormButtonClick}>
-                                    Dodaj blok
+                                    {t('buttons.create_block')}
                                 </Button>
 
                                 <Button variant="outline-secondary" className="me-2"
@@ -141,7 +143,7 @@ class Schedule extends React.Component {
                         </div>
                     </div>
                     <div className="col-md-6 px-4">
-                        <h2>Szczegóły bloku</h2>
+                        <h2>{t('entities.block.details')}</h2>
 
                         <div className="container">
                             <ScheduleBlockDetails block={selectedBlock}/>
@@ -153,4 +155,4 @@ class Schedule extends React.Component {
     }
 }
 
-export default Schedule;
+export default withTranslation()(Schedule);
