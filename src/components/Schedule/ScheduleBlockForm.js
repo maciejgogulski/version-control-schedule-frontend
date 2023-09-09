@@ -31,7 +31,7 @@ function ScheduleBlockForm(props) {
         const scheduleBlockService = new ScheduleBlockService();
 
         let block = new ScheduleBlock();
-        block.scheduleTagId = 5;
+        block.scheduleTagId = props.scheduleTagId;
         block.name = name;
 
         // Parse startDate and endDate to the desired format
