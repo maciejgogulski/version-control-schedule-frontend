@@ -17,15 +17,6 @@ class ScheduleBlockListElement extends React.Component {
                     <h4>{block.name}</h4>
                     <p className="text-warning">{block.startDate + ' - ' + block.endDate}</p>
                 </div>
-                <div className="row">
-                    <div className="col-md-6">
-                        <p className="text-info text-decoration-underline">Szczegóły</p>
-                    </div>
-
-                    <div className="col-md-6">
-                        <p>Dr inż. Roman Kowalski</p>
-                    </div>
-                </div>
             </div>
         );
     }

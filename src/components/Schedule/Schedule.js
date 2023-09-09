@@ -8,29 +8,37 @@ import {parseFromServerFormat} from "../../util/DateTimeParser";
 import {addDays, format, parseISO, subDays} from "date-fns";
 import DatePickerModal from "./DatePickerModal";
 import {withTranslation} from "react-i18next";
+import ScheduleTagService from "../../services/ScheduleTagService";
 
 class Schedule extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
+            scheduleTagService: new ScheduleTagService(),
+            scheduleBlockService: new ScheduleBlockService(),
+            scheduleTagId: null,
+            scheduleTag: null,
             selectedBlock: null,
             scheduleBlocks: [],
             showBlockForm: false,
             showDayPicker: false,
             pickedDay: new Date()
         };
+
+        console.log(this.props);
+        this.setState({scheduleTagId: this.props.match.params.scheduleTagId}, () => {
+            this.fetchScheduleTag().then(() => {
+                    this.fetchScheduleBlocks();
+                }
+            );
+        });
     }
 
-    componentDidMount() {
-        this.fetchScheduleBlocks();
-    }
 
     fetchScheduleBlocks = async () => {
-        const scheduleBlockService = new ScheduleBlockService();
-        const tagId = 5;
         const day = format(this.state.pickedDay, "yyyy-MM-dd HH:mm:ss");
-        const response = await scheduleBlockService.getScheduleBlocksByDay(tagId, day);
+        const response = await this.state.scheduleBlockService.getScheduleBlocksByDay(this.state.scheduleTagId, day);
         const data = await response.json();
 
         if (response.ok) {
@@ -39,6 +47,17 @@ class Schedule extends React.Component {
                 block.endDate = parseFromServerFormat(block.endDate);
             })
             this.setState({scheduleBlocks: data});
+        } else {
+            console.error('Error:', data);
+        }
+    };
+
+    fetchScheduleTag = async () => {
+        const response = await this.state.scheduleTagService.getScheduleTag(this.state.scheduleTagId);
+        const data = await response.json();
+
+        if (response.ok) {
+            this.setState({scheduleTag: data});
         } else {
             console.error('Error:', data);
         }
@@ -88,7 +107,7 @@ class Schedule extends React.Component {
 
     render() {
         const {t} = this.props;
-        const {selectedBlock, scheduleBlocks, pickedDay, showBlockForm, showDayPicker} = this.state;
+        const {selectedBlock, scheduleBlocks, pickedDay, showBlockForm, showDayPicker, scheduleTag} = this.state;
 
         return (
             <div className="container">
@@ -104,7 +123,7 @@ class Schedule extends React.Component {
                 <div className="row">
                     <div className="col-md-6 px-4">
                         <div>
-                            <h2>{t('entities.schedule.title')} Rok_3_Semestr_6_2022/23_ST</h2>
+                            <h2>{t('entities.schedule.title')} {scheduleTag.name}</h2>
 
                             <div className="container">
                                 <Button variant="primary" className="me-2"
