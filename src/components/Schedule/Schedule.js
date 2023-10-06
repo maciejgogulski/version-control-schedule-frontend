@@ -1,101 +1,113 @@
-import React, {useEffect, useState} from "react";
-import ScheduleBlockListElement from "./ScheduleBlockListElement";
-import ScheduleBlockDetails from "./ScheduleBlockDetails";
-import ScheduleBlockService from "../../services/ScheduleBlockService";
-import {Button} from "react-bootstrap";
-import ScheduleBlockForm from "./ScheduleBlockForm";
-import {parseFromServerFormat} from "../../util/DateTimeParser";
-import {addDays, format, parseISO, subDays} from "date-fns";
-import DatePickerModal from "./DatePickerModal";
-import {useTranslation} from "react-i18next";
-import ScheduleTagService from "../../services/ScheduleTagService";
-import {useParams} from "react-router-dom";
+import React, {useEffect, useState} from "react"
+import ScheduleBlockListElement from "./ScheduleBlockListElement"
+import ScheduleBlockDetails from "./ScheduleBlockDetails"
+import ScheduleBlockService from "../../services/ScheduleBlockService"
+import {Button} from "react-bootstrap"
+import ScheduleBlockForm from "./ScheduleBlockForm"
+import {parseFromServerFormat} from "../../util/DateTimeParser"
+import {addDays, format, parseISO, subDays} from "date-fns"
+import DatePickerModal from "./DatePickerModal"
+import {useTranslation} from "react-i18next"
+import ScheduleTagService from "../../services/ScheduleTagService"
+import {useParams} from "react-router-dom"
 
 function Schedule() {
-    const [scheduleTagService] = useState(new ScheduleTagService());
-    const [scheduleBlockService] = useState(new ScheduleBlockService());
-    const {scheduleTagId} = useParams();
-    const [scheduleTag, setScheduleTag] = useState(null);
-    const [selectedBlock, setSelectedBlock] = useState(null);
-    const [scheduleBlocks, setScheduleBlocks] = useState([]);
-    const [showBlockForm, setShowBlockForm] = useState(false);
-    const [showDayPicker, setShowDayPicker] = useState(false);
-    const [pickedDay, setPickedDay] = useState(new Date());
+    const [scheduleTagService] = useState(new ScheduleTagService())
+    const [scheduleBlockService] = useState(new ScheduleBlockService())
+    const {scheduleTagId} = useParams()
+    const [scheduleTag, setScheduleTag] = useState(null)
+    const [selectedBlock, setSelectedBlock] = useState(null)
+    const [scheduleBlocks, setScheduleBlocks] = useState([])
+    const [showBlockForm, setShowBlockForm] = useState(false)
+    const [showDayPicker, setShowDayPicker] = useState(false)
+    const [pickedDay, setPickedDay] = useState(new Date())
+    const [showDeleteBlockModal, setShowDeleteBlockModal] = useState(false)
+    const [blockToEdit, setBlockToEdit] = useState(null)
+
 
     useEffect(() => {
-        fetchScheduleTag().then(() => fetchScheduleBlocks());
-    }, [pickedDay, scheduleTagId]);
+        fetchScheduleTag().then(() => fetchScheduleBlocks())
+    }, [pickedDay, scheduleTagId])
 
     const fetchScheduleBlocks = async () => {
-        const day = format(pickedDay, "yyyy-MM-dd HH:mm:ss");
+        const day = format(pickedDay, "yyyy-MM-dd HH:mm:ss")
         const response = await scheduleBlockService.getScheduleBlocksByDay(
             scheduleTagId,
             day
-        );
-        const data = await response.json();
+        )
+        const data = await response.json()
 
         if (response.ok) {
             data.forEach((block) => {
-                block.startDate = parseFromServerFormat(block.startDate);
-                block.endDate = parseFromServerFormat(block.endDate);
-            });
-            setScheduleBlocks(data);
+                block.startDate = parseFromServerFormat(block.startDate)
+                block.endDate = parseFromServerFormat(block.endDate)
+            })
+            setScheduleBlocks(data)
         } else {
-            console.error("Error:", data);
+            console.error("Error:", data)
         }
-    };
+    }
 
     const fetchScheduleTag = async () => {
-        const response = await scheduleTagService.getScheduleTag(scheduleTagId);
-        const data = await response.json();
+        const response = await scheduleTagService.getScheduleTag(scheduleTagId)
+        const data = await response.json()
 
         if (response.ok) {
-            setScheduleTag(data);
+            setScheduleTag(data)
         } else {
-            console.error("Error:", data);
+            console.error("Error:", data)
         }
-    };
+    }
 
     const handleBlockClick = (block) => {
-        setSelectedBlock(block);
-    };
+        setSelectedBlock(block)
+    }
 
-    const handleBlockFormButtonClick = () => {
-        setShowBlockForm(true);
-    };
+    const handleBlockFormButtonClick = (block) => {
+        setShowBlockForm(true)
+        if (block) {
+            setBlockToEdit(block)
+        }
+    }
 
     const handleCloseBlockForm = () => {
-        setShowBlockForm(false);
-    };
+        setShowBlockForm(false)
+        setBlockToEdit(null)
+    }
 
     const handlePickDayClick = () => {
-        setShowDayPicker(true);
-    };
+        setShowDayPicker(true)
+    }
 
     const handlePickDayClose = () => {
-        setShowDayPicker(false);
-    };
+        setShowDayPicker(false)
+    }
 
     const handlePreviousDayClick = () => {
-        setPickedDay(subDays(pickedDay, 1));
-        setSelectedBlock(null);
-    };
+        setPickedDay(subDays(pickedDay, 1))
+        setSelectedBlock(null)
+    }
 
     const handleNextDayClick = () => {
-        setPickedDay(addDays(pickedDay, 1));
-        setSelectedBlock(null);
-    };
+        setPickedDay(addDays(pickedDay, 1))
+        setSelectedBlock(null)
+    }
 
     const handleFormSubmit = async () => {
-        await fetchScheduleBlocks();
-    };
+        await fetchScheduleBlocks()
+        setBlockToEdit(null)
+    }
 
     const handleDayPick = (day) => {
-        setPickedDay(parseISO(day));
-        setSelectedBlock(null);
-    };
+        setPickedDay(parseISO(day))
+        setSelectedBlock(null)
+    }
 
-    const {t} = useTranslation();
+    const handleDeleteBlockClick = (block) => {
+        setShowDeleteBlockModal(true)
+    }
+
+    const {t} = useTranslation()
 
     return (
         <div className="container">
@@ -105,6 +117,7 @@ function Schedule() {
                 onClose={handleCloseBlockForm}
                 onFormSubmit={handleFormSubmit}
                 scheduleTagId={scheduleTagId}
+                blockToEdit={blockToEdit}
             />
             <DatePickerModal
                 show={showDayPicker}
@@ -123,7 +136,7 @@ function Schedule() {
                             <Button
                                 variant="primary"
                                 className="me-2"
-                                onClick={handleBlockFormButtonClick}
+                                onClick={() => handleBlockFormButtonClick(null)}
                             >
                                 {t("buttons.create_block")}
                             </Button>
@@ -172,11 +185,19 @@ function Schedule() {
 
                     <div className="container">
                         <ScheduleBlockDetails block={selectedBlock}/>
+                        <Button variant="secondary" className="me-2"
+                                onClick={() => handleBlockFormButtonClick(selectedBlock)}>
+                            {t('buttons.edit_block')}
+                        </Button>
+                        <Button variant="danger"
+                                onClick={() => handleDeleteBlockClick(selectedBlock)}>
+                            {t('buttons.delete_block')}
+                        </Button>
                     </div>
                 </div>
             </div>
         </div>
-    );
+    )
 }
 
-export default Schedule;
+export default Schedule

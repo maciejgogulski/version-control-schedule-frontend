@@ -37,4 +37,18 @@ export default class ScheduleBlockService {
             }
         )
     }
+
+    async editScheduleBlock(block) {
+        const jsonBlock = JSON.stringify(block);
+        return await this.apiService.sendRequest(
+            this.scheduleBlockUrl,
+            "PUT",
+            [],
+            jsonBlock,
+            {
+                'Content-Type': 'application/json',
+            }
+        )
+    }
+
 }

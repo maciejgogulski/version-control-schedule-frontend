@@ -11,7 +11,9 @@
     "create_schedule": "Stwórz plan",
     "close": "Zamknij",
     "pick_date": "Wybierz datę",
-    "edit_schedule": "Edytuj plan"
+    "edit_schedule": "Edytuj plan",
+    "edit_block": "Edytuj blok",
+    "delete_block": "Usuń blok"
   },
   "entities": {
     "schedule": {
@@ -22,6 +24,7 @@
       "title": "Blok",
       "details": "Szczegóły bloku",
       "creating_new_block": "Tworzenie nowego bloku",
+      "editing_block": "Edycja bloku",
       "name": "Nazwa",
       "start_date": "Data rozpoczęcia",
       "end_date": "Data zakończenia",

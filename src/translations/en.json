@@ -11,7 +11,9 @@
     "create_schedule": "Create schedule",
     "close": "Close",
     "pick_date": "Pick a date",
-    "edit_schedule": "Edit schedule"
+    "edit_schedule": "Edit schedule",
+    "edit_block": "Edit block",
+    "delete_block": "Delete block"
   },
   "entities": {
     "schedule": {
@@ -22,6 +24,7 @@
       "title": "Block",
       "details": "Block details",
       "creating_new_block": "Creating new block",
+      "editing_block": "Editing block",
       "name": "Name",
       "start_date": "Start date",
       "end_date": "End date",
