@@ -12,8 +12,10 @@
     "close": "Close",
     "pick_date": "Pick a date",
     "edit_schedule": "Edit schedule",
+    "delete_schedule": "Delete schedule",
     "edit_block": "Edit block",
-    "delete_block": "Delete block"
+    "delete_block": "Delete block",
+    "confirm": "Confirm"
   },
   "entities": {
     "schedule": {
@@ -25,6 +27,8 @@
       "details": "Block details",
       "creating_new_block": "Creating new block",
       "editing_block": "Editing block",
+      "deleting_block": "Deleting block",
+      "delete_block_message": "Are you sure, you want to delete block {{name}}?",
       "name": "Name",
       "start_date": "Start date",
       "end_date": "End date",
@@ -35,6 +39,8 @@
     "tag": {
       "creating_new_tag": "Creating new schedule",
       "editing_tag": "Editing schedule",
+      "deleting_tag": "Deleting schedule",
+      "delete_tag_message": "Are you sure, you want to delete schedule {{name}}?",
       "name": "Name"
     }
   }

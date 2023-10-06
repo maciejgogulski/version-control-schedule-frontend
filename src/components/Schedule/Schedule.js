@@ -6,10 +6,11 @@ import {Button} from "react-bootstrap"
 import ScheduleBlockForm from "./ScheduleBlockForm"
 import {parseFromServerFormat} from "../../util/DateTimeParser"
 import {addDays, format, parseISO, subDays} from "date-fns"
-import DatePickerModal from "./DatePickerModal"
+import DatePickerModal from "./Modals/DatePickerModal"
 import {useTranslation} from "react-i18next"
 import ScheduleTagService from "../../services/ScheduleTagService"
 import {useParams} from "react-router-dom"
+import ConfirmActionModal from "./Modals/ConfirmActionModal";
 
 function Schedule() {
     const [scheduleTagService] = useState(new ScheduleTagService())
@@ -103,8 +104,20 @@ function Schedule() {
         setSelectedBlock(null)
     }
 
-    const handleDeleteBlockClick = (block) => {
+    const handleDeleteBlockClick = () => {
         setShowDeleteBlockModal(true)
+    }
+
+    const handleDeleteBlockClose = () => {
+        setShowDeleteBlockModal(false)
+    }
+
+    const handleBlockDelete = async () => {
+        await scheduleBlockService.deleteScheduleBlock(selectedBlock.id)
+        await fetchScheduleBlocks()
+
+        setShowDeleteBlockModal(false)
+        setSelectedBlock(null)
     }
 
     const {t} = useTranslation()
@@ -125,6 +138,14 @@ function Schedule() {
                 onDayPick={handleDayPick}
                 onClose={handlePickDayClose}
             />
+            <ConfirmActionModal
+                show={showDeleteBlockModal}
+                title={t("entities.block.deleting_block") + " " + selectedBlock?.name }
+                message={t("entities.block.delete_block_message", {name: selectedBlock?.name})}
+                action={handleBlockDelete}
+                variant={"danger"}
+                onClose={handleDeleteBlockClose}
+            />
             <div className="row">
                 <div className="col-md-6 px-4">
                     <div>
@@ -134,7 +155,7 @@ function Schedule() {
 
                         <div className="container">
                             <Button
-                                variant="primary"
+                                variant="success"
                                 className="me-2"
                                 onClick={() => handleBlockFormButtonClick(null)}
                             >
@@ -180,21 +201,23 @@ function Schedule() {
                         </div>
                     </div>
                 </div>
-                <div className="col-md-6 px-4">
-                    <h2>{t("entities.block.details")}</h2>
+                { selectedBlock &&
+                    <div className="col-md-6 px-4">
+                        <h2>{t("entities.block.details")}</h2>
 
-                    <div className="container">
-                        <ScheduleBlockDetails block={selectedBlock}/>
-                        <Button variant="secondary" className="me-2"
-                                onClick={() => handleBlockFormButtonClick(selectedBlock)}>
-                            {t('buttons.edit_block')}
-                        </Button>
-                        <Button variant="danger"
-                                onClick={() => handleDeleteBlockClick(selectedBlock)}>
-                            {t('buttons.delete_block')}
-                        </Button>
+                        <div className="container">
+                            <ScheduleBlockDetails block={selectedBlock}/>
+                            <Button variant="secondary" className="me-2"
+                                    onClick={() => handleBlockFormButtonClick(selectedBlock)}>
+                                {t('buttons.edit_block')}
+                            </Button>
+                            <Button variant="danger"
+                                    onClick={() => handleDeleteBlockClick(selectedBlock)}>
+                                {t('buttons.delete_block')}
+                            </Button>
+                        </div>
                     </div>
-                </div>
+                }
             </div>
         </div>
     )

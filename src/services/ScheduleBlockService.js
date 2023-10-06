@@ -51,4 +51,12 @@ export default class ScheduleBlockService {
         )
     }
 
+    async deleteScheduleBlock(blockId) {
+        return await this.apiService.sendRequest(
+            this.scheduleBlockUrl + "/" + blockId,
+            "DELETE",
+            [],
+        )
+    }
+
 }

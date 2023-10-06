@@ -45,4 +45,11 @@ export default class ScheduleTagService {
             }
         )
     }
+
+    async deleteScheduleTag(id) {
+        return await this.apiService.sendRequest(
+            this.scheduleTagUrl + "/" + id,
+            "DELETE",
+        )
+    }
 }

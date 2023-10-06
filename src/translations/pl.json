@@ -12,8 +12,10 @@
     "close": "Zamknij",
     "pick_date": "Wybierz datę",
     "edit_schedule": "Edytuj plan",
+    "delete_schedule": "Usuń plan",
     "edit_block": "Edytuj blok",
-    "delete_block": "Usuń blok"
+    "delete_block": "Usuń blok",
+    "confirm": "Potwierdź"
   },
   "entities": {
     "schedule": {
@@ -25,6 +27,8 @@
       "details": "Szczegóły bloku",
       "creating_new_block": "Tworzenie nowego bloku",
       "editing_block": "Edycja bloku",
+      "deleting_block": "Usuwanie bloku",
+      "delete_block_message": "Czy jesteś pewien, że chcesz usunąć blok {{name}}?",
       "name": "Nazwa",
       "start_date": "Data rozpoczęcia",
       "end_date": "Data zakończenia",
@@ -35,6 +39,8 @@
     "tag": {
       "creating_new_tag": "Tworzenie nowego planu",
       "editing_tag": "Edycja planu",
+      "deleting_tag": "Usuwanie planu",
+      "delete_tag_message": "Czy jesteś pewien, że chcesz usunąć plan {{name}}?",
       "name": "Nazwa"
     }
   }

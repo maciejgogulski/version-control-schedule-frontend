@@ -52,7 +52,7 @@ function ScheduleTagForm(props) {
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="primary" onClick={handleSubmit}>
+                <Button variant={(props.scheduleTag) ? "primary" : "success"} onClick={handleSubmit}>
                     {(props.scheduleTag) ? t('buttons.edit_schedule') : t('buttons.create_schedule')}
                 </Button>
                 <Button variant="secondary" onClick={props.onClose}>

@@ -96,7 +96,7 @@ function ScheduleBlockForm(props) {
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="primary" onClick={handleSubmit}>
+                <Button variant={(props.blockToEdit) ? "primary" : "success"} onClick={handleSubmit}>
                     {(props.blockToEdit) ? t('buttons.edit_block') : t('buttons.create_block')}
                 </Button>
                 <Button variant="secondary" onClick={props.onClose}>

@@ -4,12 +4,15 @@ import {useTranslation, withTranslation} from "react-i18next";
 import ScheduleTagService from "../../services/ScheduleTagService";
 import {Link} from "react-router-dom";
 import ScheduleTagForm from "./ScheduleTagForm";
+import ConfirmActionModal from "./Modals/ConfirmActionModal";
 
 function ScheduleTagList() {
     const [scheduleTagService] = useState(new ScheduleTagService());
     const [scheduleTags, setScheduleTags] = useState([]);
     const [showScheduleTagForm, setScheduleTagForm] = useState(false);
     const [selectedScheduleTag, setSelectedScheduleTag] = useState(null);
+    const [showDeleteTagModal, setShowDeleteTagModal] = useState(false)
+
 
     useEffect(() => {
         fetchScheduleTags();
@@ -43,6 +46,24 @@ function ScheduleTagList() {
         await fetchScheduleTags();
     };
 
+    const handleDeleteTagButtonClick = (scheduleTag = null) => {
+        setSelectedScheduleTag(scheduleTag)
+        setShowDeleteTagModal(true)
+    }
+
+    const handleDeleteTagClose = () => {
+        setShowDeleteTagModal(false)
+        setSelectedScheduleTag(null)
+    }
+
+    const handleTagDelete = async () => {
+        await scheduleTagService.deleteScheduleTag(selectedScheduleTag.id)
+        await fetchScheduleTags()
+
+        setShowDeleteTagModal(false)
+        setSelectedScheduleTag(null)
+    }
+
     const {t} = useTranslation();
 
     return (
@@ -52,13 +73,21 @@ function ScheduleTagList() {
                              onFormSubmit={handleFormSubmit}
                              scheduleTag={selectedScheduleTag}
             />
+            <ConfirmActionModal
+                show={showDeleteTagModal}
+                title={t("entities.tag.deleting_tag") + " " + selectedScheduleTag?.name }
+                message={t("entities.tag.delete_tag_message", {name: selectedScheduleTag?.name})}
+                action={handleTagDelete}
+                variant={"danger"}
+                onClose={handleDeleteTagClose}
+            />
             <div className="row">
-                <div className="col-md-6 px-4">
+                <div className="col-md-12 px-4">
                     <div>
                         <h2>{t('navigation.schedules')} </h2>
 
                         <div className="container">
-                            <Button variant="primary" className="me-2"
+                            <Button variant="success" className="me-2"
                                     onClick={() => handleTagFormButtonClick(null)}>
                                 {t('buttons.create_schedule')}
                             </Button>
@@ -76,9 +105,14 @@ function ScheduleTagList() {
                                         </Link>
                                     </div>
                                     <div className="col-sm-6">
-                                        <Button variant="secondary" className="col-sm-6 me-2"
+                                        <Button variant="secondary" className="me-2"
                                                 onClick={() => handleTagFormButtonClick(tag)}>
                                             {t('buttons.edit_schedule')}
+                                        </Button>
+
+                                        <Button variant="danger" className="me-2"
+                                                onClick={() => handleDeleteTagButtonClick(tag)}>
+                                            {t('buttons.delete_schedule')}
                                         </Button>
                                     </div>
                                 </div>
