@@ -8,8 +8,10 @@
   },
   "buttons": {
     "create_block": "Create block",
+    "create_schedule": "Create schedule",
     "close": "Close",
-    "pick_date": "Pick a date"
+    "pick_date": "Pick a date",
+    "edit_schedule": "Edit schedule"
   },
   "entities": {
     "schedule": {
@@ -26,6 +28,11 @@
       "addressees": "Addressees",
       "addressee_groups": "Groups",
       "persons": "Persons"
+    },
+    "tag": {
+      "creating_new_tag": "Creating new schedule",
+      "editing_tag": "Editing schedule",
+      "name": "Name"
     }
   }
 }

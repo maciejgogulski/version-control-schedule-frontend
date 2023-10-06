@@ -7,9 +7,11 @@
     "users": "Użytkownicy"
   },
   "buttons": {
-    "create_block": "Utwórz blok",
+    "create_block": "Stwórz blok",
+    "create_schedule": "Stwórz plan",
     "close": "Zamknij",
-    "pick_date": "Wybierz datę"
+    "pick_date": "Wybierz datę",
+    "edit_schedule": "Edytuj plan"
   },
   "entities": {
     "schedule": {
@@ -26,6 +28,11 @@
       "addressees": "Adresaci",
       "addressee_groups": "Grupy",
       "persons": "Osoby"
+    },
+    "tag": {
+      "creating_new_tag": "Tworzenie nowego planu",
+      "editing_tag": "Edycja planu",
+      "name": "Nazwa"
     }
   }
 }

@@ -32,4 +32,17 @@ export default class ScheduleTagService {
             }
         )
     }
+
+    async editScheduleTag(tag) {
+        const jsonTag = JSON.stringify(tag);
+        return await this.apiService.sendRequest(
+            this.scheduleTagUrl,
+            "PUT",
+            [],
+            jsonTag,
+            {
+                'Content-Type': 'application/json',
+            }
+        )
+    }
 }

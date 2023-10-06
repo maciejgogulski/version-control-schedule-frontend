@@ -1,87 +1,95 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {Button} from "react-bootstrap";
-import {withTranslation} from "react-i18next";
+import {useTranslation, withTranslation} from "react-i18next";
 import ScheduleTagService from "../../services/ScheduleTagService";
 import {Link} from "react-router-dom";
+import ScheduleTagForm from "./ScheduleTagForm";
 
-class ScheduleTagList extends React.Component {
+function ScheduleTagList() {
+    const [scheduleTagService] = useState(new ScheduleTagService());
+    const [scheduleTags, setScheduleTags] = useState([]);
+    const [showScheduleTagForm, setScheduleTagForm] = useState(false);
+    const [selectedScheduleTag, setSelectedScheduleTag] = useState(null);
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            selectedScheduleTag: null,
-            scheduleTags: [],
-            showScheduleTagForm: false,
-        };
-    }
+    useEffect(() => {
+        fetchScheduleTags();
+    }, []);
 
-    componentDidMount() {
-        this.fetchScheduleTags();
-    }
-
-    fetchScheduleTags = async () => {
-        const scheduleTagService = new ScheduleTagService();
+    const fetchScheduleTags = async () => {
         const response = await scheduleTagService.getScheduleTags();
         const data = await response.json();
 
         if (response.ok) {
-            this.setState({scheduleTags: data});
+            setScheduleTags(data);
         } else {
             console.error('Error:', data);
         }
     };
 
 
-    handleTagFormButtonClick = () => {
-        this.setState({showTagForm: true})
+    const handleTagFormButtonClick = (scheduleTag = null) => {
+        setScheduleTagForm(true);
+        if (scheduleTag) {
+            setSelectedScheduleTag(scheduleTag)
+        }
     };
 
-    handleCloseTagForm = () => {
-        this.setState({showTagForm: false})
+    const handleCloseTagForm = () => {
+        setScheduleTagForm(false);
+        setSelectedScheduleTag(null);
     };
 
-    handleFormSubmit = async () => {
-        await this.fetchScheduleTags();
+    const handleFormSubmit = async () => {
+        await fetchScheduleTags();
     };
 
+    const {t} = useTranslation();
 
-    render() {
-        const {t} = this.props;
-        const {scheduleTags} = this.state;
+    return (
+        <div className="container">
+            <ScheduleTagForm show={showScheduleTagForm}
+                             onClose={handleCloseTagForm}
+                             onFormSubmit={handleFormSubmit}
+                             scheduleTag={selectedScheduleTag}
+            />
+            <div className="row">
+                <div className="col-md-6 px-4">
+                    <div>
+                        <h2>{t('navigation.schedules')} </h2>
 
-        return (
-            <div className="container">
-                {/*<ScheduleTagForm show={showTagForm}*/}
-                {/*                 onClose={this.handleCloseTagForm}*/}
-                {/*                 onFormSubmit={this.handleFormSubmit}/>*/}
-                <div className="row">
-                    <div className="col-md-6 px-4">
-                        <div>
-                            <h2>{t('navigation.schedules')} </h2>
-
-                            <div className="container">
-                                <Button variant="primary" className="me-2"
-                                        onClick={this.handleBlockFormButtonClick}>
-                                    {t('buttons.create_schedule')}
-                                </Button>
-                            </div>
+                        <div className="container">
+                            <Button variant="primary" className="me-2"
+                                    onClick={() => handleTagFormButtonClick(null)}>
+                                {t('buttons.create_schedule')}
+                            </Button>
                         </div>
+                    </div>
 
-                        <div>
-                            <div className="list-container">
-                                {scheduleTags.map((tag) => (
-                                    <Link to={tag.id.toString()}
-                                          key={tag.id}>
-                                        <p>{tag.name}</p>
-                                    </Link>
-                                ))}
-                            </div>
+                    <div>
+                        <div className="container">
+                            {scheduleTags.map((tag) => (
+                                <div className="row">
+                                    <div className="col-sm-6 mb-2">
+                                        <Link className="text-decoration-none text-dark" to={tag.id.toString()}
+                                              key={tag.id}>
+                                            {tag.name}
+                                        </Link>
+                                    </div>
+                                    <div className="col-sm-6">
+                                        <Button variant="secondary" className="col-sm-6 me-2"
+                                                onClick={() => handleTagFormButtonClick(tag)}>
+                                            {t('buttons.edit_schedule')}
+                                        </Button>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
             </div>
-        );
-    }
+        </div>
+    )
+        ;
 }
 
 export default withTranslation()(ScheduleTagList);
