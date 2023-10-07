@@ -1,50 +1,50 @@
-import React, {useEffect, useState} from "react";
-import {Button} from "react-bootstrap";
-import {useTranslation, withTranslation} from "react-i18next";
-import ScheduleTagService from "../../services/ScheduleTagService";
-import {Link} from "react-router-dom";
-import ScheduleTagForm from "./ScheduleTagForm";
-import ConfirmActionModal from "./Modals/ConfirmActionModal";
+import React, {useEffect, useState} from "react"
+import {Button, Table} from "react-bootstrap"
+import {useTranslation, withTranslation} from "react-i18next"
+import ScheduleTagService from "../../../services/ScheduleTagService"
+import ScheduleTagForm from "./ScheduleTagForm"
+import ConfirmActionModal from "../../Modals/ConfirmActionModal"
+import {useNavigate} from "react-router-dom";
 
 function ScheduleTagList() {
-    const [scheduleTagService] = useState(new ScheduleTagService());
-    const [scheduleTags, setScheduleTags] = useState([]);
-    const [showScheduleTagForm, setScheduleTagForm] = useState(false);
-    const [selectedScheduleTag, setSelectedScheduleTag] = useState(null);
+    const navigate = useNavigate();
+    const [scheduleTagService] = useState(new ScheduleTagService())
+    const [scheduleTags, setScheduleTags] = useState([])
+    const [showScheduleTagForm, setScheduleTagForm] = useState(false)
+    const [selectedScheduleTag, setSelectedScheduleTag] = useState(null)
     const [showDeleteTagModal, setShowDeleteTagModal] = useState(false)
 
-
     useEffect(() => {
-        fetchScheduleTags();
-    }, []);
+        fetchScheduleTags()
+    }, [])
 
     const fetchScheduleTags = async () => {
-        const response = await scheduleTagService.getScheduleTags();
-        const data = await response.json();
+        const response = await scheduleTagService.getScheduleTags()
+        const data = await response.json()
 
         if (response.ok) {
-            setScheduleTags(data);
+            setScheduleTags(data)
         } else {
-            console.error('Error:', data);
+            console.error('Error:', data)
         }
-    };
+    }
 
 
     const handleTagFormButtonClick = (scheduleTag = null) => {
-        setScheduleTagForm(true);
+        setScheduleTagForm(true)
         if (scheduleTag) {
             setSelectedScheduleTag(scheduleTag)
         }
-    };
+    }
 
     const handleCloseTagForm = () => {
-        setScheduleTagForm(false);
-        setSelectedScheduleTag(null);
-    };
+        setScheduleTagForm(false)
+        setSelectedScheduleTag(null)
+    }
 
     const handleFormSubmit = async () => {
-        await fetchScheduleTags();
-    };
+        await fetchScheduleTags()
+    }
 
     const handleDeleteTagButtonClick = (scheduleTag = null) => {
         setSelectedScheduleTag(scheduleTag)
@@ -64,7 +64,11 @@ function ScheduleTagList() {
         setSelectedScheduleTag(null)
     }
 
-    const {t} = useTranslation();
+    const redirectToScheduleTag = (tagId) => {
+        navigate("/schedule/" + tagId)
+    }
+
+    const {t} = useTranslation()
 
     return (
         <div className="container">
@@ -75,7 +79,7 @@ function ScheduleTagList() {
             />
             <ConfirmActionModal
                 show={showDeleteTagModal}
-                title={t("entities.tag.deleting_tag") + " " + selectedScheduleTag?.name }
+                title={t("entities.tag.deleting_tag") + " " + selectedScheduleTag?.name}
                 message={t("entities.tag.delete_tag_message", {name: selectedScheduleTag?.name})}
                 action={handleTagDelete}
                 variant={"danger"}
@@ -95,16 +99,20 @@ function ScheduleTagList() {
                     </div>
 
                     <div>
-                        <div className="container">
+                        <Table responsive>
+                            <thead>
+                            <tr>
+                                <th>{t('entities.tag.name')}</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
                             {scheduleTags.map((tag) => (
-                                <div className="row">
-                                    <div className="col-sm-6 mb-2">
-                                        <Link className="text-decoration-none text-dark" to={tag.id.toString()}
-                                              key={tag.id}>
-                                            {tag.name}
-                                        </Link>
-                                    </div>
-                                    <div className="col-sm-6">
+                                <tr key={tag.id}>
+                                    <td onClick={() => redirectToScheduleTag(tag.id)}>
+                                        {tag.name}
+                                    </td>
+                                    <td>
                                         <Button variant="secondary" className="me-2"
                                                 onClick={() => handleTagFormButtonClick(tag)}>
                                             {t('buttons.edit_schedule')}
@@ -114,16 +122,16 @@ function ScheduleTagList() {
                                                 onClick={() => handleDeleteTagButtonClick(tag)}>
                                             {t('buttons.delete_schedule')}
                                         </Button>
-                                    </div>
-                                </div>
+                                    </td>
+                                </tr>
                             ))}
-                        </div>
+                            </tbody>
+                        </Table>
                     </div>
                 </div>
             </div>
         </div>
     )
-        ;
 }
 
-export default withTranslation()(ScheduleTagList);
+export default withTranslation()(ScheduleTagList)

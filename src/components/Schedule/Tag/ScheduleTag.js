@@ -1,18 +1,18 @@
 import React, {useEffect, useState} from "react"
-import ScheduleBlockListElement from "./ScheduleBlockListElement"
-import ScheduleBlockDetails from "./ScheduleBlockDetails"
-import ScheduleBlockService from "../../services/ScheduleBlockService"
+import ScheduleBlockListElement from "../Block/ScheduleBlockListElement"
+import ScheduleBlockDetails from "../Block/ScheduleBlockDetails"
+import ScheduleBlockService from "../../../services/ScheduleBlockService"
 import {Button} from "react-bootstrap"
-import ScheduleBlockForm from "./ScheduleBlockForm"
-import {parseFromServerFormat} from "../../util/DateTimeParser"
+import ScheduleBlockForm from "../Block/ScheduleBlockForm"
+import {parseFromServerFormat} from "../../../util/DateTimeParser"
 import {addDays, format, parseISO, subDays} from "date-fns"
-import DatePickerModal from "./Modals/DatePickerModal"
+import DatePickerModal from "../../Modals/DatePickerModal"
 import {useTranslation} from "react-i18next"
-import ScheduleTagService from "../../services/ScheduleTagService"
+import ScheduleTagService from "../../../services/ScheduleTagService"
 import {useParams} from "react-router-dom"
-import ConfirmActionModal from "./Modals/ConfirmActionModal";
+import ConfirmActionModal from "../../Modals/ConfirmActionModal";
 
-function Schedule() {
+function ScheduleTag() {
     const [scheduleTagService] = useState(new ScheduleTagService())
     const [scheduleBlockService] = useState(new ScheduleBlockService())
     const {scheduleTagId} = useParams()
@@ -223,4 +223,4 @@ function Schedule() {
     )
 }
 
-export default Schedule
+export default ScheduleTag

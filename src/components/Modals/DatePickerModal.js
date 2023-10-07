@@ -1,25 +1,25 @@
-import React, {useEffect, useState} from "react";
-import {Button, Form, Modal} from "react-bootstrap";
-import {format} from "date-fns";
-import {useTranslation} from "react-i18next";
+import React, {useEffect, useState} from "react"
+import {Button, Form, Modal} from "react-bootstrap"
+import {format} from "date-fns"
+import {useTranslation} from "react-i18next"
 
 function DatePickerModal(props) {
-    const { t } = useTranslation();
-    const [pickedDate, setPickedDate] = useState(format(props.pickedDay, "yyyy-MM-dd"));
+    const { t } = useTranslation()
+    const [pickedDate, setPickedDate] = useState(format(props.pickedDay, "yyyy-MM-dd"))
 
     const handleStartDateChange = (e) => {
-        setPickedDate(e.target.value);
-    };
+        setPickedDate(e.target.value)
+    }
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        props.onDayPick(pickedDate);
-        props.onClose();
-    };
+        e.preventDefault()
+        props.onDayPick(pickedDate)
+        props.onClose()
+    }
 
     useEffect(() => {
-        setPickedDate(format(props.pickedDay, "yyyy-MM-dd"));
-    }, [props.pickedDay]);
+        setPickedDate(format(props.pickedDay, "yyyy-MM-dd"))
+    }, [props.pickedDay])
 
     return (
         <Modal show={props.show} onHide={props.onClose}>
@@ -46,7 +46,7 @@ function DatePickerModal(props) {
                 </Button>
             </Modal.Footer>
         </Modal>
-    );
+    )
 }
 
-export default DatePickerModal;
+export default DatePickerModal

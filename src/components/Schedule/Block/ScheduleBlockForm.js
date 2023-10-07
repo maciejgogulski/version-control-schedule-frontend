@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react"
 import {Button, Form, Modal} from "react-bootstrap"
-import ScheduleBlockService from "../../services/ScheduleBlockService"
-import ScheduleBlock from "../../models/ScheduleBlock"
-import { parseToServerFormat } from "../../util/DateTimeParser"
+import ScheduleBlockService from "../../../services/ScheduleBlockService"
+import ScheduleBlock from "../../../models/ScheduleBlock"
+import { parseToServerFormat } from "../../../util/DateTimeParser"
 import {format} from "date-fns"
 import {useTranslation} from "react-i18next"
 

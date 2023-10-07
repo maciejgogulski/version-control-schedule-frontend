@@ -1,8 +1,8 @@
-import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
-import Home from "./components/Home/Home";
-import Schedule from "./components/Schedule/Schedule";
-import Navbar from "./components/Navbar/Navbar";
-import ScheduleTagList from "./components/Schedule/ScheduleTagList";
+import {BrowserRouter as Router, Routes, Route} from "react-router-dom"
+import Home from "./components/Home/Home"
+import ScheduleTag from "./components/Schedule/Tag/ScheduleTag"
+import Navbar from "./components/Navbar/Navbar"
+import ScheduleTagList from "./components/Schedule/Tag/ScheduleTagList"
 
 function Routing() {
     return (
@@ -15,13 +15,12 @@ function Routing() {
                     <Routes>
                         <Route path="/" element={<Home/>}/>
                         <Route path="/schedule" element={<ScheduleTagList/>}/>
-                        <Route path="/schedule/:scheduleTagId" element={<Schedule/>}/>
+                        <Route path="/schedule/:scheduleTagId" element={<ScheduleTag/>}/>
                     </Routes>
                 </div>
             </div>
         </Router>
-
-    );
+    )
 }
 
-export default Routing;
+export default Routing
