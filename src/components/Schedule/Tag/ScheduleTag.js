@@ -60,56 +60,11 @@ function ScheduleTag() {
         }
     }
 
-    const handleBlockClick = (block) => {
-        setSelectedBlock(block)
-    }
-
     const handleBlockFormButtonClick = (block) => {
         setShowBlockForm(true)
         if (block) {
             setBlockToEdit(block)
         }
-    }
-
-    const handleCloseBlockForm = () => {
-        setShowBlockForm(false)
-        setBlockToEdit(null)
-    }
-
-    const handlePickDayClick = () => {
-        setShowDayPicker(true)
-    }
-
-    const handlePickDayClose = () => {
-        setShowDayPicker(false)
-    }
-
-    const handlePreviousDayClick = () => {
-        setPickedDay(subDays(pickedDay, 1))
-        setSelectedBlock(null)
-    }
-
-    const handleNextDayClick = () => {
-        setPickedDay(addDays(pickedDay, 1))
-        setSelectedBlock(null)
-    }
-
-    const handleFormSubmit = async () => {
-        await fetchScheduleBlocks()
-        setBlockToEdit(null)
-    }
-
-    const handleDayPick = (day) => {
-        setPickedDay(parseISO(day))
-        setSelectedBlock(null)
-    }
-
-    const handleDeleteBlockClick = () => {
-        setShowDeleteBlockModal(true)
-    }
-
-    const handleDeleteBlockClose = () => {
-        setShowDeleteBlockModal(false)
     }
 
     const handleBlockDelete = async () => {
@@ -127,97 +82,169 @@ function ScheduleTag() {
             <ScheduleBlockForm
                 show={showBlockForm}
                 pickedDay={pickedDay}
-                onClose={handleCloseBlockForm}
-                onFormSubmit={handleFormSubmit}
+                onClose={() => {
+                    setShowBlockForm(false)
+                    setBlockToEdit(null)
+                }}
+                onFormSubmit={async () => {
+                    await fetchScheduleBlocks()
+                    setBlockToEdit(null)
+                }}
                 scheduleTagId={scheduleTagId}
                 blockToEdit={blockToEdit}
             />
             <DatePickerModal
                 show={showDayPicker}
                 pickedDay={pickedDay}
-                onDayPick={handleDayPick}
-                onClose={handlePickDayClose}
+                onDayPick={(day) => {
+                    setPickedDay(parseISO(day))
+                    setSelectedBlock(null)
+                }}
+                onClose={() => setShowDayPicker(false)}
             />
             <ConfirmActionModal
                 show={showDeleteBlockModal}
-                title={t("entities.block.deleting_block") + " " + selectedBlock?.name }
+                title={t("entities.block.deleting_block") + " " + selectedBlock?.name}
                 message={t("entities.block.delete_block_message", {name: selectedBlock?.name})}
                 action={handleBlockDelete}
                 variant={"danger"}
-                onClose={handleDeleteBlockClose}
+                onClose={() => setShowDeleteBlockModal(false)}
             />
             <div className="row">
-                <div className="col-md-6 px-4">
-                    <div>
-                        <h2>
-                            {t("entities.schedule.title")} {scheduleTag ? scheduleTag.name : null}
-                        </h2>
+                <h2>
+                    {t("entities.schedule.title")} {scheduleTag ? scheduleTag.name : null}
+                </h2>
 
-                        <div className="container">
-                            <Button
-                                variant="success"
-                                className="me-2"
-                                onClick={() => handleBlockFormButtonClick(null)}
-                            >
-                                {t("buttons.create_block")}
-                            </Button>
+                <div className="container">
+                    <Button
+                        variant="success"
+                        className="me-2"
+                        onClick={() => handleBlockFormButtonClick(null)}
+                    >
+                        {t("buttons.create_block")}
+                    </Button>
 
-                            <Button
-                                variant="outline-secondary"
-                                className="me-2"
-                                onClick={handlePreviousDayClick}
-                            >
-                                &lt;&lt;
-                            </Button>
+                    <Button
+                        variant="outline-secondary"
+                        className="me-2"
+                        onClick={() => {
+                            setPickedDay(subDays(pickedDay, 1))
+                            setSelectedBlock(null)
+                        }}
+                    >
+                        &lt;&lt;
+                    </Button>
 
-                            <Button
-                                variant="secondary"
-                                className="me-2"
-                                onClick={handlePickDayClick}
-                            >
-                                {format(pickedDay, "dd-MM-yyyy")}
-                            </Button>
+                    <Button
+                        variant="secondary"
+                        className="me-2"
+                        onClick={() => setShowDayPicker(true)}
+                    >
+                        {format(pickedDay, "dd-MM-yyyy")}
+                    </Button>
 
-                            <Button
-                                variant="outline-secondary"
-                                className="me-2"
-                                onClick={handleNextDayClick}
-                            >
-                                &gt;&gt;
-                            </Button>
-                        </div>
+                    <Button
+                        variant="outline-secondary"
+                        className="me-2"
+                        onClick={() => {
+                            setPickedDay(addDays(pickedDay, 1))
+                            setSelectedBlock(null)
+                        }}>
+                        &gt;&gt;
+                    </Button>
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-md-6">
+                    <div className="list-container mt-3">
+                        {scheduleBlocks.map((block) => (
+                            <ScheduleBlockListElement
+                                key={block.id}
+                                block={block}
+                                onClick={(block) => setSelectedBlock(block)}
+                                isSelected={selectedBlock?.id === block.id}
+                            />
+                        ))}
                     </div>
+                </div>
+                <div className="col-md-6 px-4">
+                    {selectedBlock &&
+                        <div>
+                            <div className="row">
+                                <h2 className="col-md-6">{t("entities.block.details")}</h2>
+                                <div className="col-md-6">
+                                    <Button variant="secondary" className="me-2"
+                                            onClick={() => handleBlockFormButtonClick(selectedBlock)}>
+                                        {t('buttons.edit_block')}
+                                    </Button>
+                                    <Button variant="danger"
+                                            onClick={() => setShowDeleteBlockModal(true)}>
+                                        {t('buttons.delete_block')}
+                                    </Button>
+                                </div>
+                            </div>
+                            <ScheduleBlockDetails block={selectedBlock}/>
+                        </div>
+                    }
 
-                    <div>
-                        <div className="list-container">
-                            {scheduleBlocks.map((block) => (
-                                <ScheduleBlockListElement
-                                    key={block.id}
-                                    block={block}
-                                    onClick={handleBlockClick}
-                                    isSelected={selectedBlock?.id === block.id}
-                                />
-                            ))}
+                    <div className="px-4 container bg-light rounded px-5 py-3 shadow">
+                        <div>
+                            <h4>{t('entities.block.addressees')}</h4>
+                        </div>
+                        <hr className="my-1"/>
+                        <div className="row">
+                            <div className="col-md-6">
+                                <h5>{t('entities.block.addressee_groups')}</h5>
+                                <hr className="my-1"/>
+                            </div>
+
+                            <div className="col-md-6">
+                                <h5>{t('entities.block.persons')}</h5>
+                                <hr className="my-1"/>
+                            </div>
+                        </div>
+
+                        <div className="row">
+                            <div className="col-md-6">
+                                <p>Rok 3 L1</p>
+                            </div>
+
+                            <div className="col-md-6">
+                                <p>Krystian Marczuk</p>
+                            </div>
+                        </div>
+
+                        <div className="row">
+                            <div className="col-md-6">
+                                <p>Rok 3 L2</p>
+                            </div>
+
+                            <div className="col-md-6">
+                                <p>Elżbieta Szmyt</p>
+                            </div>
+                        </div>
+
+                        <div className="row">
+                            <div className="col-md-6">
+                                <p>Rok 3 Wykładowcy</p>
+                            </div>
+
+                            <div className="col-md-6">
+                                <p>Tomasz Polak</p>
+                            </div>
+                        </div>
+
+                        <div className="row">
+                            <div className="col-md-6">
+                                <p>Dziekanat</p>
+                            </div>
+
+                            <div className="col-md-6">
+                                <p>Hubert Opolski</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-                { selectedBlock &&
-                    <div className="col-md-6 px-4">
-                        <h2>{t("entities.block.details")}</h2>
-
-                        <div className="container">
-                            <ScheduleBlockDetails block={selectedBlock}/>
-                            <Button variant="secondary" className="me-2"
-                                    onClick={() => handleBlockFormButtonClick(selectedBlock)}>
-                                {t('buttons.edit_block')}
-                            </Button>
-                            <Button variant="danger"
-                                    onClick={() => handleDeleteBlockClick(selectedBlock)}>
-                                {t('buttons.delete_block')}
-                            </Button>
-                        </div>
-                    </div>
-                }
             </div>
         </div>
     )

@@ -10,7 +10,7 @@ class ScheduleBlockListElement extends React.Component {
     render() {
         const { block, isSelected } = this.props;
         return (
-            <div className={`container ${isSelected ? "bg-primary text-light" : "bg-light text-primary"} rounded m-3 px-5 py-3 shadow border-start border-primary border-5`}
+            <div className={`container ${isSelected ? "bg-primary text-light" : "bg-light text-primary"} rounded mb-3 px-5 py-3 shadow border-start border-primary border-5`}
                  onClick={this.handleClick}
             >
                 <div>
