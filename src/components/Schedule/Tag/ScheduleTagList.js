@@ -7,7 +7,7 @@ import ConfirmActionModal from "../../Modals/ConfirmActionModal"
 import {useNavigate} from "react-router-dom";
 
 function ScheduleTagList() {
-    const navigate = useNavigate();
+    const navigate = useNavigate()
     const [scheduleTagService] = useState(new ScheduleTagService())
     const [scheduleTags, setScheduleTags] = useState([])
     const [showScheduleTagForm, setScheduleTagForm] = useState(false)
@@ -109,7 +109,8 @@ function ScheduleTagList() {
                             <tbody>
                             {scheduleTags.map((tag) => (
                                 <tr key={tag.id}>
-                                    <td onClick={() => redirectToScheduleTag(tag.id)}>
+                                    <td className="user-select-none"
+                                        onClick={() => redirectToScheduleTag(tag.id)}>
                                         {tag.name}
                                     </td>
                                     <td>

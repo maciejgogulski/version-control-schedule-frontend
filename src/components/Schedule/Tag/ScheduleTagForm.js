@@ -25,7 +25,7 @@ function ScheduleTagForm(props) {
             await scheduleTagService.addScheduleTag(tag)
         }
 
-        setName("")
+        setName('')
         props.onClose()
         props.onFormSubmit()
     }

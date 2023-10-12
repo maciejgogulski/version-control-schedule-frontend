@@ -3,6 +3,7 @@ import Home from "./components/Home/Home"
 import ScheduleTag from "./components/Schedule/Tag/ScheduleTag"
 import Navbar from "./components/Navbar/Navbar"
 import ScheduleTagList from "./components/Schedule/Tag/ScheduleTagList"
+import AddresseeList from "./components/Addressees/AddresseeList";
 
 function Routing() {
     return (
@@ -16,6 +17,7 @@ function Routing() {
                         <Route path="/" element={<Home/>}/>
                         <Route path="/schedule" element={<ScheduleTagList/>}/>
                         <Route path="/schedule/:scheduleTagId" element={<ScheduleTag/>}/>
+                        <Route path="/addressee" element={<AddresseeList/>}/>
                     </Routes>
                 </div>
             </div>

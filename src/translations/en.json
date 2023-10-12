@@ -3,7 +3,7 @@
   "navigation": {
     "main_page": "Home",
     "schedules": "Schedules",
-    "addressee_groups": "Addressee groups",
+    "addressees": "Addressees",
     "users": "Users"
   },
   "buttons": {
@@ -15,7 +15,10 @@
     "delete_schedule": "Delete schedule",
     "edit_block": "Edit block",
     "delete_block": "Delete block",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "create_addressee": "Create addressee",
+    "edit_addressee": "Edit addressee",
+    "delete_addressee": "Delete addressee"
   },
   "entities": {
     "schedule": {
@@ -42,6 +45,15 @@
       "deleting_tag": "Deleting schedule",
       "delete_tag_message": "Are you sure, you want to delete schedule {{name}}?",
       "name": "Name"
+    },
+    "addressee": {
+      "creating_new_addressee": "Creating new addressee",
+      "editing_addressee": "Editing addressee",
+      "deleting_addressee": "Deleting addressee",
+      "delete_addressee_message": "Are you sure, you want to delete addressee {{name}}?",
+      "email": "E-mail",
+      "first-name": "First name",
+      "last-name": "Last name"
     }
   }
 }

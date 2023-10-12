@@ -3,7 +3,7 @@
   "navigation": {
     "main_page": "Strona główna",
     "schedules": "Plany",
-    "addressee_groups": "Grupy adresatów",
+    "addressees": "Adresaci",
     "users": "Użytkownicy"
   },
   "buttons": {
@@ -15,7 +15,10 @@
     "delete_schedule": "Usuń plan",
     "edit_block": "Edytuj blok",
     "delete_block": "Usuń blok",
-    "confirm": "Potwierdź"
+    "confirm": "Potwierdź",
+    "create_addressee": "Stwórz adresata",
+    "edit_addressee": "Edytuj adresata",
+    "delete_addressee": "Usuń adresata"
   },
   "entities": {
     "schedule": {
@@ -42,6 +45,15 @@
       "deleting_tag": "Usuwanie planu",
       "delete_tag_message": "Czy jesteś pewien, że chcesz usunąć plan {{name}}?",
       "name": "Nazwa"
+    },
+    "addressee": {
+      "creating_new_addressee": "Tworzenie nowego adresata",
+      "editing_addressee": "Edycja adresata",
+      "deleting_addressee": "Usuwanie adresata",
+      "delete_addressee_message": "Czy jesteś pewien, że chcesz usunąć adresata {{name}}?",
+      "email": "E-mail",
+      "first-name": "Imię",
+      "last-name": "Nazwisko"
     }
   }
 }

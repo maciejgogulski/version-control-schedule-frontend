@@ -31,9 +31,9 @@ const Navbar = () => {
                         <AiOutlineSchedule color={isActiveIcon("/schedule")} size={25}/> {t('navigation.schedules')}
                     </li>
                 </Link>
-                <Link to="/addressees">
-                    <li className={`nav-item px-4 py-3 ${isActiveRoute("/addressees")}`}>
-                        <FaRegAddressBook color={isActiveIcon("/addressees")} size={25}/> {t('navigation.addressee_groups')}
+                <Link to="/addressee">
+                    <li className={`nav-item px-4 py-3 ${isActiveRoute("/addressee")}`}>
+                        <FaRegAddressBook color={isActiveIcon("/addressee")} size={25}/> {t('navigation.addressees')}
                     </li>
                 </Link>
                 <Link to="/users">
