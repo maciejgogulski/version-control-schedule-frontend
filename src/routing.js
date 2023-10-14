@@ -14,7 +14,7 @@ function Routing() {
                 </div>
                 <div className="col-sm-10">
                     <Routes>
-                        <Route path="/" element={<Home/>}/>
+                        <Route path="/home" element={<Home/>}/>
                         <Route path="/schedule" element={<ScheduleTagList/>}/>
                         <Route path="/schedule/:scheduleTagId" element={<ScheduleTag/>}/>
                         <Route path="/addressee" element={<AddresseeList/>}/>

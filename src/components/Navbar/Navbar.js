@@ -10,19 +10,19 @@ const Navbar = () => {
     const { t } = useTranslation();
 
     const isActiveRoute = (route) => {
-        return location.pathname === route ? "bg-light text-primary" : "bg-primary text-light";
+        return location.pathname.startsWith(route) ? "bg-light text-primary" : "bg-primary text-light";
     };
 
     const isActiveIcon = (route) => {
-        return location.pathname === route ? "cornflowerblue" : "white";
+        return location.pathname.startsWith(route) ? "cornflowerblue" : "white";
     };
 
     return (
         <nav className="navbar">
             <ul className="navbar-nav w-100">
-                <Link to="/">
-                    <li className={`nav-item px-4 py-3 ${isActiveRoute("/")}`}>
-                        <AiOutlineHome color={isActiveIcon("/")} size={25}/> {t('navigation.main_page')}
+                <Link to="/home">
+                    <li className={`nav-item px-4 py-3 ${isActiveRoute("/home")}`}>
+                        <AiOutlineHome color={isActiveIcon("/home")} size={25}/> {t('navigation.main_page')}
                     </li>
                 </Link>
 
@@ -36,9 +36,9 @@ const Navbar = () => {
                         <FaRegAddressBook color={isActiveIcon("/addressee")} size={25}/> {t('navigation.addressees')}
                     </li>
                 </Link>
-                <Link to="/users">
-                    <li className={`nav-item px-4 py-3 ${isActiveRoute("/users")}`}>
-                        <HiOutlineUserGroup color={isActiveIcon("/users")} size={25}/> {t('navigation.users')}
+                <Link to="/user">
+                    <li className={`nav-item px-4 py-3 ${isActiveRoute("/user")}`}>
+                        <HiOutlineUserGroup color={isActiveIcon("/user")} size={25}/> {t('navigation.users')}
                     </li>
                 </Link>
             </ul>

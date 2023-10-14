@@ -52,4 +52,11 @@ export default class AddresseeService{
             "DELETE",
         )
     }
+
+    async getAddresseesForScheduleTagId(id) {
+        return await this.apiService.sendRequest(
+            this.addresseeUrl + '/schedule-tag/' + id,
+            "GET",
+        )
+    }
 }

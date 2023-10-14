@@ -16,7 +16,7 @@ function ScheduleTagList() {
 
     useEffect(() => {
         fetchScheduleTags()
-    }, [])
+    }, [scheduleTagService])
 
     const fetchScheduleTags = async () => {
         const response = await scheduleTagService.getScheduleTags()

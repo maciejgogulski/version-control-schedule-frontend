@@ -11,6 +11,7 @@ import {useTranslation} from "react-i18next"
 import ScheduleTagService from "../../../services/ScheduleTagService"
 import {useParams} from "react-router-dom"
 import ConfirmActionModal from "../../Modals/ConfirmActionModal";
+import ScheduleTagAddressees from "./ScheduleTagAddressees";
 
 function ScheduleTag() {
     const [scheduleTagService] = useState(new ScheduleTagService())
@@ -186,64 +187,10 @@ function ScheduleTag() {
                             <ScheduleBlockDetails block={selectedBlock}/>
                         </div>
                     }
+                    <ScheduleTagAddressees
+                        scheduleTagId={scheduleTagId}
+                    />
 
-                    <div className="px-4 container bg-light rounded px-5 py-3 shadow">
-                        <div>
-                            <h4>{t('entities.block.addressees')}</h4>
-                        </div>
-                        <hr className="my-1"/>
-                        <div className="row">
-                            <div className="col-md-6">
-                                <h5>{t('entities.block.addressee_groups')}</h5>
-                                <hr className="my-1"/>
-                            </div>
-
-                            <div className="col-md-6">
-                                <h5>{t('entities.block.persons')}</h5>
-                                <hr className="my-1"/>
-                            </div>
-                        </div>
-
-                        <div className="row">
-                            <div className="col-md-6">
-                                <p>Rok 3 L1</p>
-                            </div>
-
-                            <div className="col-md-6">
-                                <p>Krystian Marczuk</p>
-                            </div>
-                        </div>
-
-                        <div className="row">
-                            <div className="col-md-6">
-                                <p>Rok 3 L2</p>
-                            </div>
-
-                            <div className="col-md-6">
-                                <p>Elżbieta Szmyt</p>
-                            </div>
-                        </div>
-
-                        <div className="row">
-                            <div className="col-md-6">
-                                <p>Rok 3 Wykładowcy</p>
-                            </div>
-
-                            <div className="col-md-6">
-                                <p>Tomasz Polak</p>
-                            </div>
-                        </div>
-
-                        <div className="row">
-                            <div className="col-md-6">
-                                <p>Dziekanat</p>
-                            </div>
-
-                            <div className="col-md-6">
-                                <p>Hubert Opolski</p>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
