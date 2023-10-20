@@ -59,4 +59,12 @@ export default class ScheduleBlockService {
         )
     }
 
+    async getParameters(blockId) {
+        return await this.apiService.sendRequest(
+            this.scheduleBlockUrl + "/" + blockId + "/parameter",
+            "GET",
+            []
+        )
+    }
+
 }
