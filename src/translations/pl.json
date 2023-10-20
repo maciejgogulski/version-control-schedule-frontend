@@ -18,7 +18,8 @@
     "confirm": "Potwierdź",
     "create_addressee": "Stwórz adresata",
     "edit_addressee": "Edytuj adresata",
-    "delete_addressee": "Usuń adresata"
+    "delete_addressee": "Usuń adresata",
+    "assign_addressees": "Przypisz adresatów"
   },
   "entities": {
     "schedule": {
@@ -44,6 +45,7 @@
       "editing_tag": "Edycja planu",
       "deleting_tag": "Usuwanie planu",
       "delete_tag_message": "Czy jesteś pewien, że chcesz usunąć plan {{name}}?",
+      "assigning_addressees": "Przypisanie adresatów",
       "name": "Nazwa"
     },
     "addressee": {

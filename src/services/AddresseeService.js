@@ -59,4 +59,11 @@ export default class AddresseeService{
             "GET",
         )
     }
+
+    async assignAddresseeToScheduleTag(addresseeId, scheduleTagId) {
+        return await this.apiService.sendRequest(
+            this.addresseeUrl + '/' + addresseeId + '/schedule-tag/' + scheduleTagId,
+            "PUT",
+        )
+    }
 }

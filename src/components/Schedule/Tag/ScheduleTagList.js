@@ -15,7 +15,7 @@ function ScheduleTagList() {
     const [showDeleteTagModal, setShowDeleteTagModal] = useState(false)
 
     useEffect(() => {
-        fetchScheduleTags()
+        fetchScheduleTags().then(r => console.log(r))
     }, [scheduleTagService])
 
     const fetchScheduleTags = async () => {
