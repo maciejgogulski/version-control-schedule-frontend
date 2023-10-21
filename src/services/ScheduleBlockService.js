@@ -67,4 +67,17 @@ export default class ScheduleBlockService {
         )
     }
 
+    async assignParameterToScheduleBlock(parameter) {
+        const jsonParameter = JSON.stringify(parameter);
+        return await this.apiService.sendRequest(
+            this.scheduleBlockUrl + '/parameter',
+            "PUT",
+            [],
+            jsonParameter,
+            {
+                'Content-Type': 'application/json',
+            }
+        )
+    }
+
 }
