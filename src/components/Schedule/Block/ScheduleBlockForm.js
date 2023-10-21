@@ -5,7 +5,8 @@ import ScheduleBlock from "../../../models/ScheduleBlock"
 import {parseToServerFormat} from "../../../util/DateTimeParser"
 import {format} from "date-fns"
 import {useTranslation} from "react-i18next"
-import Parameter from "../../../models/Parameter";
+import Parameter from "../../../models/Parameter"
+import './ScheduleBlockForm.css'
 
 function ScheduleBlockForm(props) {
     const {t} = useTranslation()
@@ -87,7 +88,10 @@ function ScheduleBlockForm(props) {
     }
 
     return (
-        <Modal show={props.show} onHide={props.onClose}>
+        <Modal show={props.show} onHide={() => {
+            setShowAddParameterField(false)
+            props.onClose()
+        }}>
             <Modal.Header closeButton>
                 <Modal.Title>{(props.blockToEdit) ? t('entities.block.editing_block') + ": " + props.blockToEdit.name : t('entities.block.creating_new_block')}</Modal.Title>
             </Modal.Header>
@@ -127,11 +131,15 @@ function ScheduleBlockForm(props) {
                             />
                         </Form.Group>
                     ))}
-                    {showAddParameterField &&
+                    {props.blockToEdit && showAddParameterField &&
                         <>
+                            <Modal.Header>
+                                <Modal.Title>{t('entities.parameter.new')}</Modal.Title>
+                            </Modal.Header>
                             <Form.Group controlId={'newParameterName'}>
-                                <Form.Label>{t('entities.parameters.name')}:</Form.Label>
+                                <Form.Label>{t('entities.parameter.name')}:</Form.Label>
                                 <Form.Control
+                                    className="bg-success-light"
                                     type="text"
                                     value={newParameterName}
                                     onChange={(e) => setNewParameterName(e.target.value)}
@@ -140,6 +148,7 @@ function ScheduleBlockForm(props) {
                             <Form.Group controlId={'newParameterValue'}>
                                 <Form.Label>{t('entities.parameter.value')}:</Form.Label>
                                 <Form.Control
+                                    className="bg-success-light"
                                     type="text"
                                     value={newParameterValue}
                                     onChange={(e) => setNewParameterValue(e.target.value)}
@@ -148,21 +157,34 @@ function ScheduleBlockForm(props) {
                         </>
                     }
                 </Form>
-                { showAddParameterField ?
-                    <Button variant="success" onClick={handleAddParameterSubmit}>
+                {showAddParameterField ?
+                    <Button
+                        className="mt-3"
+                        variant="success"
+                        onClick={handleAddParameterSubmit}>
                         {t('buttons.add_parameter')}
                     </Button>
                     :
-                    <Button variant="secondary" onClick={() => setShowAddParameterField(true)}>
-                        {t('buttons.add_parameter')}
-                    </Button>
+                    <>
+                        {
+                            props.blockToEdit && <Button
+                                className="mt-3"
+                                variant="secondary"
+                                onClick={() => setShowAddParameterField(true)}>
+                                {t('buttons.add_parameter')}
+                            </Button>
+                        }
+                    </>
                 }
             </Modal.Body>
             <Modal.Footer>
                 <Button variant={(props.blockToEdit) ? "primary" : "success"} onClick={handleSubmit}>
                     {(props.blockToEdit) ? t('buttons.edit_block') : t('buttons.create_block')}
                 </Button>
-                <Button variant="secondary" onClick={props.onClose}>
+                <Button variant="secondary" onClick={() => {
+                    setShowAddParameterField(false)
+                    props.onClose()
+                }}>
                     {t('buttons.close')}
                 </Button>
             </Modal.Footer>

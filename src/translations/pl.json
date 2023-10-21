@@ -19,7 +19,8 @@
     "create_addressee": "Stwórz adresata",
     "edit_addressee": "Edytuj adresata",
     "delete_addressee": "Usuń adresata",
-    "assign_addressees": "Przypisz adresatów"
+    "assign_addressees": "Przypisz adresatów",
+    "add_parameter": "Dodaj parametr"
   },
   "entities": {
     "schedule": {
@@ -56,6 +57,11 @@
       "email": "E-mail",
       "first-name": "Imię",
       "last-name": "Nazwisko"
+    },
+    "parameter": {
+      "new": "Nowy parametr",
+      "name": "Nazwa",
+      "value": "Wartość"
     }
   }
 }

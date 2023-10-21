@@ -18,11 +18,12 @@
     "confirm": "Confirm",
     "create_addressee": "Create addressee",
     "edit_addressee": "Edit addressee",
-    "delete_addressee": "Delete addressee"
+    "delete_addressee": "Delete addressee",
+    "add_parameter": "Add parameter"
   },
   "entities": {
     "schedule": {
-      "title" : "Schedule",
+      "title": "Schedule",
       "picking_date": "Pick a date"
     },
     "block": {
@@ -54,6 +55,11 @@
       "email": "E-mail",
       "first-name": "First name",
       "last-name": "Last name"
+    },
+    "parameter": {
+      "new": "New parameter",
+      "name": "Name",
+      "value": "Value"
     }
   }
 }
