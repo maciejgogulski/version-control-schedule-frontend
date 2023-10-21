@@ -12,10 +12,12 @@ import ScheduleTagService from "../../../services/ScheduleTagService"
 import {useParams} from "react-router-dom"
 import ConfirmActionModal from "../../Modals/ConfirmActionModal";
 import ScheduleTagAddressees from "./ScheduleTagAddressees";
+import StagedEventService from "../../../services/StagedEventService";
 
 function ScheduleTag() {
     const [scheduleTagService] = useState(new ScheduleTagService())
     const [scheduleBlockService] = useState(new ScheduleBlockService())
+    const [stagedEventService, setStagedEventService] = useState(new StagedEventService())
     const {scheduleTagId} = useParams()
     const [scheduleTag, setScheduleTag] = useState(null)
     const [selectedBlock, setSelectedBlock] = useState(null)
@@ -25,10 +27,13 @@ function ScheduleTag() {
     const [pickedDay, setPickedDay] = useState(new Date())
     const [showDeleteBlockModal, setShowDeleteBlockModal] = useState(false)
     const [blockToEdit, setBlockToEdit] = useState(null)
-
+    const [modifications, setModifications] = useState([])
 
     useEffect(() => {
-        fetchScheduleTag().then(() => fetchScheduleBlocks())
+        fetchScheduleTag().then(() => {
+            fetchScheduleBlocks()
+            fetchModifications()
+        })
     }, [pickedDay, scheduleTagId])
 
     const fetchScheduleBlocks = async () => {
@@ -56,6 +61,17 @@ function ScheduleTag() {
 
         if (response.ok) {
             setScheduleTag(data)
+        } else {
+            console.error("Error:", data)
+        }
+    }
+
+    const fetchModifications = async () => {
+        const response = await stagedEventService.getModificationsForStagedEvent(1) // TODO: pobranie stagedEventId
+        const data = await response.json()
+
+        if (response.ok) {
+            setModifications(data)
         } else {
             console.error("Error:", data)
         }
@@ -193,6 +209,14 @@ function ScheduleTag() {
 
                 </div>
             </div>
+            {modifications.map((modification) => (
+                <div key={modification.id} className="row">
+                    <div className="col-md-3">{modification.type}</div>
+                    <div className="col-md-3">{modification.parameterName}</div>
+                    <div className="col-md-3">{modification.oldValue}</div>
+                    <div className="col-md-3">{modification.newValue}</div>
+                </div>
+            ))}
         </div>
     )
 }

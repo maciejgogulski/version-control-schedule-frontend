@@ -19,6 +19,7 @@ function ScheduleBlockForm(props) {
     const [showAddParameterField, setShowAddParameterField] = useState(null)
     const [newParameterName, setNewParameterName] = useState('')
     const [newParameterValue, setNewParameterValue] = useState('')
+    const [newParameters, setNewParameters] = useState([])
 
 
     const fetchParametersForBlock = async () => {
@@ -43,6 +44,9 @@ function ScheduleBlockForm(props) {
         block.endDate = parseToServerFormat(endDate)
 
         if (block.id) {
+            parameters.map(async (parameter) => {
+                await scheduleBlockService.assignParameterToScheduleBlock(parameter)
+            })
             await scheduleBlockService.editScheduleBlock(block)
         } else {
             await scheduleBlockService.addScheduleBlock(block)
@@ -51,6 +55,7 @@ function ScheduleBlockForm(props) {
         setName("")
         setStartDate("")
         setEndDate("")
+        setParameters([])
 
         props.onClose()
         props.onFormSubmit()
@@ -76,22 +81,23 @@ function ScheduleBlockForm(props) {
         newParameter.scheduleBlockId = props.blockToEdit.id
         newParameter.parameterName = newParameterName
         newParameter.value = newParameterValue
-
-        await scheduleBlockService.assignParameterToScheduleBlock(newParameter)
+        newParameters.push(newParameter)
+        parameters.push(newParameter)
 
         setNewParameterName('')
         setNewParameterValue('')
 
-        await fetchParametersForBlock()
-
         setShowAddParameterField(false)
     }
 
+    const handleFormClose = () => {
+        setShowAddParameterField(false)
+        setNewParameters([])
+        props.onClose()
+    }
+
     return (
-        <Modal show={props.show} onHide={() => {
-            setShowAddParameterField(false)
-            props.onClose()
-        }}>
+        <Modal show={props.show} onHide={handleFormClose}>
             <Modal.Header closeButton>
                 <Modal.Title>{(props.blockToEdit) ? t('entities.block.editing_block') + ": " + props.blockToEdit.name : t('entities.block.creating_new_block')}</Modal.Title>
             </Modal.Header>
@@ -181,10 +187,7 @@ function ScheduleBlockForm(props) {
                 <Button variant={(props.blockToEdit) ? "primary" : "success"} onClick={handleSubmit}>
                     {(props.blockToEdit) ? t('buttons.edit_block') : t('buttons.create_block')}
                 </Button>
-                <Button variant="secondary" onClick={() => {
-                    setShowAddParameterField(false)
-                    props.onClose()
-                }}>
+                <Button variant="secondary" onClick={handleFormClose}>
                     {t('buttons.close')}
                 </Button>
             </Modal.Footer>
