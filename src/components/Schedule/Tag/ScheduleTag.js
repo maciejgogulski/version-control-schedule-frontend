@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react"
 import ScheduleBlockListElement from "../Block/ScheduleBlockListElement"
 import ScheduleBlockDetails from "../Block/ScheduleBlockDetails"
 import ScheduleBlockService from "../../../services/ScheduleBlockService"
-import {Button} from "react-bootstrap"
+import {Button, Table} from "react-bootstrap"
 import ScheduleBlockForm from "../Block/ScheduleBlockForm"
 import {parseFromServerFormat} from "../../../util/DateTimeParser"
 import {addDays, format, parseISO, subDays} from "date-fns"
@@ -79,9 +79,7 @@ function ScheduleTag() {
 
     const handleBlockFormButtonClick = (block) => {
         setShowBlockForm(true)
-        if (block) {
-            setBlockToEdit(block)
-        }
+        setBlockToEdit(block)
     }
 
     const handleBlockDelete = async () => {
@@ -105,6 +103,7 @@ function ScheduleTag() {
                 }}
                 onFormSubmit={async () => {
                     await fetchScheduleBlocks()
+                    await fetchModifications()
                     setBlockToEdit(null)
                 }}
                 scheduleTagId={scheduleTagId}
@@ -136,7 +135,10 @@ function ScheduleTag() {
                     <Button
                         variant="success"
                         className="me-2"
-                        onClick={() => handleBlockFormButtonClick(null)}
+                        onClick={() => {
+                            setBlockToEdit(null)
+                            setShowBlockForm(true)
+                        }}
                     >
                         {t("buttons.create_block")}
                     </Button>
@@ -184,14 +186,17 @@ function ScheduleTag() {
                         ))}
                     </div>
                 </div>
-                <div className="col-md-6 px-4">
+                <div className="col-md-6 mt-3 px-4">
                     {selectedBlock &&
                         <div>
                             <div className="row">
                                 <h2 className="col-md-6">{t("entities.block.details")}</h2>
                                 <div className="col-md-6">
                                     <Button variant="secondary" className="me-2"
-                                            onClick={() => handleBlockFormButtonClick(selectedBlock)}>
+                                            onClick={() => {
+                                                setBlockToEdit(selectedBlock)
+                                                setShowBlockForm(true)
+                                            }}>
                                         {t('buttons.edit_block')}
                                     </Button>
                                     <Button variant="danger"
@@ -209,14 +214,30 @@ function ScheduleTag() {
 
                 </div>
             </div>
-            {modifications.map((modification) => (
-                <div key={modification.id} className="row">
-                    <div className="col-md-3">{modification.type}</div>
-                    <div className="col-md-3">{modification.parameterName}</div>
-                    <div className="col-md-3">{modification.oldValue}</div>
-                    <div className="col-md-3">{modification.newValue}</div>
-                </div>
-            ))}
+            <h2>{t('entities.modification.plural')}</h2>
+            <Table responsive hover>
+                <thead>
+                <tr>
+                    <th>{t('entities.modification.type')}</th>
+                    <th>{t('entities.block.title')}</th>
+                    <th>{t('entities.modification.parameter_name')}</th>
+                    <th>{t('entities.modification.new_value')}</th>
+                    <th>{t('entities.modification.old_value')}</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                {modifications.map((modification) => (
+                    <tr key={modification.id}>
+                        <td>{t('entities.modification.types.' + modification.type)}</td>
+                        <td>{modification.blockName}</td>
+                        <td>{modification.parameterName}</td>
+                        <td>{modification.newValue}</td>
+                        <td>{modification.oldValue}</td>
+                    </tr>
+                ))}
+                </tbody>
+            </Table>
         </div>
     )
 }

@@ -99,7 +99,7 @@ function ScheduleTagList() {
                     </div>
 
                     <div>
-                        <Table responsive>
+                        <Table responsive hover>
                             <thead>
                             <tr>
                                 <th>{t('entities.tag.name')}</th>

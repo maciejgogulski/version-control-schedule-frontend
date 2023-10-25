@@ -60,6 +60,18 @@
       "new": "New parameter",
       "name": "Name",
       "value": "Value"
+    },
+    "modification": {
+      "plural": "Modifications",
+      "type": "Type",
+      "parameter_name": "Parameter name",
+      "old_value": "Previous value",
+      "new_value": "New value",
+      "types": {
+        "CREATE_PARAMETER": "Created parameter",
+        "UPDATE_PARAMETER": "Updated parameter",
+        "DELETE_PARAMETER": "Deleted parameter"
+      }
     }
   }
 }

@@ -99,7 +99,7 @@ function AddresseeList() {
                     </div>
 
                     <div>
-                        <Table responsive>
+                        <Table responsive hover>
                             <thead>
                             <tr>
                                 <th>{t('entities.addressee.email')}</th>

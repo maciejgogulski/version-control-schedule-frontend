@@ -12,8 +12,8 @@ function ScheduleBlockForm(props) {
     const {t} = useTranslation()
 
     const [name, setName] = useState('')
-    const [startDate, setStartDate] = useState(format(props.pickedDay, "yyyy-MM-dd HH:mm:ss"))
-    const [endDate, setEndDate] = useState(format(props.pickedDay, "yyyy-MM-dd HH:mm:ss"))
+    const [startDate, setStartDate] = useState()
+    const [endDate, setEndDate] = useState()
     const [parameters, setParameters] = useState([])
     const [scheduleBlockService] = useState(new ScheduleBlockService())
     const [showAddParameterField, setShowAddParameterField] = useState(null)
@@ -65,7 +65,7 @@ function ScheduleBlockForm(props) {
         if (props.blockToEdit) {
             setName(props.blockToEdit.name)
             setStartDate(props.blockToEdit.startDate)
-            setStartDate(props.blockToEdit.endDate)
+            setEndDate(props.blockToEdit.endDate)
             fetchParametersForBlock()
         } else {
             setStartDate(format(props.pickedDay, "yyyy-MM-dd HH:mm:ss"))
@@ -73,6 +73,17 @@ function ScheduleBlockForm(props) {
         }
 
     }, [props.pickedDay, props.blockToEdit])
+
+    const handleParameterChange = (id, value) => {
+        setParameters(prevParameters => {
+            return prevParameters.map(parameter => {
+                if (parameter.id === id) {
+                    return {...parameter, value}
+                }
+                return parameter
+            })
+        })
+    }
 
     const handleAddParameterSubmit = async (e) => {
         e.preventDefault()
@@ -92,6 +103,10 @@ function ScheduleBlockForm(props) {
 
     const handleFormClose = () => {
         setShowAddParameterField(false)
+        setName('')
+        setStartDate('')
+        setEndDate('')
+        setParameters([])
         setNewParameters([])
         props.onClose()
     }
@@ -133,7 +148,7 @@ function ScheduleBlockForm(props) {
                             <Form.Control
                                 type="text"
                                 value={parameter.value}
-                                onChange={(e) => parameter.value = e.target.value}
+                                onChange={(e) => handleParameterChange(parameter.id, e.target.value)}
                             />
                         </Form.Group>
                     ))}

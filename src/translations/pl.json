@@ -62,6 +62,18 @@
       "new": "Nowy parametr",
       "name": "Nazwa",
       "value": "Wartość"
+    },
+    "modification": {
+      "plural": "Zmiany",
+      "type": "Rodzaj zmiany",
+      "parameter_name": "Nazwa parametru",
+      "old_value": "Poprzednia wartość",
+      "new_value": "Nowa wartość",
+      "types": {
+        "CREATE_PARAMETER": "Utworzono parametr",
+        "UPDATE_PARAMETER": "Zmodyfikowano parametr",
+        "DELETE_PARAMETER": "Usunięto parameter"
+      }
     }
   }
 }
