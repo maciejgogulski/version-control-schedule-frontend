@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react"
-import {Button, Form, Modal} from "react-bootstrap"
+import {Button, CloseButton, Form, Modal} from "react-bootstrap"
 import ScheduleBlockService from "../../../services/ScheduleBlockService"
 import ScheduleBlock from "../../../models/ScheduleBlock"
 import {parseToServerFormat} from "../../../util/DateTimeParser"
@@ -20,7 +20,7 @@ function ScheduleBlockForm(props) {
     const [newParameterName, setNewParameterName] = useState('')
     const [newParameterValue, setNewParameterValue] = useState('')
     const [newParameters, setNewParameters] = useState([])
-
+    const [deletedParameters, setDeletedParameters] = useState([])
 
     const fetchParametersForBlock = async () => {
         const response = await scheduleBlockService.getParameters(props.blockToEdit.id)
@@ -47,6 +47,9 @@ function ScheduleBlockForm(props) {
             parameters.map(async (parameter) => {
                 await scheduleBlockService.assignParameterToScheduleBlock(parameter)
             })
+            deletedParameters.map(async (parameter) => {
+                await scheduleBlockService.deleteParameterFromScheduleBlock(parameter)
+            })
             await scheduleBlockService.editScheduleBlock(block)
         } else {
             await scheduleBlockService.addScheduleBlock(block)
@@ -56,6 +59,8 @@ function ScheduleBlockForm(props) {
         setStartDate("")
         setEndDate("")
         setParameters([])
+        setNewParameters([])
+        setDeletedParameters([])
 
         props.onClose()
         props.onFormSubmit()
@@ -101,6 +106,17 @@ function ScheduleBlockForm(props) {
         setShowAddParameterField(false)
     }
 
+    const handleParameterDelete = async (parameter) => {
+        const updatedParameters = parameters.filter(param => param.parameterName !== parameter.parameterName)
+        setParameters(updatedParameters)
+        if (parameter.id) {
+            deletedParameters.push(parameter)
+        } else {
+            const updatedNewParameters = newParameters.filter(param => param.parameterName !== parameter.parameterName)
+            setNewParameters(updatedNewParameters)
+        }
+    }
+
     const handleFormClose = () => {
         setShowAddParameterField(false)
         setName('')
@@ -144,12 +160,20 @@ function ScheduleBlockForm(props) {
                     </Form.Group>
                     {parameters.map((parameter) => (
                         <Form.Group key={parameter.id} controlId={parameter.parameterName}>
-                            <Form.Label>{parameter.parameterName}:</Form.Label>
+                            <div className="row">
+                                <Form.Label className="col-md-6">{parameter.parameterName}:</Form.Label>
+                                <CloseButton
+                                    className="col-md-6"
+                                    onClick={() => handleParameterDelete(parameter)}
+                                />
+                            </div>
                             <Form.Control
                                 type="text"
                                 value={parameter.value}
                                 onChange={(e) => handleParameterChange(parameter.id, e.target.value)}
                             />
+
+
                         </Form.Group>
                     ))}
                     {props.blockToEdit && showAddParameterField &&

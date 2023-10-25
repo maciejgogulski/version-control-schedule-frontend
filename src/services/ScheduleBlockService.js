@@ -80,4 +80,12 @@ export default class ScheduleBlockService {
         )
     }
 
+    async deleteParameterFromScheduleBlock(parameter) {
+        return await this.apiService.sendRequest(
+            this.scheduleBlockUrl + "/parameter/" + parameter.id ,
+            "DELETE",
+            [],
+        )
+    }
+
 }
