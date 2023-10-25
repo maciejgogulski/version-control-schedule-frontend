@@ -77,10 +77,6 @@ function ScheduleTag() {
         }
     }
 
-    const handleBlockFormButtonClick = (block) => {
-        setShowBlockForm(true)
-        setBlockToEdit(block)
-    }
 
     const handleBlockDelete = async () => {
         await scheduleBlockService.deleteScheduleBlock(selectedBlock.id)

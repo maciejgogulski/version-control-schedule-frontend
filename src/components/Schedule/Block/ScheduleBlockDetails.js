@@ -21,7 +21,7 @@ export default function ScheduleBlockDetails(props) {
 
     useEffect(() => {
         fetchParameters()
-    }, [scheduleBlockService])
+    }, [scheduleBlockService, props.block.id]) // TODO fetch params after block form submit
 
     return (
         <div className="container bg-light rounded mb-3 px-5 py-3 shadow border-top border-primary border-5">
