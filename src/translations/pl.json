@@ -1,0 +1,79 @@
+{
+  "app_name": "Nazwa Aplikacji",
+  "navigation": {
+    "main_page": "Strona główna",
+    "schedules": "Plany",
+    "addressees": "Adresaci",
+    "users": "Użytkownicy"
+  },
+  "buttons": {
+    "create_block": "Stwórz blok",
+    "create_schedule": "Stwórz plan",
+    "close": "Zamknij",
+    "pick_date": "Wybierz datę",
+    "edit_schedule": "Edytuj plan",
+    "delete_schedule": "Usuń plan",
+    "edit_block": "Edytuj blok",
+    "delete_block": "Usuń blok",
+    "confirm": "Potwierdź",
+    "create_addressee": "Stwórz adresata",
+    "edit_addressee": "Edytuj adresata",
+    "delete_addressee": "Usuń adresata",
+    "assign_addressees": "Przypisz adresatów",
+    "add_parameter": "Dodaj parametr"
+  },
+  "entities": {
+    "schedule": {
+      "title": "Plan",
+      "picking_date": "Wybór daty"
+    },
+    "block": {
+      "title": "Blok",
+      "details": "Szczegóły bloku",
+      "creating_new_block": "Tworzenie nowego bloku",
+      "editing_block": "Edycja bloku",
+      "deleting_block": "Usuwanie bloku",
+      "delete_block_message": "Czy jesteś pewien, że chcesz usunąć blok {{name}}?",
+      "name": "Nazwa",
+      "start_date": "Data rozpoczęcia",
+      "end_date": "Data zakończenia",
+      "addressees": "Adresaci",
+      "addressee_groups": "Grupy",
+      "persons": "Osoby"
+    },
+    "tag": {
+      "creating_new_tag": "Tworzenie nowego planu",
+      "editing_tag": "Edycja planu",
+      "deleting_tag": "Usuwanie planu",
+      "delete_tag_message": "Czy jesteś pewien, że chcesz usunąć plan {{name}}?",
+      "assigning_addressees": "Przypisanie adresatów",
+      "name": "Nazwa"
+    },
+    "addressee": {
+      "creating_new_addressee": "Tworzenie nowego adresata",
+      "editing_addressee": "Edycja adresata",
+      "deleting_addressee": "Usuwanie adresata",
+      "delete_addressee_message": "Czy jesteś pewien, że chcesz usunąć adresata {{name}}?",
+      "email": "E-mail",
+      "first-name": "Imię",
+      "last-name": "Nazwisko"
+    },
+    "parameter": {
+      "new": "Nowy parametr",
+      "name": "Nazwa",
+      "value": "Wartość"
+    },
+    "modification": {
+      "plural": "Zmiany",
+      "type": "Rodzaj zmiany",
+      "parameter_name": "Nazwa parametru",
+      "old_value": "Poprzednia wartość",
+      "new_value": "Nowa wartość",
+      "types": {
+        "CREATE_PARAMETER": "Utworzono parametr",
+        "UPDATE_PARAMETER": "Zmodyfikowano parametr",
+        "DELETE_PARAMETER": "Usunięto parameter"
+      }
+    }
+  }
+}
