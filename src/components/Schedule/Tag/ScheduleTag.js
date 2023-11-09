@@ -26,6 +26,7 @@ function ScheduleTag() {
     const [showDayPicker, setShowDayPicker] = useState(false)
     const [pickedDay, setPickedDay] = useState(new Date())
     const [showDeleteBlockModal, setShowDeleteBlockModal] = useState(false)
+    const [showCommitStagedEventModal, setShowCommitStagedEventModal] = useState(false)
     const [blockToEdit, setBlockToEdit] = useState(null)
     const [modifications, setModifications] = useState([])
 
@@ -98,6 +99,13 @@ function ScheduleTag() {
         setSelectedBlock(null)
     }
 
+    const handleStagedEventCommit = async () => {
+        const stagedEvent = await fetchStagedEvent()
+        await stagedEventService.commitStagedEvent(stagedEvent.id)
+        await fetchModifications()
+        setShowCommitStagedEventModal(false)
+    }
+
     const {t} = useTranslation()
 
     return (
@@ -133,6 +141,14 @@ function ScheduleTag() {
                 action={handleBlockDelete}
                 variant={"danger"}
                 onClose={() => setShowDeleteBlockModal(false)}
+            />
+            <ConfirmActionModal
+                show={showCommitStagedEventModal}
+                title={t("entities.staged_event.committing_staged_event")}
+                message={t("entities.staged_event.commit_staged_event_message")}
+                action={handleStagedEventCommit}
+                variant={"success"}
+                onClose={() => setShowCommitStagedEventModal(false)}
             />
             <div className="row">
                 <h2>
@@ -222,30 +238,38 @@ function ScheduleTag() {
 
                 </div>
             </div>
-            <h2>{t('entities.modification.plural')}</h2>
-            <Table responsive hover>
-                <thead>
-                <tr>
-                    <th>{t('entities.modification.type')}</th>
-                    <th>{t('entities.block.title')}</th>
-                    <th>{t('entities.modification.parameter_name')}</th>
-                    <th>{t('entities.modification.new_value')}</th>
-                    <th>{t('entities.modification.old_value')}</th>
+            {modifications.length > 0 && (
+                <>
+                    <h2>{t('entities.modification.plural')}</h2>
+                    <Table responsive hover>
+                        <thead>
+                        <tr>
+                            <th>{t('entities.modification.type')}</th>
+                            <th>{t('entities.block.title')}</th>
+                            <th>{t('entities.modification.parameter_name')}</th>
+                            <th>{t('entities.modification.new_value')}</th>
+                            <th>{t('entities.modification.old_value')}</th>
 
-                </tr>
-                </thead>
-                <tbody>
-                {modifications.map((modification) => (
-                    <tr key={modification.id}>
-                        <td>{t('entities.modification.types.' + modification.type)}</td>
-                        <td>{modification.blockName}</td>
-                        <td>{modification.parameterName}</td>
-                        <td>{modification.newValue}</td>
-                        <td>{modification.oldValue}</td>
-                    </tr>
-                ))}
-                </tbody>
-            </Table>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {modifications.map((modification) => (
+                            <tr key={modification.id}>
+                                <td>{t('entities.modification.types.' + modification.type)}</td>
+                                <td>{modification.blockName}</td>
+                                <td>{modification.parameterName}</td>
+                                <td>{modification.newValue}</td>
+                                <td>{modification.oldValue}</td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </Table>
+                    <Button variant="success"
+                            onClick={() => setShowCommitStagedEventModal(true)}>
+                        {t('buttons.commit_staged_event')}
+                    </Button>
+                </>
+            )}
         </div>
     )
 }

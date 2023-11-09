@@ -21,4 +21,12 @@ export default class StagedEventService {
             []
         )
     }
+
+    async commitStagedEvent(stagedEventId) {
+        return await this.apiService.sendRequest(
+            this.url + "/" + stagedEventId + "/commit",
+            "PUT",
+            []
+        )
+    }
 }
