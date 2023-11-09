@@ -17,7 +17,7 @@ import StagedEventService from "../../../services/StagedEventService";
 function ScheduleTag() {
     const [scheduleTagService] = useState(new ScheduleTagService())
     const [scheduleBlockService] = useState(new ScheduleBlockService())
-    const [stagedEventService, setStagedEventService] = useState(new StagedEventService())
+    const [stagedEventService] = useState(new StagedEventService())
     const {scheduleTagId} = useParams()
     const [scheduleTag, setScheduleTag] = useState(null)
     const [selectedBlock, setSelectedBlock] = useState(null)
@@ -67,7 +67,9 @@ function ScheduleTag() {
     }
 
     const fetchModifications = async () => {
-        const response = await stagedEventService.getModificationsForStagedEvent(1) // TODO: pobranie stagedEventId
+        const stagedEvent = await fetchStagedEvent()
+
+        const response = await stagedEventService.getModificationsForStagedEvent(stagedEvent.id)
         const data = await response.json()
 
         if (response.ok) {
@@ -77,6 +79,16 @@ function ScheduleTag() {
         }
     }
 
+    const fetchStagedEvent = async () => {
+        const response = await stagedEventService.getLatestStagedEventForSchedule(scheduleTagId)
+        const data = await response.json()
+
+        if (response.ok) {
+            return data
+        } else {
+            console.error("Error:", data)
+        }
+    }
 
     const handleBlockDelete = async () => {
         await scheduleBlockService.deleteScheduleBlock(selectedBlock.id)

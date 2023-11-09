@@ -13,4 +13,12 @@ export default class StagedEventService {
             []
         )
     }
+
+    async getLatestStagedEventForSchedule(scheduleTagId) {
+        return await this.apiService.sendRequest(
+            this.url + "/schedule-tag/" + scheduleTagId + "/latest",
+            "GET",
+            []
+        )
+    }
 }
