@@ -8,7 +8,7 @@ import AddresseeList from "./components/Addressees/AddresseeList";
 function Routing() {
     return (
         <Router>
-            <div className="row">
+            <div className="row min-vh-100">
                 <div className="col-sm-2 bg-primary p-0">
                     <Navbar/>
                 </div>

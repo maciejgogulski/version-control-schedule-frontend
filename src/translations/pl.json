@@ -20,7 +20,8 @@
     "edit_addressee": "Edytuj adresata",
     "delete_addressee": "Usuń adresata",
     "assign_addressees": "Przypisz adresatów",
-    "add_parameter": "Dodaj parametr"
+    "add_parameter": "Dodaj parametr",
+    "commit_staged_event": "Zatwierdź zmiany"
   },
   "entities": {
     "schedule": {
@@ -39,7 +40,8 @@
       "end_date": "Data zakończenia",
       "addressees": "Adresaci",
       "addressee_groups": "Grupy",
-      "persons": "Osoby"
+      "persons": "Osoby",
+      "no_blocks_in_day": "Brak bloków w tym dniu"
     },
     "tag": {
       "creating_new_tag": "Tworzenie nowego planu",
@@ -69,11 +71,16 @@
       "parameter_name": "Nazwa parametru",
       "old_value": "Poprzednia wartość",
       "new_value": "Nowa wartość",
+      "changes_made": "Dokonano zmian",
       "types": {
         "CREATE_PARAMETER": "Utworzono parametr",
         "UPDATE_PARAMETER": "Zmodyfikowano parametr",
-        "DELETE_PARAMETER": "Usunięto parameter"
+        "DELETE_PARAMETER": "Usunięto parametr"
       }
+    },
+    "staged_event": {
+      "committing_staged_event": "Zatwierdzanie zmian",
+      "commit_staged_event_message": "Czy na pewno chcesz zatwierdzić zmiany?"
     }
   }
 }

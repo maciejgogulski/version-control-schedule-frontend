@@ -11,8 +11,8 @@ import {useTranslation} from "react-i18next"
 import ScheduleTagService from "../../../services/ScheduleTagService"
 import {useParams} from "react-router-dom"
 import ConfirmActionModal from "../../Modals/ConfirmActionModal";
-import ScheduleTagAddressees from "./ScheduleTagAddressees";
 import StagedEventService from "../../../services/StagedEventService";
+import CommitChangesModal from "../StagedEvent/CommitChangesModal";
 
 function ScheduleTag() {
     const [scheduleTagService] = useState(new ScheduleTagService())
@@ -29,6 +29,7 @@ function ScheduleTag() {
     const [showCommitStagedEventModal, setShowCommitStagedEventModal] = useState(false)
     const [blockToEdit, setBlockToEdit] = useState(null)
     const [modifications, setModifications] = useState([])
+    const [parameters, setParameters] = useState([])
 
     useEffect(() => {
         fetchScheduleTag().then(() => {
@@ -36,6 +37,21 @@ function ScheduleTag() {
             fetchModifications()
         })
     }, [pickedDay, scheduleTagId])
+
+    useEffect(() => {
+        fetchParameters()
+    }, [selectedBlock]);
+
+    const fetchParameters = async () => {
+        const response = await scheduleBlockService.getParameters(selectedBlock.id)
+        const data = await response.json()
+
+        if (response.ok) {
+            setParameters(data)
+        } else {
+            console.error("Error:", data)
+        }
+    }
 
     const fetchScheduleBlocks = async () => {
         const day = format(pickedDay, "yyyy-MM-dd HH:mm:ss")
@@ -99,13 +115,6 @@ function ScheduleTag() {
         setSelectedBlock(null)
     }
 
-    const handleStagedEventCommit = async () => {
-        const stagedEvent = await fetchStagedEvent()
-        await stagedEventService.commitStagedEvent(stagedEvent.id)
-        await fetchModifications()
-        setShowCommitStagedEventModal(false)
-    }
-
     const {t} = useTranslation()
 
     return (
@@ -120,11 +129,13 @@ function ScheduleTag() {
                 onFormSubmit={async () => {
                     await fetchScheduleBlocks()
                     await fetchModifications()
+                    await fetchParameters()
                     setBlockToEdit(null)
                 }}
                 scheduleTagId={scheduleTagId}
                 blockToEdit={blockToEdit}
             />
+
             <DatePickerModal
                 show={showDayPicker}
                 pickedDay={pickedDay}
@@ -134,6 +145,7 @@ function ScheduleTag() {
                 }}
                 onClose={() => setShowDayPicker(false)}
             />
+
             <ConfirmActionModal
                 show={showDeleteBlockModal}
                 title={t("entities.block.deleting_block") + " " + selectedBlock?.name}
@@ -142,14 +154,14 @@ function ScheduleTag() {
                 variant={"danger"}
                 onClose={() => setShowDeleteBlockModal(false)}
             />
-            <ConfirmActionModal
+
+            <CommitChangesModal
                 show={showCommitStagedEventModal}
-                title={t("entities.staged_event.committing_staged_event")}
-                message={t("entities.staged_event.commit_staged_event_message")}
-                action={handleStagedEventCommit}
-                variant={"success"}
+                scheduleTagId={scheduleTagId}
+                modifications={modifications}
                 onClose={() => setShowCommitStagedEventModal(false)}
             />
+
             <div className="row">
                 <h2>
                     {t("entities.schedule.title")} {scheduleTag ? scheduleTag.name : null}
@@ -197,10 +209,10 @@ function ScheduleTag() {
                     </Button>
                 </div>
             </div>
-            <div className="row">
+            <div className="row mb-4">
                 <div className="col-md-6">
                     <div className="list-container mt-3">
-                        {scheduleBlocks.map((block) => (
+                        {scheduleBlocks.length > 0 && scheduleBlocks.map((block) => (
                             <ScheduleBlockListElement
                                 key={block.id}
                                 block={block}
@@ -208,6 +220,12 @@ function ScheduleTag() {
                                 isSelected={selectedBlock?.id === block.id}
                             />
                         ))}
+                        {scheduleBlocks.length === 0 && (
+                            <div className="alert alert-info" role="alert">
+                                {t('entities.block.no_blocks_in_day')}
+                            </div>
+                        )
+                        }
                     </div>
                 </div>
                 <div className="col-md-6 mt-3 px-4">
@@ -229,46 +247,24 @@ function ScheduleTag() {
                                     </Button>
                                 </div>
                             </div>
-                            <ScheduleBlockDetails block={selectedBlock}/>
+                            <ScheduleBlockDetails block={selectedBlock}
+                                                  parameters={parameters}/>
                         </div>
                     }
-                    <ScheduleTagAddressees
-                        scheduleTagId={scheduleTagId}
-                    />
-
                 </div>
             </div>
             {modifications.length > 0 && (
-                <>
-                    <h2>{t('entities.modification.plural')}</h2>
-                    <Table responsive hover>
-                        <thead>
-                        <tr>
-                            <th>{t('entities.modification.type')}</th>
-                            <th>{t('entities.block.title')}</th>
-                            <th>{t('entities.modification.parameter_name')}</th>
-                            <th>{t('entities.modification.new_value')}</th>
-                            <th>{t('entities.modification.old_value')}</th>
-
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {modifications.map((modification) => (
-                            <tr key={modification.id}>
-                                <td>{t('entities.modification.types.' + modification.type)}</td>
-                                <td>{modification.blockName}</td>
-                                <td>{modification.parameterName}</td>
-                                <td>{modification.newValue}</td>
-                                <td>{modification.oldValue}</td>
-                            </tr>
-                        ))}
-                        </tbody>
-                    </Table>
-                    <Button variant="success"
-                            onClick={() => setShowCommitStagedEventModal(true)}>
-                        {t('buttons.commit_staged_event')}
-                    </Button>
-                </>
+                <div className="alert alert-warning" role="alert">
+                    <div className="d-flex flex-row">
+                        <div
+                            className="me-2 align-self-center">{t('entities.modification.changes_made') + ': '}<strong>{modifications.length}</strong>
+                        </div>
+                        <Button variant="success"
+                                onClick={() => setShowCommitStagedEventModal(true)}>
+                            {t('buttons.commit_staged_event')}
+                        </Button>
+                    </div>
+                </div>
             )}
         </div>
     )

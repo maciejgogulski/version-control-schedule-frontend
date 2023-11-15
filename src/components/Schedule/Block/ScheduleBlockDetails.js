@@ -3,25 +3,7 @@ import {useTranslation, withTranslation} from "react-i18next"
 import ScheduleBlockService from "../../../services/ScheduleBlockService";
 
 export default function ScheduleBlockDetails(props) {
-    const [scheduleBlockService] = useState(new ScheduleBlockService())
-    const [parameters, setParameters] = useState([])
-
     const {t} = useTranslation();
-
-    const fetchParameters = async () => {
-        const response = await scheduleBlockService.getParameters(props.block.id)
-        const data = await response.json()
-
-        if (response.ok) {
-            setParameters(data)
-        } else {
-            console.error("Error:", data)
-        }
-    }
-
-    useEffect(() => {
-        fetchParameters()
-    }, [scheduleBlockService, props.block.id]) // TODO fetch params after block form submit
 
     return (
         <div className="container bg-light rounded mb-3 px-5 py-3 shadow border-top border-primary border-5">
@@ -49,7 +31,7 @@ export default function ScheduleBlockDetails(props) {
                 </div>
             </div>
 
-            {parameters.map((parameter) => (
+            {props.parameters.map((parameter) => (
                 <div key={parameter.id} className="row">
                     <div className="col-md-6">
                         <p>{parameter.parameterName}</p>

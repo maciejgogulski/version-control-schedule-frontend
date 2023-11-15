@@ -19,7 +19,8 @@
     "create_addressee": "Create addressee",
     "edit_addressee": "Edit addressee",
     "delete_addressee": "Delete addressee",
-    "add_parameter": "Add parameter"
+    "add_parameter": "Add parameter",
+    "commit_staged_event": "Commit changes"
   },
   "entities": {
     "schedule": {
@@ -38,7 +39,8 @@
       "end_date": "End date",
       "addressees": "Addressees",
       "addressee_groups": "Groups",
-      "persons": "Persons"
+      "persons": "Persons",
+      "no_blocks_in_day": "No blocks created in this day"
     },
     "tag": {
       "creating_new_tag": "Creating new schedule",
@@ -67,11 +69,16 @@
       "parameter_name": "Parameter name",
       "old_value": "Previous value",
       "new_value": "New value",
+      "changes_made": "Changes made",
       "types": {
         "CREATE_PARAMETER": "Created parameter",
         "UPDATE_PARAMETER": "Updated parameter",
         "DELETE_PARAMETER": "Deleted parameter"
       }
+    },
+    "staged_event": {
+      "committing_staged_event": "Committing changes",
+      "commit_staged_event_message": "Are you sure, you want to commit changes?"
     }
   }
 }

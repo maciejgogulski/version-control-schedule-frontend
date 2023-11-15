@@ -36,3 +36,15 @@
     transform: rotate(360deg);
   }
 }
+
+.bg-create {
+  --bs-table-color: #006700 !important;
+}
+
+.bg-update {
+  --bs-table-color: #3030ff !important;
+}
+
+.bg-delete {
+  --bs-table-color: #9d0000 !important;
+}

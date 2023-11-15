@@ -26,19 +26,13 @@ export default function ScheduleTagAddressees(props) {
     }, [props.scheduleTagId])
 
     return (
-        <div className="px-4 container bg-light rounded px-5 py-3 shadow">
+        <div className="px-4 container">
             <AssignAddresseeToScheduleTagForm show={showAssignToScheduleForm}
                                               onClose={() => setShowAssignToScheduleForm(false)}
                                               onFormSubmit={async () => fetchAddressees(props.scheduleTagId)}
                                               scheduleTagId={props.scheduleTagId}
             />
-            <div className="row">
-                <h4 className="col-auto">{t('entities.block.addressees')}</h4>
-                <Button variant="success" className="col-auto me-2"
-                        onClick={() => setShowAssignToScheduleForm(true)}>
-                    {t('buttons.assign_addressees')}
-                </Button>
-            </div>
+            <h4>{t('entities.block.addressees')}</h4>
             <hr className="my-1"/>
             <div className="row">
                 <div className="col-md-6">
@@ -55,6 +49,11 @@ export default function ScheduleTagAddressees(props) {
                     ))}
                 </div>
             </div>
+            <Button className="align-self-end"
+                    variant="success"
+                    onClick={() => setShowAssignToScheduleForm(true)}>
+                {t('buttons.assign_addressees')}
+            </Button>
         </div>
     )
 }
