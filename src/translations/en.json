@@ -19,6 +19,7 @@
     "create_addressee": "Create addressee",
     "edit_addressee": "Edit addressee",
     "delete_addressee": "Delete addressee",
+    "assign_addressees": "Assign addressees",
     "add_parameter": "Add parameter",
     "commit_staged_event": "Commit changes"
   },
@@ -61,7 +62,12 @@
     "parameter": {
       "new": "New parameter",
       "name": "Name",
-      "value": "Value"
+      "value": "Value",
+      "required": {
+        "name": "Name",
+        "start_date": "Start date",
+        "end_date": "End date"
+      }
     },
     "modification": {
       "plural": "Modifications",

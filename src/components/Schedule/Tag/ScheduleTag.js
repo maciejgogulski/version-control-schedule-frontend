@@ -12,7 +12,7 @@ import ScheduleTagService from "../../../services/ScheduleTagService"
 import {useParams} from "react-router-dom"
 import ConfirmActionModal from "../../Modals/ConfirmActionModal";
 import StagedEventService from "../../../services/StagedEventService";
-import CommitChangesModal from "../StagedEvent/CommitChangesModal";
+import CommitStagedEventModal from "../StagedEvent/CommitStagedEventModal";
 
 function ScheduleTag() {
     const [scheduleTagService] = useState(new ScheduleTagService())
@@ -39,7 +39,7 @@ function ScheduleTag() {
     }, [pickedDay, scheduleTagId])
 
     useEffect(() => {
-        fetchParameters()
+        if (selectedBlock) fetchParameters()
     }, [selectedBlock]);
 
     const fetchParameters = async () => {
@@ -155,7 +155,7 @@ function ScheduleTag() {
                 onClose={() => setShowDeleteBlockModal(false)}
             />
 
-            <CommitChangesModal
+            <CommitStagedEventModal
                 show={showCommitStagedEventModal}
                 scheduleTagId={scheduleTagId}
                 modifications={modifications}

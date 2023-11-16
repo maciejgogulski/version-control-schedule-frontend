@@ -63,7 +63,12 @@
     "parameter": {
       "new": "Nowy parametr",
       "name": "Nazwa",
-      "value": "Wartość"
+      "value": "Wartość",
+      "required": {
+        "name": "Nazwa",
+        "start_date": "Data rozpoczęcia",
+        "end_date": "Data zakończenia"
+      }
     },
     "modification": {
       "plural": "Zmiany",

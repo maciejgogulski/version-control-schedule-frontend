@@ -38,10 +38,10 @@ function ScheduleBlockForm(props) {
 
         let block = (props.blockToEdit) ? props.blockToEdit : new ScheduleBlock()
         block.scheduleTagId = props.scheduleTagId
-        block.name = parameters[0].value
+        block.name = (props.blockToEdit) ? parameters[0].value : name
 
-        block.startDate = parameters[1].value // TODO change to date picker and parse date from date picker
-        block.endDate = parameters[2].value
+        block.startDate = parseToServerFormat((props.blockToEdit) ? parameters[1].value : startDate)
+        block.endDate = parseToServerFormat((props.blockToEdit) ? parameters[2].value : endDate)
 
         if (block.id) {
             parameters.map(async (parameter) => {
@@ -55,9 +55,9 @@ function ScheduleBlockForm(props) {
             await scheduleBlockService.addScheduleBlock(block)
         }
 
-        setName("")
-        setStartDate("")
-        setEndDate("")
+        setName('')
+        setStartDate('')
+        setEndDate('')
         setParameters([])
         setNewParameters([])
         setDeletedParameters([])
@@ -174,7 +174,7 @@ function ScheduleBlockForm(props) {
                                 )}
                             </div>
                             <Form.Control
-                                type="text"
+                                type={(index === 1 || index === 2) ? 'datetime-local' : 'text'}
                                 value={parameter.value}
                                 onChange={(e) => handleParameterChange(parameter.id, e.target.value)}
                             />

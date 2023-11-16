@@ -3,8 +3,9 @@ import {Button, Modal, Table} from "react-bootstrap"
 import {useTranslation} from "react-i18next"
 import StagedEventService from "../../../services/StagedEventService";
 import ScheduleTagAddressees from "../Tag/ScheduleTagAddressees";
+import {parseToServerFormat} from "../../../util/DateTimeParser";
 
-function CommitChangesModal(props) {
+function CommitStagedEventModal(props) {
     const {t} = useTranslation()
     const [stagedEventService] = useState(new StagedEventService())
 
@@ -39,6 +40,31 @@ function CommitChangesModal(props) {
         }
     }
 
+    const translateParameterName = (parameterName) => {
+        switch (parameterName) {
+            case 'Name':
+                return t('entities.parameter.required.name')
+            case 'Start date':
+                return t('entities.parameter.required.start_date')
+            case 'End date':
+                return t('entities.parameter.required.end_date')
+            default:
+                return parameterName
+        }
+    }
+
+    const translateParameterValue = (parameterName, parameterValue) => {
+        switch (parameterName) {
+            case 'Start date':
+                return parseToServerFormat(parameterValue)
+            case 'End date':
+                return parseToServerFormat(parameterValue)
+            default:
+                return parameterValue
+        }
+    }
+
+
     return (
         <Modal size={"xl"} show={props.show} onHide={props.onClose}>
             <Modal.Header closeButton>
@@ -66,7 +92,7 @@ function CommitChangesModal(props) {
                                     className={pickModificationRowBackGround(modification.type)}>
                                     <td>{t('entities.modification.types.' + modification.type)}</td>
                                     <td>{modification.blockName}</td>
-                                    <td>{modification.parameterName}</td>
+                                    <td>{translateParameterName(modification.parameterName)}</td>
                                     <td>{modification.newValue}</td>
                                     <td>{modification.oldValue}</td>
                                 </tr>
@@ -83,7 +109,7 @@ function CommitChangesModal(props) {
             </Modal.Body>
             <Modal.Footer>
                 <Button variant={props.variant} onClick={handleConfirmation}>
-                    {t('buttons.confirm')}
+                    {t('buttons.commit_staged_event')}
                 </Button>
                 <Button variant="secondary" onClick={props.onClose}>
                     {t('buttons.close')}
@@ -93,4 +119,4 @@ function CommitChangesModal(props) {
     )
 }
 
-export default CommitChangesModal
+export default CommitStagedEventModal
