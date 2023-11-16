@@ -31,17 +31,20 @@ export default function ScheduleBlockDetails(props) {
                 </div>
             </div>
 
-            {props.parameters.map((parameter) => (
-                <div key={parameter.id} className="row">
-                    <div className="col-md-6">
-                        <p>{parameter.parameterName}</p>
-                    </div>
+            {props.parameters.map((parameter, index) => (
+                index >= 3 && (
+                    <div key={parameter.id} className="row">
+                        <div className="col-md-6">
+                            <p>{parameter.parameterName}</p>
+                        </div>
 
-                    <div className="col-md-6">
-                        <p>{parameter.value}</p>
+                        <div className="col-md-6">
+                            <p>{parameter.value}</p>
+                        </div>
                     </div>
-                </div>
+                )
             ))}
+
         </div>
     )
 }

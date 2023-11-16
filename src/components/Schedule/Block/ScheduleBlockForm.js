@@ -38,10 +38,10 @@ function ScheduleBlockForm(props) {
 
         let block = (props.blockToEdit) ? props.blockToEdit : new ScheduleBlock()
         block.scheduleTagId = props.scheduleTagId
-        block.name = name
+        block.name = parameters[0].value
 
-        block.startDate = parseToServerFormat(startDate)
-        block.endDate = parseToServerFormat(endDate)
+        block.startDate = parameters[1].value // TODO change to date picker and parse date from date picker
+        block.endDate = parameters[2].value
 
         if (block.id) {
             parameters.map(async (parameter) => {
@@ -134,46 +134,50 @@ function ScheduleBlockForm(props) {
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
-                    <Form.Group controlId="name">
-                        <Form.Label>{t('entities.block.name')}:</Form.Label>
-                        <Form.Control
-                            type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                        />
-                    </Form.Group>
-                    <Form.Group controlId="startDate">
-                        <Form.Label>{t('entities.block.start_date')}:</Form.Label>
-                        <Form.Control
-                            type="datetime-local"
-                            value={startDate}
-                            onChange={(e) => setStartDate(e.target.value)}
-                        />
-                    </Form.Group>
-                    <Form.Group controlId="endDate">
-                        <Form.Label>{t('entities.block.end_date')}:</Form.Label>
-                        <Form.Control
-                            type="datetime-local"
-                            value={endDate}
-                            onChange={(e) => setEndDate(e.target.value)}
-                        />
-                    </Form.Group>
-                    {parameters.map((parameter) => (
+                    {!props.blockToEdit && (
+                        <>
+                            <Form.Group controlId="name">
+                                <Form.Label>{t('entities.block.name')}:</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                />
+                            </Form.Group>
+                            <Form.Group controlId="startDate">
+                                <Form.Label>{t('entities.block.start_date')}:</Form.Label>
+                                <Form.Control
+                                    type="datetime-local"
+                                    value={startDate}
+                                    onChange={(e) => setStartDate(e.target.value)}
+                                />
+                            </Form.Group>
+                            <Form.Group controlId="endDate">
+                                <Form.Label>{t('entities.block.end_date')}:</Form.Label>
+                                <Form.Control
+                                    type="datetime-local"
+                                    value={endDate}
+                                    onChange={(e) => setEndDate(e.target.value)}
+                                />
+                            </Form.Group>
+                        </>
+                    )}
+                    {parameters.map((parameter, index) => (
                         <Form.Group key={parameter.id} controlId={parameter.parameterName}>
                             <div className="row">
                                 <Form.Label className="col-md-6">{parameter.parameterName}:</Form.Label>
-                                <CloseButton
-                                    className="col-md-6"
-                                    onClick={() => handleParameterDelete(parameter)}
-                                />
+                                {index >= 3 && (
+                                    <CloseButton
+                                        className="col-md-6"
+                                        onClick={() => handleParameterDelete(parameter)}
+                                    />
+                                )}
                             </div>
                             <Form.Control
                                 type="text"
                                 value={parameter.value}
                                 onChange={(e) => handleParameterChange(parameter.id, e.target.value)}
                             />
-
-
                         </Form.Group>
                     ))}
                     {props.blockToEdit && showAddParameterField &&
