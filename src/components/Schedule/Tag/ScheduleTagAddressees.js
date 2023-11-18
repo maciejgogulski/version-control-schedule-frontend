@@ -26,7 +26,7 @@ export default function ScheduleTagAddressees(props) {
     }, [props.scheduleTagId])
 
     return (
-        <div className="px-4 container">
+        <div>
             <AssignAddresseeToScheduleTagForm show={showAssignToScheduleForm}
                                               onClose={() => setShowAssignToScheduleForm(false)}
                                               onFormSubmit={async () => fetchAddressees(props.scheduleTagId)}

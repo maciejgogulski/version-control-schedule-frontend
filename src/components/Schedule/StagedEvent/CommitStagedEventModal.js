@@ -27,7 +27,7 @@ function CommitStagedEventModal(props) {
         }
     }
 
-    const pickModificationRowBackGround = (modificationType) => {
+    const pickModificationRowFontColor = (modificationType) => {
         switch (modificationType) {
             case 'CREATE_PARAMETER':
                 return 'bg-create'
@@ -54,6 +54,7 @@ function CommitStagedEventModal(props) {
     }
 
     const translateParameterValue = (parameterName, parameterValue) => {
+        if (!parameterValue) return <p className="text-center">-</p>
         switch (parameterName) {
             case 'Start date':
                 return parseToServerFormat(parameterValue)
@@ -71,41 +72,39 @@ function CommitStagedEventModal(props) {
                 <Modal.Title>{t('entities.staged_event.committing_staged_event')}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <div className="row">
-                    <div className="col-md-6">
-                        <h4>{t('entities.modification.plural')}</h4>
-                        <hr className="my-1"/>
-                        <Table responsive hover>
-                            <thead>
-                            <tr>
-                                <th>{t('entities.modification.type')}</th>
-                                <th>{t('entities.block.title')}</th>
-                                <th>{t('entities.modification.parameter_name')}</th>
-                                <th>{t('entities.modification.new_value')}</th>
-                                <th>{t('entities.modification.old_value')}</th>
+                <div className="mb-3">
+                    <h4>{t('entities.modification.plural')}</h4>
+                    <hr className="my-1"/>
+                    <Table responsive hover className={'text-center'}>
+                        <thead>
+                        <tr>
+                            <th>{t('entities.modification.timestamp')}</th>
+                            <th>{t('entities.modification.type')}</th>
+                            <th>{t('entities.block.title')}</th>
+                            <th>{t('entities.modification.parameter_name')}</th>
+                            <th>{t('entities.modification.new_value')}</th>
+                            <th>{t('entities.modification.old_value')}</th>
 
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {props.modifications.map((modification) => (
+                            <tr key={modification.id}
+                                className={pickModificationRowFontColor(modification.type)}>
+                                <td>{parseToServerFormat(modification.timestamp)}</td>
+                                <td>{t('entities.modification.types.' + modification.type)}</td>
+                                <td>{modification.blockName}</td>
+                                <td>{translateParameterName(modification.parameterName)}</td>
+                                <td>{translateParameterValue(modification.parameterName, modification.newValue)}</td>
+                                <td>{translateParameterValue(modification.parameterName, modification.oldValue)}</td>
                             </tr>
-                            </thead>
-                            <tbody>
-                            {props.modifications.map((modification) => (
-                                <tr key={modification.id}
-                                    className={pickModificationRowBackGround(modification.type)}>
-                                    <td>{t('entities.modification.types.' + modification.type)}</td>
-                                    <td>{modification.blockName}</td>
-                                    <td>{translateParameterName(modification.parameterName)}</td>
-                                    <td>{modification.newValue}</td>
-                                    <td>{modification.oldValue}</td>
-                                </tr>
-                            ))}
-                            </tbody>
-                        </Table>
-                    </div>
-
-                    <div className="col-md-6">
-                        <ScheduleTagAddressees
-                            scheduleTagId={props.scheduleTagId}/>
-                    </div>
+                        ))}
+                        </tbody>
+                    </Table>
                 </div>
+
+                <ScheduleTagAddressees
+                    scheduleTagId={props.scheduleTagId}/>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant={props.variant} onClick={handleConfirmation}>

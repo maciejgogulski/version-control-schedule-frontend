@@ -127,6 +127,19 @@ function ScheduleBlockForm(props) {
         props.onClose()
     }
 
+    const translateParameterName = (parameterName) => {
+        switch (parameterName) {
+            case 'Name':
+                return t('entities.parameter.required.name')
+            case 'Start date':
+                return t('entities.parameter.required.start_date')
+            case 'End date':
+                return t('entities.parameter.required.end_date')
+            default:
+                return parameterName
+        }
+    }
+
     return (
         <Modal show={props.show} onHide={handleFormClose}>
             <Modal.Header closeButton>
@@ -165,7 +178,7 @@ function ScheduleBlockForm(props) {
                     {parameters.map((parameter, index) => (
                         <Form.Group key={parameter.id} controlId={parameter.parameterName}>
                             <div className="row">
-                                <Form.Label className="col-md-6">{parameter.parameterName}:</Form.Label>
+                                <Form.Label className="col-md-6">{translateParameterName(parameter.parameterName)}:</Form.Label>
                                 {index >= 3 && (
                                     <CloseButton
                                         className="col-md-6"

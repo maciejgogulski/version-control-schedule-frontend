@@ -76,6 +76,7 @@
       "old_value": "Previous value",
       "new_value": "New value",
       "changes_made": "Changes made",
+      "timestamp": "Modified at",
       "types": {
         "CREATE_PARAMETER": "Created parameter",
         "UPDATE_PARAMETER": "Updated parameter",
