@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react"
 import {useTranslation, withTranslation} from "react-i18next"
-import ScheduleBlockService from "../../../services/ScheduleBlockService";
+import ScheduleBlockService from "../../../backend/services/ScheduleBlockService";
 
 export default function ScheduleBlockDetails(props) {
     const {t} = useTranslation();

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react"
 import {Button, Form, Modal} from "react-bootstrap"
 import {useTranslation} from "react-i18next"
-import AddresseeService from "../../services/AddresseeService";
+import AddresseeService from "../../backend/services/AddresseeService";
 import Addressee from "../../models/Addressee";
 
 function AddresseeForm(props) {

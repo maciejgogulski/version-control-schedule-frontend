@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react"
 import {useTranslation} from "react-i18next"
-import AddresseeService from "../../../services/AddresseeService"
+import AddresseeService from "../../../backend/services/AddresseeService"
 import {Button} from "react-bootstrap"
 import AssignAddresseeToScheduleTagForm from "./AssignAddresseeToScheduleTagForm"
 

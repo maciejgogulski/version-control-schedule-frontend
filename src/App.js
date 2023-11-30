@@ -1,15 +1,21 @@
 import './App.css';
 import Routing from "./routing";
 import Header from "./components/Header/Header";
+import {DependenciesProvider} from "./context/Dependencies";
+import {AuthProvider} from "./context/Auth";
 
 function App() {
     return (
-        <div>
-            <Header />
-            <main className="bg-light">
-                <Routing />
-            </main>
-        </div>
+        <DependenciesProvider>
+            <AuthProvider>
+                <div>
+                    <Header/>
+                    <main className="bg-light">
+                        <Routing/>
+                    </main>
+                </div>
+            </AuthProvider>
+        </DependenciesProvider>
     );
 }
 

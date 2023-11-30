@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react"
 import {Button, Table} from "react-bootstrap"
 import {useTranslation, withTranslation} from "react-i18next"
-import ScheduleTagService from "../../../services/ScheduleTagService"
+import ScheduleTagService from "../../../backend/services/ScheduleTagService"
 import ScheduleTagForm from "./ScheduleTagForm"
 import ConfirmActionModal from "../../Modals/ConfirmActionModal"
 import {useNavigate} from "react-router-dom";

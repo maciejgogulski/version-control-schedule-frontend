@@ -1,10 +1,15 @@
-import ApiService from "./ApiService"
+import ApiService from "../ApiService"
 
 export default class ScheduleTagService {
 
     scheduleTagUrl = '/schedule-tag'
 
-    apiService = new ApiService()
+    apiService
+
+    constructor(token) {
+        this.apiService = new ApiService(token)
+    }
+
 
     async getScheduleTags() {
         return await this.apiService.sendRequest(

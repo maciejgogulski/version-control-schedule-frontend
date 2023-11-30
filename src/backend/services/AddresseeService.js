@@ -1,10 +1,14 @@
-import ApiService from "./ApiService"
+import ApiService from "../ApiService"
 
-export default class AddresseeService{
+export default class AddresseeService {
 
     addresseeUrl = '/addressee'
 
-    apiService = new ApiService()
+    apiService
+
+    constructor(token) {
+        this.apiService = new ApiService(token)
+    }
 
     async getAddressees() {
         return await this.apiService.sendRequest(

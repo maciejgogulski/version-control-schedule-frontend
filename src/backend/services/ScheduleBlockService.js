@@ -1,10 +1,14 @@
-import ApiService from "./ApiService";
+import ApiService from "../ApiService";
 
 export default class ScheduleBlockService {
 
     scheduleBlockUrl = '/schedule-block'
 
-    apiService = new ApiService();
+    apiService
+
+    constructor(token) {
+        this.apiService = new ApiService(token)
+    }
 
     async getScheduleBlocksByDay(tagId, day) {
         const params = [

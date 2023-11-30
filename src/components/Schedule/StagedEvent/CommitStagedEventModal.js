@@ -1,9 +1,9 @@
 import React, {useState} from "react"
 import {Button, Modal, Table} from "react-bootstrap"
 import {useTranslation} from "react-i18next"
-import StagedEventService from "../../../services/StagedEventService";
+import StagedEventService from "../../../backend/services/StagedEventService";
 import ScheduleTagAddressees from "../Tag/ScheduleTagAddressees";
-import {parseToServerFormat} from "../../../util/DateTimeParser";
+import {parseToServerFormat} from "../../../utils/DateTimeParser";
 
 function CommitStagedEventModal(props) {
     const {t} = useTranslation()

@@ -1,6 +1,12 @@
 export default class ApiService {
 
-    backendUrl = 'http://localhost:8080';
+    backendUrl = 'http://localhost:8080'
+
+    token
+
+    constructor(token) {
+        this.token = token
+    }
 
     async sendRequest(endpoint,
                       method,
@@ -9,17 +15,17 @@ export default class ApiService {
                       headers = {}
     ) {
         try {
-            let paramString = "";
+            let paramString = ""
 
             if (params.length !== 0) {
-                paramString += "?";
+                paramString += "?"
 
                 params.forEach((param, index) => {
-                    paramString += param.key + "=" + param.value + "&";
+                    paramString += param.key + "=" + param.value + "&"
 
                     // Check if it's the last iteration
                     if (index === params.length - 1) {
-                        paramString = paramString.slice(0, -1);
+                        paramString = paramString.slice(0, -1)
                     }
                 })
             }
@@ -31,7 +37,14 @@ export default class ApiService {
                         method: method,
                         headers: headers,
                     },
-                );
+                )
+            }
+
+            if (this.token) {
+                headers = {
+                    ...headers,
+                    'Authorization' : 'Bearer ' + this.token
+                }
             }
 
             return await fetch(
@@ -41,9 +54,9 @@ export default class ApiService {
                     headers: headers,
                     body: body
                 },
-            );
+            )
         } catch (error) {
-            console.error('Error:', error);
+            console.error('Error:', error)
         }
     }
 }

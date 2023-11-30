@@ -4,7 +4,7 @@ import {useTranslation, withTranslation} from "react-i18next"
 import ConfirmActionModal from "../Modals/ConfirmActionModal"
 import {useNavigate} from "react-router-dom";
 import AddresseeForm from "./AddresseeForm";
-import AddresseeService from "../../services/AddresseeService";
+import AddresseeService from "../../backend/services/AddresseeService";
 
 function AddresseeList() {
     const navigate = useNavigate()

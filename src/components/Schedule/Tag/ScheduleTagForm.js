@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react"
 import {Button, Form, Modal} from "react-bootstrap"
 import {useTranslation} from "react-i18next"
-import ScheduleTagService from "../../../services/ScheduleTagService"
+import ScheduleTagService from "../../../backend/services/ScheduleTagService"
 import ScheduleTag from "../../../models/ScheduleTag"
 
 function ScheduleTagForm(props) {
