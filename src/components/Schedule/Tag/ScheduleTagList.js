@@ -10,6 +10,7 @@ import {useAuth} from "../../../context/Auth";
 
 function ScheduleTagList() {
     const navigate = useNavigate()
+    const {t} = useTranslation()
     const {getApiService, getToastUtils} = useDependencies()
     const {token} = useAuth()
     const apiService = getApiService()
@@ -44,7 +45,6 @@ function ScheduleTagList() {
             )
         }
     }
-
 
     const handleTagFormButtonClick = (scheduleTag = null) => {
         updateState({showScheduleTagForm: true})
@@ -83,28 +83,26 @@ function ScheduleTagList() {
             await state.scheduleTagService.deleteScheduleTag(state.selectedScheduleTag.id)
             await fetchScheduleTags()
 
-            toastUtils.showToast(
-                'info',
-                `Deleted schedule ${state.selectedScheduleTag.name}`,
-            )
-
             updateState({
                 selectedScheduleTag: null,
                 showDeleteTagModal: false
             })
+
+            toastUtils.showToast(
+                'success',
+                t('toast.success.delete-tag')
+            )
         } catch (error) {
             toastUtils.showToast(
                 'error',
-                'Unable to delete schedule',
+                t('toast.error.delete-tag')
             )
         }
     }
 
     const redirectToScheduleTag = (tagId) => {
-        navigate("/schedule/" + tagId)
+        navigate(`/schedule/${tagId}`)
     }
-
-    const {t} = useTranslation()
 
     return (
         <div className="container">

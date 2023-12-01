@@ -18,10 +18,7 @@ export default class ScheduleTagService {
     }
 
     async getScheduleTag(id) {
-        return await this.apiService.sendRequest(
-            this.scheduleTagUrl + "/" + id,
-            "GET",
-        )
+        return await this.apiService.get(`${this.scheduleTagUrl}/${id}`)
     }
 
     async addScheduleTag(tag) {

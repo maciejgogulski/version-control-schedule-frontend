@@ -11,63 +11,36 @@ export default class AddresseeService {
     }
 
     async getAddressees() {
-        return await this.apiService.sendRequest(
-            this.addresseeUrl,
-            "GET",
-        )
+        return await this.apiService.get(this.addresseeUrl)
     }
 
-    async addressee(id) {
-        return await this.apiService.sendRequest(
-            this.addresseeUrl + "/" + id,
-            "GET",
-        )
+    async getAddressee(id) {
+        return await this.apiService.get(`${this.addresseeUrl}/${id}`)
     }
 
     async addAddressee(addressee) {
-        const jsonAddressee = JSON.stringify(addressee)
-        return await this.apiService.sendRequest(
+        return await this.apiService.post(
             this.addresseeUrl,
-            "POST",
-            [],
-            jsonAddressee,
-            {
-                'Content-Type': 'application/json',
-            }
+            addressee,
         )
     }
 
     async editAddressee(addressee) {
-        const jsonAddressee = JSON.stringify(addressee)
-        return await this.apiService.sendRequest(
+        return await this.apiService.put(
             this.addresseeUrl,
-            "PUT",
-            [],
-            jsonAddressee,
-            {
-                'Content-Type': 'application/json',
-            }
+            addressee,
         )
     }
 
     async deleteAddressee(id) {
-        return await this.apiService.sendRequest(
-            this.addresseeUrl + "/" + id,
-            "DELETE",
-        )
+        return await this.apiService.delete(`${this.addresseeUrl}/${id}`)
     }
 
     async getAddresseesForScheduleTagId(id) {
-        return await this.apiService.sendRequest(
-            this.addresseeUrl + '/schedule-tag/' + id,
-            "GET",
-        )
+        return await this.apiService.get(`${this.addresseeUrl}/schedule-tag/${id}`)
     }
 
     async assignAddresseeToScheduleTag(addresseeId, scheduleTagId) {
-        return await this.apiService.sendRequest(
-            this.addresseeUrl + '/' + addresseeId + '/schedule-tag/' + scheduleTagId,
-            "PUT",
-        )
+        return await this.apiService.put(`${this.addresseeUrl}/${addresseeId}/schedule-tag/${scheduleTagId}`)
     }
 }

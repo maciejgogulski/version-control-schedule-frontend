@@ -38,18 +38,16 @@ function ScheduleTagForm(props) {
             if (tag.id) {
                 await state.scheduleTagService.editScheduleTag(tag)
                 toastUtils.showToast(
-                    'info',
-                    `Edited schedule: ${state.name}`,
+                    'success',
+                    t('toast.success.edit-schedule')
                 )
             } else {
                 await state.scheduleTagService.addScheduleTag(tag)
                 toastUtils.showToast(
                     'success',
-                    `Created schedule: ${state.name}`,
+                    t('toast.success.add-schedule')
                 )
             }
-
-
 
             updateState({name: ''})
             props.onClose()
@@ -57,7 +55,7 @@ function ScheduleTagForm(props) {
         } catch (error) {
             toastUtils.showToast(
                 'error',
-                'Unable to create/edit schedule',
+                t('toast.error.submit-schedule')
             )
         }
     }

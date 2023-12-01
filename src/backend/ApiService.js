@@ -22,10 +22,10 @@ export default class ApiService {
         );
     }
 
-    async get(endpoint) {
+    async get(endpoint, params = {}) {
         try {
             const url = `${this.backendUrl}${endpoint}`;
-            const response = await axios.get(url);
+            const response = await axios.get(url, {params: params});
             return response.data;
         } catch (err) {
             console.log(err);

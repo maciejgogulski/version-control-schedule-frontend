@@ -1,66 +1,96 @@
 import React, {useEffect, useState} from "react"
 import {Button, CloseButton, Form, Modal} from "react-bootstrap"
-import ScheduleBlockService from "../../../backend/services/ScheduleBlockService"
 import ScheduleBlock from "../../../models/ScheduleBlock"
 import {parseToServerFormat} from "../../../utils/DateTimeParser"
 import {format} from "date-fns"
 import {useTranslation} from "react-i18next"
 import Parameter from "../../../models/Parameter"
 import './ScheduleBlockForm.css'
+import {useDependencies} from "../../../context/Dependencies";
+import {useAuth} from "../../../context/Auth";
 
 function ScheduleBlockForm(props) {
     const {t} = useTranslation()
+    const token = useAuth()
+    const {getApiService, getToastUtils} = useDependencies()
+    const apiService = getApiService()
+    const toastUtils = getToastUtils()
 
-    const [name, setName] = useState('')
-    const [startDate, setStartDate] = useState()
-    const [endDate, setEndDate] = useState()
-    const [parameters, setParameters] = useState([])
-    const [scheduleBlockService] = useState(new ScheduleBlockService())
-    const [showAddParameterField, setShowAddParameterField] = useState(null)
-    const [newParameterName, setNewParameterName] = useState('')
-    const [newParameterValue, setNewParameterValue] = useState('')
-    const [newParameters, setNewParameters] = useState([])
-    const [deletedParameters, setDeletedParameters] = useState([])
+    const initialState = {
+        scheduleBlockService: apiService.getScheduleBlockService(token),
+        name: '',
+        startDate: null,
+        endDate: null,
+        parameters: [],
+        showAddParameterField: null,
+        newParameterName: '',
+        newParameterValue: '',
+        newParameters: [],
+        deletedParameters: []
+    }
+
+    const [state, setState] = useState(initialState);
+
+    const updateState = (updates) => {
+        setState((prevState) => ({...prevState, ...updates}));
+    };
 
     const fetchParametersForBlock = async () => {
-        const response = await scheduleBlockService.getParameters(props.blockToEdit.id)
-        const data = await response.json()
-
-        if (response.ok) {
-            setParameters(data)
-        } else {
-            console.error("Error:", data)
+        try {
+            const data = await state.scheduleBlockService.getParameters(props.blockToEdit.id)
+            updateState({parameters: data})
+        } catch (error) {
+            toastUtils.showToast(
+                'error',
+                t('toast.error.fetch-params-for-block')
+            )
         }
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        try {
+            let block = (props.blockToEdit) ? props.blockToEdit : new ScheduleBlock()
+            block.scheduleTagId = props.scheduleTagId
+            block.name = (props.blockToEdit) ? state.parameters[0].value : state.name
 
-        let block = (props.blockToEdit) ? props.blockToEdit : new ScheduleBlock()
-        block.scheduleTagId = props.scheduleTagId
-        block.name = (props.blockToEdit) ? parameters[0].value : name
+            block.startDate = parseToServerFormat((props.blockToEdit) ? state.parameters[1].value : state.startDate)
+            block.endDate = parseToServerFormat((props.blockToEdit) ? state.parameters[2].value : state.endDate)
 
-        block.startDate = parseToServerFormat((props.blockToEdit) ? parameters[1].value : startDate)
-        block.endDate = parseToServerFormat((props.blockToEdit) ? parameters[2].value : endDate)
-
-        if (block.id) {
-            parameters.map(async (parameter) => {
-                await scheduleBlockService.assignParameterToScheduleBlock(parameter)
-            })
-            deletedParameters.map(async (parameter) => {
-                await scheduleBlockService.deleteParameterFromScheduleBlock(parameter)
-            })
-            await scheduleBlockService.editScheduleBlock(block)
-        } else {
-            await scheduleBlockService.addScheduleBlock(block)
+            if (block.id) {
+                state.parameters.map(async (parameter) => {
+                    await state.scheduleBlockService.assignParameterToScheduleBlock(parameter)
+                })
+                state.deletedParameters.map(async (parameter) => {
+                    await state.scheduleBlockService.deleteParameterFromScheduleBlock(parameter)
+                })
+                await state.scheduleBlockService.editScheduleBlock(block)
+                toastUtils.showToast(
+                    'success',
+                    t('toast.success.edit-block')
+                )
+            } else {
+                await state.scheduleBlockService.addScheduleBlock(block)
+                toastUtils.showToast(
+                    'success',
+                    t('toast.success.add-block')
+                )
+            }
+        } catch (error) {
+            toastUtils.showToast(
+                'error',
+                t('toast.error.block-submit')
+            )
         }
 
-        setName('')
-        setStartDate('')
-        setEndDate('')
-        setParameters([])
-        setNewParameters([])
-        setDeletedParameters([])
+        updateState({
+            name: '',
+            startDate: '',
+            endDate: '',
+            parameters: [],
+            newParameters: [],
+            deletedParameters: []
+        })
 
         props.onClose()
         props.onFormSubmit()
@@ -68,20 +98,24 @@ function ScheduleBlockForm(props) {
 
     useEffect(() => {
         if (props.blockToEdit) {
-            setName(props.blockToEdit.name)
-            setStartDate(props.blockToEdit.startDate)
-            setEndDate(props.blockToEdit.endDate)
+            updateState({
+                name: props.blockToEdit.name,
+                startDate: props.blockToEdit.startDate,
+                endDate: props.blockToEdit.endDate
+            })
             fetchParametersForBlock()
         } else {
-            setStartDate(format(props.pickedDay, "yyyy-MM-dd HH:mm:ss"))
-            setEndDate(format(props.pickedDay, "yyyy-MM-dd HH:mm:ss"))
+            updateState({
+                startDate: format(props.pickedDay, "yyyy-MM-dd HH:mm:ss"),
+                endDate: format(props.pickedDay, "yyyy-MM-dd HH:mm:ss")
+            })
         }
 
     }, [props.pickedDay, props.blockToEdit])
 
     const handleParameterChange = (id, value) => {
-        setParameters(prevParameters => {
-            return prevParameters.map(parameter => {
+        updateState({
+            parameters: state.parameters.map(parameter => {
                 if (parameter.id === id) {
                     return {...parameter, value}
                 }
@@ -95,35 +129,38 @@ function ScheduleBlockForm(props) {
 
         let newParameter = new Parameter();
         newParameter.scheduleBlockId = props.blockToEdit.id
-        newParameter.parameterName = newParameterName
-        newParameter.value = newParameterValue
-        newParameters.push(newParameter)
-        parameters.push(newParameter)
+        newParameter.parameterName = state.newParameterName
+        newParameter.value = state.newParameterValue
+        state.newParameters.push(newParameter)
+        state.parameters.push(newParameter)
 
-        setNewParameterName('')
-        setNewParameterValue('')
-
-        setShowAddParameterField(false)
+        updateState({
+            newParameterName: '',
+            newParameterValue: '',
+            showAddParameterField: false
+        })
     }
 
     const handleParameterDelete = async (parameter) => {
-        const updatedParameters = parameters.filter(param => param.parameterName !== parameter.parameterName)
-        setParameters(updatedParameters)
+        const updatedParameters = state.parameters.filter(param => param.parameterName !== parameter.parameterName)
+        updateState({parameters: updatedParameters})
         if (parameter.id) {
-            deletedParameters.push(parameter)
+            state.deletedParameters.push(parameter)
         } else {
-            const updatedNewParameters = newParameters.filter(param => param.parameterName !== parameter.parameterName)
-            setNewParameters(updatedNewParameters)
+            const updatedNewParameters = state.newParameters.filter(param => param.parameterName !== parameter.parameterName)
+            updateState({newParameters: updatedNewParameters})
         }
     }
 
     const handleFormClose = () => {
-        setShowAddParameterField(false)
-        setName('')
-        setStartDate('')
-        setEndDate('')
-        setParameters([])
-        setNewParameters([])
+        updateState({
+            showAddParameterField: false,
+            name: '',
+            startDate: '',
+            endDate: '',
+            parameters: [],
+            newParameters: []
+        })
         props.onClose()
     }
 
@@ -153,32 +190,33 @@ function ScheduleBlockForm(props) {
                                 <Form.Label>{t('entities.block.name')}:</Form.Label>
                                 <Form.Control
                                     type="text"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
+                                    value={state.name}
+                                    onChange={(e) => updateState({name: e.target.value})}
                                 />
                             </Form.Group>
                             <Form.Group controlId="startDate">
                                 <Form.Label>{t('entities.block.start_date')}:</Form.Label>
                                 <Form.Control
                                     type="datetime-local"
-                                    value={startDate}
-                                    onChange={(e) => setStartDate(e.target.value)}
+                                    value={state.startDate}
+                                    onChange={(e) => updateState({startDate: e.target.value})}
                                 />
                             </Form.Group>
                             <Form.Group controlId="endDate">
                                 <Form.Label>{t('entities.block.end_date')}:</Form.Label>
                                 <Form.Control
                                     type="datetime-local"
-                                    value={endDate}
-                                    onChange={(e) => setEndDate(e.target.value)}
+                                    value={state.endDate}
+                                    onChange={(e) => updateState({endDate: e.target.value})}
                                 />
                             </Form.Group>
                         </>
                     )}
-                    {parameters.map((parameter, index) => (
+                    {state.parameters.map((parameter, index) => (
                         <Form.Group key={parameter.id} controlId={parameter.parameterName}>
                             <div className="row">
-                                <Form.Label className="col-md-6">{translateParameterName(parameter.parameterName)}:</Form.Label>
+                                <Form.Label
+                                    className="col-md-6">{translateParameterName(parameter.parameterName)}:</Form.Label>
                                 {index >= 3 && (
                                     <CloseButton
                                         className="col-md-6"
@@ -193,7 +231,7 @@ function ScheduleBlockForm(props) {
                             />
                         </Form.Group>
                     ))}
-                    {props.blockToEdit && showAddParameterField &&
+                    {props.blockToEdit && state.showAddParameterField &&
                         <>
                             <Modal.Header>
                                 <Modal.Title>{t('entities.parameter.new')}</Modal.Title>
@@ -203,8 +241,8 @@ function ScheduleBlockForm(props) {
                                 <Form.Control
                                     className="bg-success-light"
                                     type="text"
-                                    value={newParameterName}
-                                    onChange={(e) => setNewParameterName(e.target.value)}
+                                    value={state.newParameterName}
+                                    onChange={(e) => updateState({newParameterName: e.target.value})}
                                 />
                             </Form.Group>
                             <Form.Group controlId={'newParameterValue'}>
@@ -212,14 +250,14 @@ function ScheduleBlockForm(props) {
                                 <Form.Control
                                     className="bg-success-light"
                                     type="text"
-                                    value={newParameterValue}
-                                    onChange={(e) => setNewParameterValue(e.target.value)}
+                                    value={state.newParameterValue}
+                                    onChange={(e) => updateState({newParameterValue: e.target.value})}
                                 />
                             </Form.Group>
                         </>
                     }
                 </Form>
-                {showAddParameterField ?
+                {state.showAddParameterField ?
                     <Button
                         className="mt-3"
                         variant="success"
@@ -232,7 +270,7 @@ function ScheduleBlockForm(props) {
                             props.blockToEdit && <Button
                                 className="mt-3"
                                 variant="secondary"
-                                onClick={() => setShowAddParameterField(true)}>
+                                onClick={() => updateState({showAddParameterField: true})}>
                                 {t('buttons.add_parameter')}
                             </Button>
                         }

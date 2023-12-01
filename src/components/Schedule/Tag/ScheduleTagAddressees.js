@@ -3,21 +3,37 @@ import {useTranslation} from "react-i18next"
 import AddresseeService from "../../../backend/services/AddresseeService"
 import {Button} from "react-bootstrap"
 import AssignAddresseeToScheduleTagForm from "./AssignAddresseeToScheduleTagForm"
+import {useDependencies} from "../../../context/Dependencies";
+import {useAuth} from "../../../context/Auth";
 
 export default function ScheduleTagAddressees(props) {
-    const [addresseeService] = useState(new AddresseeService())
-    const [addressees, setAddressees] = useState([])
-    const [showAssignToScheduleForm, setShowAssignToScheduleForm] = useState(false)
     const {t} = useTranslation()
+    const {token} = useAuth()
+    const {getApiService, getToastUtils} = useDependencies()
+    const apiService = getApiService()
+    const toastUtils = getToastUtils()
+
+    const initialState = {
+        addresseeService: apiService.getAddresseeService(token),
+        addressees: [],
+        showAssignToScheduleForm: false
+    }
+
+    const [state, setState] = useState(initialState);
+
+    const updateState = (updates) => {
+        setState((prevState) => ({...prevState, ...updates}));
+    };
 
     async function fetchAddressees(id) {
-        const response = await addresseeService.getAddresseesForScheduleTagId(id)
-        const data = await response.json()
-
-        if (response.ok) {
-            setAddressees(data)
-        } else {
-            console.error('Error:', data)
+        try {
+            const data = await state.addresseeService.getAddresseesForScheduleTagId(id)
+            updateState({addressees: data})
+        } catch (error) {
+            toastUtils.showToast(
+                'error',
+                t('toast.error.fetch-addressees')
+            )
         }
     }
 
@@ -27,8 +43,8 @@ export default function ScheduleTagAddressees(props) {
 
     return (
         <div>
-            <AssignAddresseeToScheduleTagForm show={showAssignToScheduleForm}
-                                              onClose={() => setShowAssignToScheduleForm(false)}
+            <AssignAddresseeToScheduleTagForm show={state.showAssignToScheduleForm}
+                                              onClose={() => updateState({showAssignToScheduleForm: false})}
                                               onFormSubmit={async () => fetchAddressees(props.scheduleTagId)}
                                               scheduleTagId={props.scheduleTagId}
             />
@@ -44,14 +60,14 @@ export default function ScheduleTagAddressees(props) {
                     <h5>{t('entities.block.persons')}</h5>
 
                     <hr className="my-1"/>
-                    {addressees.map((addressee) => (
+                    {state.addressees.map((addressee) => (
                         <p key={addressee.id}>{addressee.firstName + ' ' + addressee.lastName}</p>
                     ))}
                 </div>
             </div>
             <Button className="align-self-end"
                     variant="success"
-                    onClick={() => setShowAssignToScheduleForm(true)}>
+                    onClick={() => updateState({showAssignToScheduleForm: true})}>
                 {t('buttons.assign_addressees')}
             </Button>
         </div>

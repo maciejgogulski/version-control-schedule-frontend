@@ -11,85 +11,48 @@ export default class ScheduleBlockService {
     }
 
     async getScheduleBlocksByDay(tagId, day) {
-        const params = [
-            {
-                key: "scheduleTagId",
-                value: tagId,
-            },
-            {
-                key: "day",
-                value: day,
-            }
-        ]
+        const params = {
+            scheduleTagId: tagId,
+            day: day
+        }
 
-        return await this.apiService.sendRequest(
-            this.scheduleBlockUrl + "/by-day",
-            "GET",
+        return await this.apiService.get(
+            `${this.scheduleBlockUrl}/by-day`,
             params
         )
     }
 
     async addScheduleBlock(block) {
-        const jsonBlock = JSON.stringify(block);
-        return await this.apiService.sendRequest(
+        return await this.apiService.post(
             this.scheduleBlockUrl,
-            "POST",
-            [],
-            jsonBlock,
-            {
-                'Content-Type': 'application/json',
-            }
+            block,
         )
     }
 
     async editScheduleBlock(block) {
-        const jsonBlock = JSON.stringify(block);
-        return await this.apiService.sendRequest(
+        return await this.apiService.put(
             this.scheduleBlockUrl,
-            "PUT",
-            [],
-            jsonBlock,
-            {
-                'Content-Type': 'application/json',
-            }
+            block
         )
     }
 
     async deleteScheduleBlock(blockId) {
-        return await this.apiService.sendRequest(
-            this.scheduleBlockUrl + "/" + blockId,
-            "DELETE",
-            [],
-        )
+        return await this.apiService.delete(`${this.scheduleBlockUrl}/${blockId}`)
     }
 
     async getParameters(blockId) {
-        return await this.apiService.sendRequest(
-            this.scheduleBlockUrl + "/" + blockId + "/parameter",
-            "GET",
-            []
-        )
+        return await this.apiService.get(`${this.scheduleBlockUrl}/${blockId}/parameter`)
     }
 
     async assignParameterToScheduleBlock(parameter) {
-        const jsonParameter = JSON.stringify(parameter);
-        return await this.apiService.sendRequest(
-            this.scheduleBlockUrl + '/parameter',
-            "PUT",
-            [],
-            jsonParameter,
-            {
-                'Content-Type': 'application/json',
-            }
+        return await this.apiService.put(
+            `${this.scheduleBlockUrl}/parameter`,
+            parameter
         )
     }
 
     async deleteParameterFromScheduleBlock(parameter) {
-        return await this.apiService.sendRequest(
-            this.scheduleBlockUrl + "/parameter/" + parameter.id ,
-            "DELETE",
-            [],
-        )
+        return await this.apiService.delete(`${this.scheduleBlockUrl}/parameter/${parameter.id}`)
     }
 
 }

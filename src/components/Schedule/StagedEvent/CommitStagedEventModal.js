@@ -1,29 +1,54 @@
 import React, {useState} from "react"
 import {Button, Modal, Table} from "react-bootstrap"
 import {useTranslation} from "react-i18next"
-import StagedEventService from "../../../backend/services/StagedEventService";
 import ScheduleTagAddressees from "../Tag/ScheduleTagAddressees";
 import {parseToServerFormat} from "../../../utils/DateTimeParser";
+import {useAuth} from "../../../context/Auth";
+import {useDependencies} from "../../../context/Dependencies";
 
 function CommitStagedEventModal(props) {
     const {t} = useTranslation()
-    const [stagedEventService] = useState(new StagedEventService())
+    const {token} = useAuth()
+    const {getToastUtils, getApiService} = useDependencies()
+    const apiService = getApiService()
+    const toastUtils = getToastUtils()
+
+    const initialState = {
+        stagedEventService: apiService.getStagedEventService(token)
+    }
+
+    const [state, setState] = useState(initialState)
+
+    const updateState = (updates) => {
+        setState((prevState) => ({...prevState, ...updates}))
+    }
 
     const handleConfirmation = async () => {
-        const stagedEvent = await fetchStagedEvent()
-        await stagedEventService.commitStagedEvent(stagedEvent.id)
+        try {
+            const stagedEvent = await fetchStagedEvent()
+            await state.stagedEventService.commitStagedEvent(stagedEvent.id)
 
+            toastUtils.showToast(
+                'success',
+                t('toast.success.commit-staged-event')
+            )
+        } catch (error) {
+            toastUtils.showToast(
+                'error',
+                t('toast.error.commit-staged-event')
+            )
+        }
         props.onClose()
     }
 
     const fetchStagedEvent = async () => {
-        const response = await stagedEventService.getLatestStagedEventForSchedule(props.scheduleTagId)
-        const data = await response.json()
-
-        if (response.ok) {
-            return data
-        } else {
-            console.error("Error:", data)
+        try {
+            return  await state.stagedEventService.getLatestStagedEventForSchedule(props.scheduleTagId)
+        } catch (error) {
+            toastUtils.showToast(
+                'error',
+                t('toast.error.fetch-latest-staged-event')
+            )
         }
     }
 

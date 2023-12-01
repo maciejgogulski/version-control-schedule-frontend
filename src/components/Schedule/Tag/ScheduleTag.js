@@ -17,6 +17,7 @@ function ScheduleTag() {
     const {getApiService, getToastUtils} = useDependencies()
     const {token} = useAuth()
     const apiService = getApiService()
+    const toastUtils = getToastUtils()
 
     const initialState = {
         scheduleTagService: apiService.getScheduleTagService(token),
@@ -39,7 +40,7 @@ function ScheduleTag() {
     const [state, setState] = useState(initialState);
 
     const updateState = (updates) => {
-        setState((prevState) => ({ ...prevState, ...updates }));
+        setState((prevState) => ({...prevState, ...updates}));
     };
 
     useEffect(() => {
@@ -54,78 +55,94 @@ function ScheduleTag() {
     }, [state.selectedBlock]);
 
     const fetchParameters = async () => {
-        const response = await state.scheduleBlockService.getParameters(state.selectedBlock.id)
-        const data = await response.json()
-
-        if (response.ok) {
-            updateState({parameters : data})
-        } else {
-            console.error("Error:", data)
+        try {
+            const data = await state.scheduleBlockService.getParameters(state.selectedBlock.id)
+            updateState({parameters: data})
+        } catch (error) {
+            toastUtils.showToast(
+                'error',
+                t('toast.error.fetch-parameters')
+            )
         }
     }
 
     const fetchScheduleBlocks = async () => {
-        const day = format(state.pickedDay, "yyyy-MM-dd HH:mm:ss")
-        const response = await state.scheduleBlockService.getScheduleBlocksByDay(
-            state.scheduleTagId,
-            day
-        )
-        const data = await response.json()
+        try {
+            const day = format(state.pickedDay, "yyyy-MM-dd HH:mm:ss")
+            const data = await state.scheduleBlockService.getScheduleBlocksByDay(
+                state.scheduleTagId,
+                day
+            )
 
-        if (response.ok) {
             data.forEach((block) => {
                 block.startDate = parseFromServerFormat(block.startDate)
                 block.endDate = parseFromServerFormat(block.endDate)
             })
             updateState({scheduleBlocks: data})
-        } else {
-            console.error("Error:", data)
+        } catch (error) {
+            toastUtils.showToast(
+                'error',
+                t('toast.error.fetch-blocks')
+            )
         }
     }
 
     const fetchScheduleTag = async () => {
-        const response = await state.scheduleTagService.getScheduleTag(state.scheduleTagId)
-        const data = await response.json()
-
-        if (response.ok) {
+        try {
+            const data = await state.scheduleTagService.getScheduleTag(state.scheduleTagId)
             updateState({scheduleTag: data})
-        } else {
-            console.error("Error:", data)
+        } catch (error) {
+            toastUtils.showToast(
+                'error',
+                t('toast.error.fetch-tag')
+            )
         }
     }
 
     const fetchModifications = async () => {
-        const stagedEvent = await fetchStagedEvent()
-
-        const response = await state.stagedEventService.getModificationsForStagedEvent(stagedEvent.id)
-        const data = await response.json()
-
-        if (response.ok) {
+        try {
+            const stagedEvent = await fetchStagedEvent()
+            const data = await state.stagedEventService.getModificationsForStagedEvent(stagedEvent.id)
             updateState({modifications: data})
-        } else {
-            console.error("Error:", data)
+        } catch (error) {
+            toastUtils.showToast(
+                'error',
+                t('toast.error.fetch-modifications')
+            )
         }
     }
 
     const fetchStagedEvent = async () => {
-        const response = await state.stagedEventService.getLatestStagedEventForSchedule(state.scheduleTagId)
-        const data = await response.json()
-
-        if (response.ok) {
-            return data
-        } else {
-            console.error("Error:", data)
+        try {
+            return await state.stagedEventService.getLatestStagedEventForSchedule(state.scheduleTagId)
+        } catch (error) {
+            toastUtils.showToast(
+                'error',
+                t('toast.error.fetch-staged-event')
+            )
         }
     }
 
     const handleBlockDelete = async () => {
-        await state.scheduleBlockService.deleteScheduleBlock(state.selectedBlock.id)
-        await fetchScheduleBlocks()
+        try {
+            await state.scheduleBlockService.deleteScheduleBlock(state.selectedBlock.id)
+            await fetchScheduleBlocks()
 
-        updateState({
-            showDeleteBlockModal: false,
-            selectedBlock: null
-        })
+            updateState({
+                showDeleteBlockModal: false,
+                selectedBlock: null
+            })
+
+            toastUtils.showToast(
+                'success',
+                t('toast.success.delete-block')
+            )
+        } catch (error) {
+            toastUtils.showToast(
+                'error',
+                t('toast.error.delete-block')
+            )
+        }
     }
 
     const {t} = useTranslation()

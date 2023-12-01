@@ -1,39 +1,62 @@
 import React, {useEffect, useState} from "react"
 import {Button, Form, Modal} from "react-bootstrap"
 import {useTranslation} from "react-i18next"
-import AddresseeService from "../../../backend/services/AddresseeService"
+import {useAuth} from "../../../context/Auth";
+import {useDependencies} from "../../../context/Dependencies";
 
 function AssignAddresseeToScheduleTagForm(props) {
     const {t} = useTranslation()
+    const {token} = useAuth()
+    const {getApiService, getToastUtils} = useDependencies()
+    const apiService = getApiService()
+    const toastUtils = getToastUtils()
 
-    const [selectedAddressees, setSelectedAddressees] = useState([])
-    const [addressees, setAddressees] = useState([])
-    const [addresseeService] = useState(new AddresseeService())
+    const initialState = {
+        addresseeService: apiService.getAddresseeService(token),
+        addressees: [],
+        selectedAddressees: []
+    }
+
+    const [state, setState] = useState(initialState)
+
+    const updateState = (updates) => {
+        setState((prevState) => ({...prevState, ...updates}))
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-
-        if (selectedAddressees.length !== 0) {
-            selectedAddressees.map(
-                async (addressee) => {
-                    await addresseeService.assignAddresseeToScheduleTag(addressee, props.scheduleTagId)
-                }
+        try {
+            if (state.selectedAddressees.length !== 0) {
+                state.selectedAddressees.map(
+                    async (addressee) => {
+                        await state.addresseeService.assignAddresseeToScheduleTag(addressee, props.scheduleTagId)
+                    }
+                )
+                toastUtils.showToast(
+                    'success',
+                    t('toast.success.submit-addressees')
+                )
+            }
+        } catch (error) {
+            toastUtils.showToast(
+                'error',
+                t('toast.error.submit-addressees')
             )
         }
-
-        setSelectedAddressees([])
+        updateState({selectedAddressees: []})
         props.onClose()
         props.onFormSubmit()
     }
 
     async function fetchAddressees(id) {
-        const response = await addresseeService.getAddressees(id)
-        const data = await response.json()
-
-        if (response.ok) {
-            setAddressees(data)
-        } else {
-            console.error('Error:', data)
+        try {
+            const data = await state.addresseeService.getAddressees(id)
+            updateState({addressees: data})
+        } catch (error) {
+            toastUtils.showToast(
+                'error',
+                t('toast.error.fetch-addressees')
+            )
         }
     }
 
@@ -50,10 +73,14 @@ function AssignAddresseeToScheduleTagForm(props) {
                 <Form onSubmit={handleSubmit}>
                     <Form.Group controlId="addressees">
                         <Form.Label>{t('navigation.addressees')}:</Form.Label>
-                        <Form.Control as="select" multiple value={selectedAddressees}
-                                      onChange={e => setSelectedAddressees([].slice.call(e.target.selectedOptions).map(item => item.value))}>
-                            {addressees.map((addressee) => (
-                                <option key={addressee.id} value={addressee.id}>{addressee.firstName + '' + addressee.lastName}</option>
+                        <Form.Control as="select" multiple value={state.selectedAddressees}
+                                      onChange={e => {
+                                          updateState({
+                                              selectedAddressees: [].slice.call(e.target.selectedOptions).map(item => item.value)
+                                          })
+                                      }}>
+                            {state.addressees.map((addressee) => (
+                                <option key={addressee.id} value={addressee.id}>{addressee.firstName + ' ' + addressee.lastName}</option>
                             ))}
                         </Form.Control>
                     </Form.Group>

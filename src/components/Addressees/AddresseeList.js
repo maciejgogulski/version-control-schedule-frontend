@@ -4,42 +4,60 @@ import {useTranslation, withTranslation} from "react-i18next"
 import ConfirmActionModal from "../Modals/ConfirmActionModal"
 import {useNavigate} from "react-router-dom";
 import AddresseeForm from "./AddresseeForm";
-import AddresseeService from "../../backend/services/AddresseeService";
+import {useAuth} from "../../context/Auth";
+import {useDependencies} from "../../context/Dependencies";
 
 function AddresseeList() {
     const navigate = useNavigate()
-    const [addresseeService] = useState(new AddresseeService())
-    const [addressees, setAddressees] = useState([])
-    const [showAddresseeForm, setShowAddresseeForm] = useState(false)
-    const [selectedAddressee, setSelectedAddressee] = useState(null)
-    const [showDeleteAddresseeModal, setShowDeleteAddresseeModal] = useState(false)
+    const {t} = useTranslation()
+    const {token} = useAuth()
+    const {getApiService, getToastUtils} = useDependencies()
+    const apiService = getApiService()
+    const toastUtils = getToastUtils()
+
+    const initialState = {
+        addresseeService: apiService.getAddresseeService(token),
+        addressees: [],
+        showAddresseeForm: false,
+        selectedAddressee: null,
+        showDeleteAddresseeModal: false
+    }
+
+    const [state, setState] = useState(initialState);
+
+    const updateState = (updates) => {
+        setState((prevState) => ({...prevState, ...updates}));
+    };
 
     useEffect(() => {
         fetchAddressees()
     }, [])
 
     const fetchAddressees = async () => {
-        const response = await addresseeService.getAddressees()
-        const data = await response.json()
-
-        if (response.ok) {
-            setAddressees(data)
-        } else {
-            console.error('Error:', data)
+        try {
+            const data = await state.addresseeService.getAddressees()
+            updateState({addressees: data})
+        } catch (error) {
+            toastUtils.showToast(
+                'error',
+                t('toast.error.fetch-addressees')
+            )
         }
     }
 
 
     const handleAddresseeFormButtonClick = (addressee = null) => {
-        setShowAddresseeForm(true)
+        updateState({showAddresseeForm: true})
         if (addressee) {
-            setSelectedAddressee(addressee)
+            updateState({selectedAddressee: addressee})
         }
     }
 
     const handleCloseAddresseeForm = () => {
-        setShowAddresseeForm(false)
-        setSelectedAddressee(null)
+        updateState({
+            showAddresseeForm: false,
+            selectedAddressee: null
+        })
     }
 
     const handleFormSubmit = async () => {
@@ -47,42 +65,61 @@ function AddresseeList() {
     }
 
     const handleDeleteAddresseeButtonClick = (addressee = null) => {
-        setSelectedAddressee(addressee)
-        setShowDeleteAddresseeModal(true)
+        updateState({
+            showDeleteAddresseeModal: true,
+            selectedAddressee: addressee
+        })
     }
 
     const handleDeleteAddresseeClose = () => {
-        setShowDeleteAddresseeModal(false)
-        setSelectedAddressee(null)
+        updateState({
+            showDeleteAddresseeModal: false,
+            selectedAddressee: null
+        })
     }
 
     const handleAddresseeDelete = async () => {
-        await addresseeService.deleteAddressee(selectedAddressee.id)
-        await fetchAddressees()
+        try {
+            await state.addresseeService.deleteAddressee(state.selectedAddressee.id)
+            await fetchAddressees()
 
-        setShowDeleteAddresseeModal(false)
-        setSelectedAddressee(null)
+            toastUtils.showToast(
+                'success',
+                t('toast.success.delete-addressee')
+            )
+        } catch (error) {
+            toastUtils.showToast(
+                'error',
+                t('toast.error.delete-addressee')
+            )
+        }
+
+        updateState({
+            showDeleteAddresseeModal: false,
+            selectedAddressee: null
+        })
     }
 
     const redirectToAddressee = (addresseeId) => {
-        navigate("/addressee/" + addresseeId)
+        navigate(`/addressee/${addresseeId}`)
     }
-
-    const {t} = useTranslation()
 
     return (
         <div className="container">
-            <AddresseeForm show={showAddresseeForm}
+            <AddresseeForm show={state.showAddresseeForm}
                            onClose={handleCloseAddresseeForm}
                            onFormSubmit={handleFormSubmit}
-                           addressee={selectedAddressee}
+                           addressee={state.selectedAddressee}
             />
             <ConfirmActionModal
-                show={showDeleteAddresseeModal}
-                title={t('entities.addressee.deleting_addressee') + ' '  + selectedAddressee?.firstName + ' ' + selectedAddressee?.lastName}
-                message={t('entities.addressee.delete_addressee_message', {name: selectedAddressee?.firstName + ' ' + selectedAddressee?.lastName})}
+                show={state.showDeleteAddresseeModal}
+                title={`${t('entities.addressee.deleting_addressee')} ${state.selectedAddressee?.firstName} ${state.selectedAddressee?.lastName}`}
+                message={`${t(
+                    'entities.addressee.delete_addressee_message',
+                    {name: `${state.selectedAddressee?.firstName} ${state.selectedAddressee?.lastName}`}
+                )}`}
                 action={handleAddresseeDelete}
-                variant={"danger"}
+                variant={'danger'}
                 onClose={handleDeleteAddresseeClose}
             />
             <div className="row">
@@ -109,7 +146,7 @@ function AddresseeList() {
                             </tr>
                             </thead>
                             <tbody>
-                            {addressees.map((addressee) => (
+                            {state.addressees.map((addressee) => (
                                 <tr key={addressee.id}>
                                     <td className="user-select-none"
                                         onClick={() => redirectToAddressee(addressee.id)}>

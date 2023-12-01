@@ -11,26 +11,14 @@ export default class StagedEventService {
     }
 
     async getModificationsForStagedEvent(stagedEventId) {
-        return await this.apiService.sendRequest(
-            this.url + "/" + stagedEventId + "/modification",
-            "GET",
-            []
-        )
+        return await this.apiService.get(`${this.url}/${stagedEventId}/modification`)
     }
 
     async getLatestStagedEventForSchedule(scheduleTagId) {
-        return await this.apiService.sendRequest(
-            this.url + "/schedule-tag/" + scheduleTagId + "/latest",
-            "GET",
-            []
-        )
+        return await this.apiService.get(`${this.url}/schedule-tag/${scheduleTagId}/latest`)
     }
 
     async commitStagedEvent(stagedEventId) {
-        return await this.apiService.sendRequest(
-            this.url + "/" + stagedEventId + "/commit",
-            "PUT",
-            []
-        )
+        return await this.apiService.put(`${this.url}/${stagedEventId}/commit`)
     }
 }
