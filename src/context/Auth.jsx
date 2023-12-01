@@ -12,12 +12,11 @@ class AuthClass {
 
   setLoggedIn
 
-
   constructor(
-    token,
-    setToken,
-    loggedIn,
-    setLoggedIn
+    token = undefined,
+    setToken = () => {},
+    loggedIn = false,
+    setLoggedIn = () => null
   ) {
     this.token = token
     this.setToken = setToken
@@ -33,7 +32,7 @@ export const AuthProvider = (props) => {
   const [token, setToken] = useState(cookies.token)
   const [loggedIn, setLoggedIn] = useState(Boolean(cookies.token))
 
-  const setTokenFunction = (tokenFn) => {
+  const setTokenFunction = (tokenFn = undefined) => {
     if (tokenFn) {
       setCookie('token', tokenFn)
       setToken(tokenFn)

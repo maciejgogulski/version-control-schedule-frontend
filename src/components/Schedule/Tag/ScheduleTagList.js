@@ -5,41 +5,59 @@ import ScheduleTagService from "../../../backend/services/ScheduleTagService"
 import ScheduleTagForm from "./ScheduleTagForm"
 import ConfirmActionModal from "../../Modals/ConfirmActionModal"
 import {useNavigate} from "react-router-dom";
+import {useDependencies} from "../../../context/Dependencies";
+import {useAuth} from "../../../context/Auth";
 
 function ScheduleTagList() {
     const navigate = useNavigate()
-    const [scheduleTagService] = useState(new ScheduleTagService())
-    const [scheduleTags, setScheduleTags] = useState([])
-    const [showScheduleTagForm, setScheduleTagForm] = useState(false)
-    const [selectedScheduleTag, setSelectedScheduleTag] = useState(null)
-    const [showDeleteTagModal, setShowDeleteTagModal] = useState(false)
+    const {getApiService, getToastUtils} = useDependencies()
+    const {token} = useAuth()
+    const apiService = getApiService()
+    const toastUtils = getToastUtils()
+
+    const initialState = {
+        scheduleTagService: apiService.getScheduleTagService(token),
+        scheduleTags: [],
+        showScheduleTagForm: false,
+        selectedScheduleTag: null,
+        showDeleteTagModal: false
+    }
+
+    const [state, setState] = useState(initialState);
+
+    const updateState = (updates) => {
+        setState((prevState) => ({ ...prevState, ...updates }));
+    };
 
     useEffect(() => {
-        fetchScheduleTags().then(r => console.log(r))
-    }, [scheduleTagService])
+        fetchScheduleTags()
+    }, [state.scheduleTagService])
 
     const fetchScheduleTags = async () => {
-        const response = await scheduleTagService.getScheduleTags()
-        const data = await response.json()
-
-        if (response.ok) {
-            setScheduleTags(data)
-        } else {
-            console.error('Error:', data)
+        try {
+            const data = await state.scheduleTagService.getScheduleTags()
+            updateState({scheduleTags: data})
+        } catch (error) {
+            toastUtils.showToast(
+                'error',
+                'Unable to retrieve schedules',
+            )
         }
     }
 
 
     const handleTagFormButtonClick = (scheduleTag = null) => {
-        setScheduleTagForm(true)
+        updateState({showScheduleTagForm: true})
         if (scheduleTag) {
-            setSelectedScheduleTag(scheduleTag)
+            updateState({selectedScheduleTag: scheduleTag})
         }
     }
 
     const handleCloseTagForm = () => {
-        setScheduleTagForm(false)
-        setSelectedScheduleTag(null)
+        updateState({
+            showScheduleTagForm: false,
+            selectedScheduleTag: null
+        })
     }
 
     const handleFormSubmit = async () => {
@@ -47,21 +65,39 @@ function ScheduleTagList() {
     }
 
     const handleDeleteTagButtonClick = (scheduleTag = null) => {
-        setSelectedScheduleTag(scheduleTag)
-        setShowDeleteTagModal(true)
+        updateState({
+            selectedScheduleTag: scheduleTag,
+            showDeleteTagModal: true
+        })
     }
 
     const handleDeleteTagClose = () => {
-        setShowDeleteTagModal(false)
-        setSelectedScheduleTag(null)
+        updateState({
+            selectedScheduleTag: null,
+            showDeleteTagModal: false
+        })
     }
 
     const handleTagDelete = async () => {
-        await scheduleTagService.deleteScheduleTag(selectedScheduleTag.id)
-        await fetchScheduleTags()
+        try {
+            await state.scheduleTagService.deleteScheduleTag(state.selectedScheduleTag.id)
+            await fetchScheduleTags()
 
-        setShowDeleteTagModal(false)
-        setSelectedScheduleTag(null)
+            toastUtils.showToast(
+                'info',
+                `Deleted schedule ${state.selectedScheduleTag.name}`,
+            )
+
+            updateState({
+                selectedScheduleTag: null,
+                showDeleteTagModal: false
+            })
+        } catch (error) {
+            toastUtils.showToast(
+                'error',
+                'Unable to delete schedule',
+            )
+        }
     }
 
     const redirectToScheduleTag = (tagId) => {
@@ -72,15 +108,15 @@ function ScheduleTagList() {
 
     return (
         <div className="container">
-            <ScheduleTagForm show={showScheduleTagForm}
+            <ScheduleTagForm show={state.showScheduleTagForm}
                              onClose={handleCloseTagForm}
                              onFormSubmit={handleFormSubmit}
-                             scheduleTag={selectedScheduleTag}
+                             scheduleTag={state.selectedScheduleTag}
             />
             <ConfirmActionModal
-                show={showDeleteTagModal}
-                title={t("entities.tag.deleting_tag") + " " + selectedScheduleTag?.name}
-                message={t("entities.tag.delete_tag_message", {name: selectedScheduleTag?.name})}
+                show={state.showDeleteTagModal}
+                title={t("entities.tag.deleting_tag") + " " + state.selectedScheduleTag?.name}
+                message={t("entities.tag.delete_tag_message", {name: state.selectedScheduleTag?.name})}
                 action={handleTagDelete}
                 variant={"danger"}
                 onClose={handleDeleteTagClose}
@@ -107,7 +143,7 @@ function ScheduleTagList() {
                             </tr>
                             </thead>
                             <tbody>
-                            {scheduleTags.map((tag) => (
+                            {state.scheduleTags.map((tag) => (
                                 <tr key={tag.id}>
                                     <td className="user-select-none"
                                         onClick={() => redirectToScheduleTag(tag.id)}>

@@ -12,9 +12,8 @@ export default class ScheduleTagService {
 
 
     async getScheduleTags() {
-        return await this.apiService.sendRequest(
-            this.scheduleTagUrl,
-            "GET",
+        return await this.apiService.get(
+            this.scheduleTagUrl
         )
     }
 
@@ -26,35 +25,20 @@ export default class ScheduleTagService {
     }
 
     async addScheduleTag(tag) {
-        const jsonTag = JSON.stringify(tag)
-        return await this.apiService.sendRequest(
+        return await this.apiService.post(
             this.scheduleTagUrl,
-            "POST",
-            [],
-            jsonTag,
-            {
-                'Content-Type': 'application/json',
-            }
+            tag
         )
     }
 
     async editScheduleTag(tag) {
-        const jsonTag = JSON.stringify(tag)
-        return await this.apiService.sendRequest(
+        return await this.apiService.put(
             this.scheduleTagUrl,
-            "PUT",
-            [],
-            jsonTag,
-            {
-                'Content-Type': 'application/json',
-            }
+            tag
         )
     }
 
     async deleteScheduleTag(id) {
-        return await this.apiService.sendRequest(
-            this.scheduleTagUrl + "/" + id,
-            "DELETE",
-        )
+        return await this.apiService.delete(`${this.scheduleTagUrl}/${id}`)
     }
 }

@@ -1,8 +1,8 @@
 import React, {
   createContext, useContext, useMemo,
 } from 'react'
-import { Toast, Types } from '../utils/Toast'
-import Backend from "../backend/Backend";
+import Backend from "../backend/Backend"
+import Toast from "../utils/Toast/Toast"
 
 export class Dependencies {
   getApiService() {
@@ -10,11 +10,7 @@ export class Dependencies {
   }
 
   getToastUtils() {
-    const toast = new Toast()
-    return {
-      Toast: toast,
-      types: Types.Type,
-    }
+    return new Toast()
   }
 }
 

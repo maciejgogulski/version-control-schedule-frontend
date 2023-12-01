@@ -3,35 +3,67 @@ import {Button, Form, Modal} from "react-bootstrap"
 import {useTranslation} from "react-i18next"
 import ScheduleTagService from "../../../backend/services/ScheduleTagService"
 import ScheduleTag from "../../../models/ScheduleTag"
+import {useDependencies} from "../../../context/Dependencies";
+import {useAuth} from "../../../context/Auth";
 
 function ScheduleTagForm(props) {
     const {t} = useTranslation()
+    const {getApiService, getToastUtils} = useDependencies()
+    const {token} = useAuth()
+    const apiService = getApiService()
+    const toastUtils = getToastUtils()
 
-    const [name, setName] = useState('')
-    const [scheduleTagService] = useState(new ScheduleTagService())
+    const initialState = {
+        name: '',
+        scheduleTagService: apiService.getScheduleTagService(token)
+    }
+
+    const [state, setState] = useState(initialState);
+
+    const updateState = (updates) => {
+        setState((prevState) => ({...prevState, ...updates}));
+    };
+
     const handleNameChange = (e) => {
-        setName(e.target.value)
+        updateState({name: e.target.value})
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
 
         let tag = (props.scheduleTag) ? props.scheduleTag : new ScheduleTag()
-        tag.name = name
+        tag.name = state.name
 
-        if (tag.id) {
-            await scheduleTagService.editScheduleTag(tag)
-        } else {
-            await scheduleTagService.addScheduleTag(tag)
+        try {
+            if (tag.id) {
+                await state.scheduleTagService.editScheduleTag(tag)
+                toastUtils.showToast(
+                    'info',
+                    `Edited schedule: ${state.name}`,
+                )
+            } else {
+                await state.scheduleTagService.addScheduleTag(tag)
+                toastUtils.showToast(
+                    'success',
+                    `Created schedule: ${state.name}`,
+                )
+            }
+
+
+
+            updateState({name: ''})
+            props.onClose()
+            props.onFormSubmit()
+        } catch (error) {
+            toastUtils.showToast(
+                'error',
+                'Unable to create/edit schedule',
+            )
         }
-
-        setName('')
-        props.onClose()
-        props.onFormSubmit()
     }
 
     useEffect(() => {
-        setName((props.scheduleTag) ? props.scheduleTag.name : '')
+        updateState({name: (props.scheduleTag) ? props.scheduleTag.name : ''})
     }, [props.scheduleTag])
 
     return (
@@ -45,7 +77,7 @@ function ScheduleTagForm(props) {
                         <Form.Label>{t('entities.tag.name')}:</Form.Label>
                         <Form.Control
                             type="text"
-                            value={name}
+                            value={state.name}
                             onChange={handleNameChange}
                         />
                     </Form.Group>
