@@ -79,7 +79,7 @@ function ScheduleBlockForm(props) {
         } catch (error) {
             toastUtils.showToast(
                 'error',
-                t('toast.error.block-submit')
+                t('toast.error.submit')
             )
         }
 

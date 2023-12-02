@@ -55,7 +55,7 @@ function ScheduleTagForm(props) {
         } catch (error) {
             toastUtils.showToast(
                 'error',
-                t('toast.error.submit-schedule')
+                t('toast.error.submit')
             )
         }
     }

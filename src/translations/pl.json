@@ -7,6 +7,8 @@
     "users": "Użytkownicy"
   },
   "buttons": {
+    "login": "Zaloguj się",
+    "logout": "Wyloguj się",
     "create_block": "Stwórz blok",
     "create_schedule": "Stwórz plan",
     "close": "Zamknij",
@@ -22,6 +24,27 @@
     "assign_addressees": "Przypisz adresatów",
     "add_parameter": "Dodaj parametr",
     "commit_staged_event": "Zatwierdź zmiany"
+  },
+  "toast": {
+    "success": {
+      "login": "Zalogowano do serwisu"
+    },
+    "error": {
+      "login": "Nie udało się zalogwać do serwisu",
+      "submit": "Nie udało się przesłać danych formularza",
+      "fetch-parameters": "Nie udało się pobrać parametrów",
+      "fetch-params-for-block": "Nie udało się pobrać parametrów dla bloku",
+      "fetch-blocks": "Nie udało się pobrać bloków",
+      "fetch-addressees": "Nie udało się pobrać adresatów",
+      "fetch-modifications": "Nie udało się pobrać zmian",
+      "fetch-tag": "Nie udało się pobrać planu",
+      "fetch-staged-event": "Nie udało się pobrać wersji planu",
+      "fetch-latest-staged-event": "Nie udało się pobrać ostatniej wersji planu",
+      "commit-staged-event": "Nie udało się zatwierdzić zmian",
+      "delete-addressee": "Nie udało się usunąć adresata",
+      "delete-block": "Nie udało się usunąć bloku",
+      "delete-tag": "Nie udało się usunąć planu"
+    }
   },
   "entities": {
     "schedule": {
@@ -88,5 +111,11 @@
       "committing_staged_event": "Zatwierdzanie zmian",
       "commit_staged_event_message": "Czy na pewno chcesz zatwierdzić zmiany?"
     }
+  },
+  "auth": {
+    "username": "Nazwa użytkownika",
+    "password": "Hasło",
+    "logout-title": "Wylogowanie z serwisu",
+    "logout-message": "Czy na pewno chcesz się wylogować z serwisu?"
   }
 }

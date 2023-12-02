@@ -48,3 +48,7 @@
 .bg-delete {
   --bs-table-color: #9d0000 !important;
 }
+
+.table-responsive {
+  border-radius: 5px !important;
+}

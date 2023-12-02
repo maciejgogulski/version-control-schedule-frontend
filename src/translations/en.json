@@ -7,6 +7,8 @@
     "users": "Users"
   },
   "buttons": {
+    "login": "Log in",
+    "logout": "Log out",
     "create_block": "Create block",
     "create_schedule": "Create schedule",
     "close": "Close",
@@ -22,6 +24,28 @@
     "assign_addressees": "Assign addressees",
     "add_parameter": "Add parameter",
     "commit_staged_event": "Commit changes"
+  },
+  "toast": {
+    "success": {
+      "login": "Logged in to service"
+    },
+    "error": {
+      "login": "Unable to login to service",
+      "submit": "Unable to send form data",
+      "fetch-parameters": "Unable to fetch parameters",
+      "fetch-params-for-block": "Unable to fetch parameters for block",
+      "fetch-blocks": "Unable to fetch blocks",
+      "fetch-addressees": "Unable to fetch addressees",
+      "fetch-modifications": "Unable to fetch modifications",
+      "fetch-tag": "Unable to fetch schedule",
+      "fetch-tags": "Unable to fetch schedules",
+      "fetch-staged-event": "Unable to fetch schedule version",
+      "fetch-latest-staged-event": "Unable to fetch latest schedule varsion",
+      "commit-staged-event": "Unable to commit schedule version",
+      "delete-addressee": "Unable to delete addressee",
+      "delete-block": "Unable to delete block",
+      "delete-tag": "Unable to delete tag"
+    }
   },
   "entities": {
     "schedule": {
@@ -87,5 +111,11 @@
       "committing_staged_event": "Committing changes",
       "commit_staged_event_message": "Are you sure, you want to commit changes?"
     }
+  },
+  "auth": {
+    "username": "Nazwa użytkownika",
+    "password": "Hasło",
+    "logout-title": "Wylogowanie z serwisu",
+    "logout-message": "Czy na pewno chcesz się wylogować z serwisu?"
   }
 }

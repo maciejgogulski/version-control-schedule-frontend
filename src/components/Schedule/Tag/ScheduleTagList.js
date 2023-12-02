@@ -27,7 +27,7 @@ function ScheduleTagList() {
     const [state, setState] = useState(initialState);
 
     const updateState = (updates) => {
-        setState((prevState) => ({ ...prevState, ...updates }));
+        setState((prevState) => ({...prevState, ...updates}));
     };
 
     useEffect(() => {
@@ -41,7 +41,7 @@ function ScheduleTagList() {
         } catch (error) {
             toastUtils.showToast(
                 'error',
-                'Unable to retrieve schedules',
+                t('toast.error.fetch-tags'),
             )
         }
     }
@@ -121,48 +121,42 @@ function ScheduleTagList() {
             />
             <div className="row">
                 <div className="col-md-12 px-4">
-                    <div>
-                        <h2>{t('navigation.schedules')} </h2>
+                    <h2>{t('navigation.schedules')} </h2>
 
-                        <div className="container">
-                            <Button variant="success" className="me-2"
-                                    onClick={() => handleTagFormButtonClick(null)}>
-                                {t('buttons.create_schedule')}
-                            </Button>
-                        </div>
-                    </div>
+                    <Button variant="success" className="mb-3"
+                            onClick={() => handleTagFormButtonClick(null)}>
+                        {t('buttons.create_schedule')}
+                    </Button>
 
-                    <div>
-                        <Table responsive hover>
-                            <thead>
-                            <tr>
-                                <th>{t('entities.tag.name')}</th>
-                                <th></th>
+                    <Table responsive hover>
+                        <thead>
+                        <tr>
+                            <th>{t('entities.tag.name')}</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {state.scheduleTags.map((tag) => (
+                            <tr key={tag.id}>
+                                <td className="user-select-none"
+                                    onClick={() => redirectToScheduleTag(tag.id)}>
+                                    {tag.name}
+                                </td>
+                                <td>
+                                    <Button variant="secondary" className="me-2"
+                                            onClick={() => handleTagFormButtonClick(tag)}>
+                                        {t('buttons.edit_schedule')}
+                                    </Button>
+
+                                    <Button variant="danger" className="me-2"
+                                            onClick={() => handleDeleteTagButtonClick(tag)}>
+                                        {t('buttons.delete_schedule')}
+                                    </Button>
+                                </td>
                             </tr>
-                            </thead>
-                            <tbody>
-                            {state.scheduleTags.map((tag) => (
-                                <tr key={tag.id}>
-                                    <td className="user-select-none"
-                                        onClick={() => redirectToScheduleTag(tag.id)}>
-                                        {tag.name}
-                                    </td>
-                                    <td>
-                                        <Button variant="secondary" className="me-2"
-                                                onClick={() => handleTagFormButtonClick(tag)}>
-                                            {t('buttons.edit_schedule')}
-                                        </Button>
-
-                                        <Button variant="danger" className="me-2"
-                                                onClick={() => handleDeleteTagButtonClick(tag)}>
-                                            {t('buttons.delete_schedule')}
-                                        </Button>
-                                    </td>
-                                </tr>
-                            ))}
-                            </tbody>
-                        </Table>
-                    </div>
+                        ))}
+                        </tbody>
+                    </Table>
                 </div>
             </div>
         </div>

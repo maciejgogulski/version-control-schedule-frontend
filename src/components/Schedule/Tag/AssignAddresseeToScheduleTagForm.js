@@ -40,7 +40,7 @@ function AssignAddresseeToScheduleTagForm(props) {
         } catch (error) {
             toastUtils.showToast(
                 'error',
-                t('toast.error.submit-addressees')
+                t('toast.error.submit')
             )
         }
         updateState({selectedAddressees: []})

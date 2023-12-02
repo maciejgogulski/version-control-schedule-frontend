@@ -124,58 +124,51 @@ function AddresseeList() {
             />
             <div className="row">
                 <div className="col-md-12 px-4">
-                    <div>
-                        <h2>{t('navigation.addressees')} </h2>
+                    <h2>{t('navigation.addressees')} </h2>
+                    <Button variant="success" className="mb-3"
+                            onClick={() => handleAddresseeFormButtonClick(null)}>
+                        {t('buttons.create_addressee')}
+                    </Button>
 
-                        <div className="container">
-                            <Button variant="success" className="me-2"
-                                    onClick={() => handleAddresseeFormButtonClick(null)}>
-                                {t('buttons.create_addressee')}
-                            </Button>
-                        </div>
-                    </div>
+                    <Table responsive hover>
+                        <thead>
+                        <tr>
+                            <th>{t('entities.addressee.email')}</th>
+                            <th>{t('entities.addressee.first-name')}</th>
+                            <th>{t('entities.addressee.last-name')}</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {state.addressees.map((addressee) => (
+                            <tr key={addressee.id}>
+                                <td className="user-select-none"
+                                    onClick={() => redirectToAddressee(addressee.id)}>
+                                    {addressee.email}
+                                </td>
+                                <td className="user-select-none"
+                                    onClick={() => redirectToAddressee(addressee.id)}>
+                                    {addressee.firstName}
+                                </td>
+                                <td className="user-select-none"
+                                    onClick={() => redirectToAddressee(addressee.id)}>
+                                    {addressee.lastName}
+                                </td>
+                                <td>
+                                    <Button variant="secondary" className="me-2"
+                                            onClick={() => handleAddresseeFormButtonClick(addressee)}>
+                                        {t('buttons.edit_addressee')}
+                                    </Button>
 
-                    <div>
-                        <Table responsive hover>
-                            <thead>
-                            <tr>
-                                <th>{t('entities.addressee.email')}</th>
-                                <th>{t('entities.addressee.first-name')}</th>
-                                <th>{t('entities.addressee.last-name')}</th>
-                                <th></th>
+                                    <Button variant="danger" className="me-2"
+                                            onClick={() => handleDeleteAddresseeButtonClick(addressee)}>
+                                        {t('buttons.delete_addressee')}
+                                    </Button>
+                                </td>
                             </tr>
-                            </thead>
-                            <tbody>
-                            {state.addressees.map((addressee) => (
-                                <tr key={addressee.id}>
-                                    <td className="user-select-none"
-                                        onClick={() => redirectToAddressee(addressee.id)}>
-                                        {addressee.email}
-                                    </td>
-                                    <td className="user-select-none"
-                                        onClick={() => redirectToAddressee(addressee.id)}>
-                                        {addressee.firstName}
-                                    </td>
-                                    <td className="user-select-none"
-                                        onClick={() => redirectToAddressee(addressee.id)}>
-                                        {addressee.lastName}
-                                    </td>
-                                    <td>
-                                        <Button variant="secondary" className="me-2"
-                                                onClick={() => handleAddresseeFormButtonClick(addressee)}>
-                                            {t('buttons.edit_addressee')}
-                                        </Button>
-
-                                        <Button variant="danger" className="me-2"
-                                                onClick={() => handleDeleteAddresseeButtonClick(addressee)}>
-                                            {t('buttons.delete_addressee')}
-                                        </Button>
-                                    </td>
-                                </tr>
-                            ))}
-                            </tbody>
-                        </Table>
-                    </div>
+                        ))}
+                        </tbody>
+                    </Table>
                 </div>
             </div>
         </div>

@@ -31,10 +31,14 @@ export default function LoginPage() {
             })
             setToken(authData.getToken())
             setLoggedIn(true)
+            toastUtils.showToast(
+                'info',
+                t('toast.success.login'),
+            )
         } catch (error) {
             toastUtils.showToast(
                 'error',
-                'Niepoprawne dane logowania',
+                t('toast.error.login'),
             )
         }
 
@@ -58,8 +62,8 @@ export default function LoginPage() {
                     onChange={(e) => updateState({password: e.target.value})}
                 />
             </Form.Group>
-            <Button variant={"primary"} onClick={handleSubmit}>
-                {t('buttons.auth.submit')}
+            <Button className={'mt-3'} variant={"primary"} onClick={handleSubmit}>
+                {t('buttons.login')}
             </Button>
         </Form>
     )

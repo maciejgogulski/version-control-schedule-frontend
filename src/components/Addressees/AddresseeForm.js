@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react"
 import {Button, Form, Modal} from "react-bootstrap"
 import {useTranslation} from "react-i18next"
-import AddresseeService from "../../backend/services/AddresseeService";
 import Addressee from "../../models/Addressee";
 import {useAuth} from "../../context/Auth";
 import {useDependencies} from "../../context/Dependencies";
@@ -38,19 +37,19 @@ function AddresseeForm(props) {
                 await state.addresseeService.editAddressee(addressee)
                 toastUtils.showToast(
                     'success',
-                    t('toast.error.edit-addressee')
+                    t('toast.success.edit-addressee')
                 )
             } else {
                 await state.addresseeService.addAddressee(addressee)
                 toastUtils.showToast(
                     'success',
-                    t('toast.error.add-addressee')
+                    t('toast.success.add-addressee')
                 )
             }
         } catch (error) {
             toastUtils.showToast(
                 'error',
-                t('toast.error.addressee-submit')
+                t('toast.error.submit')
             )
         }
 
