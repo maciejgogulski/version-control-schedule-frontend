@@ -23,11 +23,21 @@
     "delete_addressee": "Usuń adresata",
     "assign_addressees": "Przypisz adresatów",
     "add_parameter": "Dodaj parametr",
-    "commit_staged_event": "Zatwierdź zmiany"
+    "commit_version": "Zatwierdź zmiany"
   },
   "toast": {
     "success": {
-      "login": "Zalogowano do serwisu"
+      "login": "Zalogowano do serwisu",
+      "add-schedule": "Dodano nowy plan",
+      "delete-schedule": "Usunięto plan",
+      "edit-schedule": "Edytowano plan",
+      "add-block": "Dodano nowy blok",
+      "edit-block": "Edytowano block",
+      "add-addressee": "Dodano nowego adresata",
+      "edit-addressee": "Edytowano adresata",
+      "delete-addressee": "Usunięto adresata",
+      "submit-addressees": "Przypisano adresatów do planu",
+      "commit-version": "Zatwierdzono zmiany w planie"
     },
     "error": {
       "login": "Nie udało się zalogwać do serwisu",
@@ -37,19 +47,25 @@
       "fetch-blocks": "Nie udało się pobrać bloków",
       "fetch-addressees": "Nie udało się pobrać adresatów",
       "fetch-modifications": "Nie udało się pobrać zmian",
-      "fetch-tag": "Nie udało się pobrać planu",
-      "fetch-staged-event": "Nie udało się pobrać wersji planu",
-      "fetch-latest-staged-event": "Nie udało się pobrać ostatniej wersji planu",
-      "commit-staged-event": "Nie udało się zatwierdzić zmian",
+      "fetch-schedule": "Nie udało się pobrać planu",
+      "fetch-version": "Nie udało się pobrać wersji planu",
+      "fetch-latest-version": "Nie udało się pobrać ostatniej wersji planu",
+      "commit-version": "Nie udało się zatwierdzić zmian",
       "delete-addressee": "Nie udało się usunąć adresata",
       "delete-block": "Nie udało się usunąć bloku",
-      "delete-tag": "Nie udało się usunąć planu"
+      "delete-schedule": "Nie udało się usunąć planu"
     }
   },
   "entities": {
     "schedule": {
       "title": "Plan",
-      "picking_date": "Wybór daty"
+      "picking_date": "Wybór daty",
+      "creating_new_schedule": "Tworzenie nowego planu",
+      "editing_schedule": "Edycja planu",
+      "deleting_schedule": "Usuwanie planu",
+      "delete_schedule_message": "Czy jesteś pewien, że chcesz usunąć plan {{name}}?",
+      "assigning_addressees": "Przypisanie adresatów",
+      "name": "Nazwa"
     },
     "block": {
       "title": "Blok",
@@ -65,14 +81,6 @@
       "addressee_groups": "Grupy",
       "persons": "Osoby",
       "no_blocks_in_day": "Brak bloków w tym dniu"
-    },
-    "tag": {
-      "creating_new_tag": "Tworzenie nowego planu",
-      "editing_tag": "Edycja planu",
-      "deleting_tag": "Usuwanie planu",
-      "delete_tag_message": "Czy jesteś pewien, że chcesz usunąć plan {{name}}?",
-      "assigning_addressees": "Przypisanie adresatów",
-      "name": "Nazwa"
     },
     "addressee": {
       "creating_new_addressee": "Tworzenie nowego adresata",
@@ -107,9 +115,9 @@
         "DELETE_PARAMETER": "Usunięto parametr"
       }
     },
-    "staged_event": {
-      "committing_staged_event": "Zatwierdzanie zmian",
-      "commit_staged_event_message": "Czy na pewno chcesz zatwierdzić zmiany?"
+    "version": {
+      "committing_version": "Zatwierdzanie zmian",
+      "commit_version_message": "Czy na pewno chcesz zatwierdzić zmiany?"
     }
   },
   "auth": {

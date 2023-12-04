@@ -1,25 +1,25 @@
 import AddresseeService from "./services/AddresseeService";
 import AuthService from "./services/AuthService";
-import ScheduleBlockService from "./services/ScheduleBlockService";
-import ScheduleTagService from "./services/ScheduleTagService";
-import StagedEventService from "./services/StagedEventService";
+import BlockService from "./services/BlockService";
+import ScheduleService from "./services/ScheduleService";
+import VersionService from "./services/VersionService";
 
 export default class Backend {
   getAuthService
 
   getAddresseeService
 
-  getScheduleBlockService
+  getBlockService
 
-  getScheduleTagService
+  getScheduleService
 
-  getStagedEventService
+  getVersionService
 
   constructor() {
     this.getAuthService = () => new AuthService()
     this.getAddresseeService = (token) => new AddresseeService(token || '')
-    this.getScheduleBlockService = (token) => new ScheduleBlockService(token || '')
-    this.getScheduleTagService = (token) => new ScheduleTagService(token || '')
-    this.getStagedEventService = (token) => new StagedEventService(token || '')
+    this.getBlockService = (token) => new BlockService(token || '')
+    this.getScheduleService = (token) => new ScheduleService(token || '')
+    this.getVersionService = (token) => new VersionService(token || '')
   }
 }

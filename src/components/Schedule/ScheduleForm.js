@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from "react"
 import {Button, Form, Modal} from "react-bootstrap"
 import {useTranslation} from "react-i18next"
-import ScheduleTagService from "../../../backend/services/ScheduleTagService"
-import ScheduleTag from "../../../models/ScheduleTag"
-import {useDependencies} from "../../../context/Dependencies";
-import {useAuth} from "../../../context/Auth";
+import ScheduleService from "../../backend/services/ScheduleService"
+import Schedule from "../../models/Schedule"
+import {useDependencies} from "../../context/Dependencies";
+import {useAuth} from "../../context/Auth";
 
-function ScheduleTagForm(props) {
+function ScheduleForm(props) {
     const {t} = useTranslation()
     const {getApiService, getToastUtils} = useDependencies()
     const {token} = useAuth()
@@ -15,7 +15,7 @@ function ScheduleTagForm(props) {
 
     const initialState = {
         name: '',
-        scheduleTagService: apiService.getScheduleTagService(token)
+        scheduleService: apiService.getScheduleService(token)
     }
 
     const [state, setState] = useState(initialState);
@@ -31,18 +31,18 @@ function ScheduleTagForm(props) {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        let tag = (props.scheduleTag) ? props.scheduleTag : new ScheduleTag()
-        tag.name = state.name
+        let schedule = (props.schedule) ? props.schedule: new Schedule()
+        schedule.name = state.name
 
         try {
-            if (tag.id) {
-                await state.scheduleTagService.editScheduleTag(tag)
+            if (schedule.id) {
+                await state.scheduleService.editSchedule(schedule)
                 toastUtils.showToast(
                     'success',
                     t('toast.success.edit-schedule')
                 )
             } else {
-                await state.scheduleTagService.addScheduleTag(tag)
+                await state.scheduleService.addSchedule(schedule)
                 toastUtils.showToast(
                     'success',
                     t('toast.success.add-schedule')
@@ -61,18 +61,18 @@ function ScheduleTagForm(props) {
     }
 
     useEffect(() => {
-        updateState({name: (props.scheduleTag) ? props.scheduleTag.name : ''})
-    }, [props.scheduleTag])
+        updateState({name: (props.schedule) ? props.schedule.name : ''})
+    }, [props.schedule])
 
     return (
         <Modal show={props.show} onHide={props.onClose}>
             <Modal.Header closeButton>
-                <Modal.Title>{(props.scheduleTag) ? t('entities.tag.editing_tag') + ': ' + props.scheduleTag.name : t('entities.tag.creating_new_tag')}</Modal.Title>
+                <Modal.Title>{(props.schedule) ? t('entities.schedule.editing_schedule') + ': ' + props.schedule.name : t('entities.schedule.creating_new_schedule')}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
                     <Form.Group controlId="name">
-                        <Form.Label>{t('entities.tag.name')}:</Form.Label>
+                        <Form.Label>{t('entities.schedule.name')}:</Form.Label>
                         <Form.Control
                             type="text"
                             value={state.name}
@@ -82,8 +82,8 @@ function ScheduleTagForm(props) {
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant={(props.scheduleTag) ? "primary" : "success"} onClick={handleSubmit}>
-                    {(props.scheduleTag) ? t('buttons.edit_schedule') : t('buttons.create_schedule')}
+                <Button variant={(props.schedule) ? "primary" : "success"} onClick={handleSubmit}>
+                    {(props.schedule) ? t('buttons.edit_schedule') : t('buttons.create_schedule')}
                 </Button>
                 <Button variant="secondary" onClick={props.onClose}>
                     {t('buttons.close')}
@@ -93,4 +93,4 @@ function ScheduleTagForm(props) {
     );
 }
 
-export default ScheduleTagForm
+export default ScheduleForm

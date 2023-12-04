@@ -1,37 +1,37 @@
 import React, {useEffect, useState} from "react"
-import ScheduleBlockListElement from "../Block/ScheduleBlockListElement"
-import ScheduleBlockDetails from "../Block/ScheduleBlockDetails"
+import BlockListElement from "../Block/BlockListElement"
+import BlockDetails from "../Block/BlockDetails"
 import {Button} from "react-bootstrap"
-import ScheduleBlockForm from "../Block/ScheduleBlockForm"
-import {parseFromServerFormat} from "../../../utils/DateTimeParser"
+import BlockForm from "../Block/BlockForm"
+import {parseFromServerFormat} from "../../utils/DateTimeParser"
 import {addDays, format, parseISO, subDays} from "date-fns"
-import DatePickerModal from "../../Modals/DatePickerModal"
+import DatePickerModal from "../Modals/DatePickerModal"
 import {useTranslation} from "react-i18next"
 import {useParams} from "react-router-dom"
-import ConfirmActionModal from "../../Modals/ConfirmActionModal"
-import CommitStagedEventModal from "../StagedEvent/CommitStagedEventModal"
-import {useAuth} from "../../../context/Auth"
-import {useDependencies} from "../../../context/Dependencies"
+import ConfirmActionModal from "../Modals/ConfirmActionModal"
+import CommitVersionModal from "../Version/CommitVersionModal"
+import {useAuth} from "../../context/Auth"
+import {useDependencies} from "../../context/Dependencies"
 
-function ScheduleTag() {
+function Schedule() {
     const {getApiService, getToastUtils} = useDependencies()
     const {token} = useAuth()
     const apiService = getApiService()
     const toastUtils = getToastUtils()
 
     const initialState = {
-        scheduleTagService: apiService.getScheduleTagService(token),
-        scheduleBlockService: apiService.getScheduleBlockService(token),
-        stagedEventService: apiService.getStagedEventService(token),
-        scheduleTagId: useParams().scheduleTagId,
-        scheduleTag: null,
+        scheduleService: apiService.getScheduleService(token),
+        blockService: apiService.getBlockService(token),
+        versionService: apiService.getVersionService(token),
+        scheduleId: useParams().scheduleId,
+        schedule: null,
         selectedBlock: null,
-        scheduleBlocks: [],
+        blocks: [],
         showBlockForm: false,
         showDayPicker: false,
         pickedDay: new Date(),
         showDeleteBlockModal: false,
-        showCommitStagedEventModal: false,
+        showCommitVersionModal: false,
         blockToEdit: null,
         modifications: [],
         parameters: [],
@@ -44,11 +44,11 @@ function ScheduleTag() {
     };
 
     useEffect(() => {
-        fetchScheduleTag().then(() => {
-            fetchScheduleBlocks()
+        fetchSchedule().then(() => {
+            fetchBlocks()
             fetchModifications()
         })
-    }, [state.pickedDay, state.scheduleTagId])
+    }, [state.pickedDay, state.scheduleId])
 
     useEffect(() => {
         if (state.selectedBlock) fetchParameters()
@@ -56,7 +56,7 @@ function ScheduleTag() {
 
     const fetchParameters = async () => {
         try {
-            const data = await state.scheduleBlockService.getParameters(state.selectedBlock.id)
+            const data = await state.blockService.getParameters(state.selectedBlock.id)
             updateState({parameters: data})
         } catch (error) {
             toastUtils.showToast(
@@ -66,11 +66,11 @@ function ScheduleTag() {
         }
     }
 
-    const fetchScheduleBlocks = async () => {
+    const fetchBlocks = async () => {
         try {
             const day = format(state.pickedDay, "yyyy-MM-dd HH:mm:ss")
-            const data = await state.scheduleBlockService.getScheduleBlocksByDay(
-                state.scheduleTagId,
+            const data = await state.blockService.getBlocksByDay(
+                state.scheduleId,
                 day
             )
 
@@ -78,7 +78,7 @@ function ScheduleTag() {
                 block.startDate = parseFromServerFormat(block.startDate)
                 block.endDate = parseFromServerFormat(block.endDate)
             })
-            updateState({scheduleBlocks: data})
+            updateState({blocks: data})
         } catch (error) {
             toastUtils.showToast(
                 'error',
@@ -87,22 +87,22 @@ function ScheduleTag() {
         }
     }
 
-    const fetchScheduleTag = async () => {
+    const fetchSchedule = async () => {
         try {
-            const data = await state.scheduleTagService.getScheduleTag(state.scheduleTagId)
-            updateState({scheduleTag: data})
+            const data = await state.scheduleService.getSchedule(state.scheduleId)
+            updateState({schedule: data})
         } catch (error) {
             toastUtils.showToast(
                 'error',
-                t('toast.error.fetch-tag')
+                t('toast.error.fetch-schedule')
             )
         }
     }
 
     const fetchModifications = async () => {
         try {
-            const stagedEvent = await fetchStagedEvent()
-            const data = await state.stagedEventService.getModificationsForStagedEvent(stagedEvent.id)
+            const version = await fetchVersion()
+            const data = await state.versionService.getModificationsForVersion(version.id)
             updateState({modifications: data})
         } catch (error) {
             toastUtils.showToast(
@@ -112,21 +112,21 @@ function ScheduleTag() {
         }
     }
 
-    const fetchStagedEvent = async () => {
+    const fetchVersion = async () => {
         try {
-            return await state.stagedEventService.getLatestStagedEventForSchedule(state.scheduleTagId)
+            return await state.versionService.getLatestVersionForSchedule(state.scheduleId)
         } catch (error) {
             toastUtils.showToast(
                 'error',
-                t('toast.error.fetch-staged-event')
+                t('toast.error.fetch-version')
             )
         }
     }
 
     const handleBlockDelete = async () => {
         try {
-            await state.scheduleBlockService.deleteScheduleBlock(state.selectedBlock.id)
-            await fetchScheduleBlocks()
+            await state.blockService.deleteBlock(state.selectedBlock.id)
+            await fetchBlocks()
 
             updateState({
                 showDeleteBlockModal: false,
@@ -149,7 +149,7 @@ function ScheduleTag() {
 
     return (
         <div className="container">
-            <ScheduleBlockForm
+            <BlockForm
                 show={state.showBlockForm}
                 pickedDay={state.pickedDay}
                 onClose={() => {
@@ -159,14 +159,14 @@ function ScheduleTag() {
                     })
                 }}
                 onFormSubmit={async () => {
-                    await fetchScheduleBlocks()
+                    await fetchBlocks()
                     await fetchModifications()
                     await fetchParameters()
                     updateState({
                         blockToEdit: null
                     })
                 }}
-                scheduleTagId={state.scheduleTagId}
+                scheduleId={state.scheduleId}
                 blockToEdit={state.blockToEdit}
             />
 
@@ -191,16 +191,16 @@ function ScheduleTag() {
                 onClose={() => updateState({showDeleteBlockModal: false})}
             />
 
-            <CommitStagedEventModal
-                show={state.showCommitStagedEventModal}
-                scheduleTagId={state.scheduleTagId}
+            <CommitVersionModal
+                show={state.showCommitVersionModal}
+                scheduleId={state.scheduleId}
                 modifications={state.modifications}
-                onClose={() => updateState({showCommitStagedEventModal: false})}
+                onClose={() => updateState({showCommitVersionModal: false})}
             />
 
             <div className="row">
                 <h2>
-                    {t("entities.schedule.title")} {state.scheduleTag ? state.scheduleTag.name : null}
+                    {t("entities.schedule.title")} {state.schedule ? state.schedule.name : null}
                 </h2>
 
                 <div className="container">
@@ -254,15 +254,15 @@ function ScheduleTag() {
             <div className="row mb-4">
                 <div className="col-md-6">
                     <div className="list-container mt-3">
-                        {state.scheduleBlocks.length > 0 && state.scheduleBlocks.map((block) => (
-                            <ScheduleBlockListElement
+                        {state.blocks.length > 0 && state.blocks.map((block) => (
+                            <BlockListElement
                                 key={block.id}
                                 block={block}
                                 onClick={(block) => updateState({selectedBlock: block})}
                                 isSelected={state.selectedBlock?.id === block.id}
                             />
                         ))}
-                        {state.scheduleBlocks.length === 0 && (
+                        {state.blocks.length === 0 && (
                             <div className="alert alert-info" role="alert">
                                 {t('entities.block.no_blocks_in_day')}
                             </div>
@@ -291,8 +291,8 @@ function ScheduleTag() {
                                     </Button>
                                 </div>
                             </div>
-                            <ScheduleBlockDetails block={state.selectedBlock}
-                                                  parameters={state.parameters}/>
+                            <BlockDetails block={state.selectedBlock}
+                                          parameters={state.parameters}/>
                         </div>
                     }
                 </div>
@@ -304,8 +304,8 @@ function ScheduleTag() {
                             className="me-2 align-self-center">{t('entities.modification.changes_made') + ': '}<strong>{state.modifications.length}</strong>
                         </div>
                         <Button variant="success"
-                                onClick={() => updateState({showCommitStagedEventModal: true})}>
-                            {t('buttons.commit_staged_event')}
+                                onClick={() => updateState({showCommitVersionModal: true})}>
+                            {t('buttons.commit_version')}
                         </Button>
                     </div>
                 </div>
@@ -314,4 +314,4 @@ function ScheduleTag() {
     )
 }
 
-export default ScheduleTag
+export default Schedule

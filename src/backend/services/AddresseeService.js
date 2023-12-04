@@ -36,11 +36,11 @@ export default class AddresseeService {
         return await this.apiService.delete(`${this.addresseeUrl}/${id}`)
     }
 
-    async getAddresseesForScheduleTagId(id) {
-        return await this.apiService.get(`${this.addresseeUrl}/schedule-tag/${id}`)
+    async getAddresseesForSchedule(id) {
+        return await this.apiService.get(`${this.addresseeUrl}/schedule/${id}`)
     }
 
-    async assignAddresseeToScheduleTag(addresseeId, scheduleTagId) {
-        return await this.apiService.put(`${this.addresseeUrl}/${addresseeId}/schedule-tag/${scheduleTagId}`)
+    async assignAddresseeToSchedule(addresseeId, scheduleId) {
+        return await this.apiService.put(`${this.addresseeUrl}/${addresseeId}/schedule/${scheduleId}`)
     }
 }

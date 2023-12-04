@@ -1,12 +1,12 @@
 import React, {useState} from "react"
 import {Button, Modal, Table} from "react-bootstrap"
 import {useTranslation} from "react-i18next"
-import ScheduleTagAddressees from "../Tag/ScheduleTagAddressees";
-import {parseToServerFormat} from "../../../utils/DateTimeParser";
-import {useAuth} from "../../../context/Auth";
-import {useDependencies} from "../../../context/Dependencies";
+import ScheduleAddressees from "../Schedule/ScheduleAddressees";
+import {parseToServerFormat} from "../../utils/DateTimeParser";
+import {useAuth} from "../../context/Auth";
+import {useDependencies} from "../../context/Dependencies";
 
-function CommitStagedEventModal(props) {
+function CommitVersionModal(props) {
     const {t} = useTranslation()
     const {token} = useAuth()
     const {getToastUtils, getApiService} = useDependencies()
@@ -14,7 +14,7 @@ function CommitStagedEventModal(props) {
     const toastUtils = getToastUtils()
 
     const initialState = {
-        stagedEventService: apiService.getStagedEventService(token)
+        versionService: apiService.getVersionService(token)
     }
 
     const [state, setState] = useState(initialState)
@@ -25,29 +25,29 @@ function CommitStagedEventModal(props) {
 
     const handleConfirmation = async () => {
         try {
-            const stagedEvent = await fetchStagedEvent()
-            await state.stagedEventService.commitStagedEvent(stagedEvent.id)
+            const version = await fetchVersion()
+            await state.versionService.commitVersion(version.id)
 
             toastUtils.showToast(
                 'success',
-                t('toast.success.commit-staged-event')
+                t('toast.success.commit-version')
             )
         } catch (error) {
             toastUtils.showToast(
                 'error',
-                t('toast.error.commit-staged-event')
+                t('toast.error.commit-version')
             )
         }
         props.onClose()
     }
 
-    const fetchStagedEvent = async () => {
+    const fetchVersion = async () => {
         try {
-            return  await state.stagedEventService.getLatestStagedEventForSchedule(props.scheduleTagId)
+            return  await state.versionService.getLatestVersionForSchedule(props.scheduleId)
         } catch (error) {
             toastUtils.showToast(
                 'error',
-                t('toast.error.fetch-latest-staged-event')
+                t('toast.error.fetch-latest-version')
             )
         }
     }
@@ -94,7 +94,7 @@ function CommitStagedEventModal(props) {
     return (
         <Modal size={"xl"} show={props.show} onHide={props.onClose}>
             <Modal.Header closeButton>
-                <Modal.Title>{t('entities.staged_event.committing_staged_event')}</Modal.Title>
+                <Modal.Title>{t('entities.version.committing_version')}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <div className="mb-3">
@@ -128,12 +128,12 @@ function CommitStagedEventModal(props) {
                     </Table>
                 </div>
 
-                <ScheduleTagAddressees
-                    scheduleTagId={props.scheduleTagId}/>
+                <ScheduleAddressees
+                    scheduleId={props.scheduleId}/>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant={props.variant} onClick={handleConfirmation}>
-                    {t('buttons.commit_staged_event')}
+                    {t('buttons.commit_version')}
                 </Button>
                 <Button variant="secondary" onClick={props.onClose}>
                     {t('buttons.close')}
@@ -143,4 +143,4 @@ function CommitStagedEventModal(props) {
     )
 }
 
-export default CommitStagedEventModal
+export default CommitVersionModal

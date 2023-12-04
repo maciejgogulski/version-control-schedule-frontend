@@ -1,12 +1,11 @@
 import {useEffect, useState} from "react"
 import {useTranslation} from "react-i18next"
-import AddresseeService from "../../../backend/services/AddresseeService"
 import {Button} from "react-bootstrap"
-import AssignAddresseeToScheduleTagForm from "./AssignAddresseeToScheduleTagForm"
-import {useDependencies} from "../../../context/Dependencies";
-import {useAuth} from "../../../context/Auth";
+import AssignAddresseeToScheduleForm from "./AssignAddresseeToScheduleForm"
+import {useDependencies} from "../../context/Dependencies";
+import {useAuth} from "../../context/Auth";
 
-export default function ScheduleTagAddressees(props) {
+export default function ScheduleAddressees(props) {
     const {t} = useTranslation()
     const {token} = useAuth()
     const {getApiService, getToastUtils} = useDependencies()
@@ -27,7 +26,7 @@ export default function ScheduleTagAddressees(props) {
 
     async function fetchAddressees(id) {
         try {
-            const data = await state.addresseeService.getAddresseesForScheduleTagId(id)
+            const data = await state.addresseeService.getAddresseesForSchedule(id)
             updateState({addressees: data})
         } catch (error) {
             toastUtils.showToast(
@@ -38,15 +37,15 @@ export default function ScheduleTagAddressees(props) {
     }
 
     useEffect(() => {
-        fetchAddressees(props.scheduleTagId)
-    }, [props.scheduleTagId])
+        fetchAddressees(props.scheduleId)
+    }, [props.scheduleId])
 
     return (
         <div>
-            <AssignAddresseeToScheduleTagForm show={state.showAssignToScheduleForm}
-                                              onClose={() => updateState({showAssignToScheduleForm: false})}
-                                              onFormSubmit={async () => fetchAddressees(props.scheduleTagId)}
-                                              scheduleTagId={props.scheduleTagId}
+            <AssignAddresseeToScheduleForm show={state.showAssignToScheduleForm}
+                                           onClose={() => updateState({showAssignToScheduleForm: false})}
+                                           onFormSubmit={async () => fetchAddressees(props.scheduleId)}
+                                           scheduleId={props.scheduleId}
             />
             <h4>{t('entities.block.addressees')}</h4>
             <hr className="my-1"/>

@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react"
 import {Button, Form, Modal} from "react-bootstrap"
 import {useTranslation} from "react-i18next"
-import {useAuth} from "../../../context/Auth";
-import {useDependencies} from "../../../context/Dependencies";
+import {useAuth} from "../../context/Auth";
+import {useDependencies} from "../../context/Dependencies";
 
-function AssignAddresseeToScheduleTagForm(props) {
+function AssignAddresseeToScheduleForm(props) {
     const {t} = useTranslation()
     const {token} = useAuth()
     const {getApiService, getToastUtils} = useDependencies()
@@ -29,7 +29,7 @@ function AssignAddresseeToScheduleTagForm(props) {
             if (state.selectedAddressees.length !== 0) {
                 state.selectedAddressees.map(
                     async (addressee) => {
-                        await state.addresseeService.assignAddresseeToScheduleTag(addressee, props.scheduleTagId)
+                        await state.addresseeService.assignAddresseeToSchedule(addressee, props.scheduleId)
                     }
                 )
                 toastUtils.showToast(
@@ -61,13 +61,13 @@ function AssignAddresseeToScheduleTagForm(props) {
     }
 
     useEffect(() => {
-        fetchAddressees(props.scheduleTagId)
-    }, [props.scheduleTagId])
+        fetchAddressees(props.scheduleId)
+    }, [props.scheduleId])
 
     return (
         <Modal show={props.show} onHide={props.onClose}>
             <Modal.Header closeButton>
-                <Modal.Title>{ t('entities.tag.assigning_addressees')}</Modal.Title>
+                <Modal.Title>{ t('entities.schedule.assigning_addressees')}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
@@ -98,4 +98,4 @@ function AssignAddresseeToScheduleTagForm(props) {
     );
 }
 
-export default AssignAddresseeToScheduleTagForm
+export default AssignAddresseeToScheduleForm

@@ -1,7 +1,7 @@
 import {BrowserRouter as Router, Routes, Route, useNavigate} from "react-router-dom"
-import ScheduleTag from "./components/Schedule/Tag/ScheduleTag"
+import Schedule from "./components/Schedule/Schedule"
 import Navbar from "./components/Navbar/Navbar"
-import ScheduleTagList from "./components/Schedule/Tag/ScheduleTagList"
+import ScheduleList from "./components/Schedule/ScheduleList"
 import AddresseeList from "./components/Addressees/AddresseeList"
 import {useAuth} from "./context/Auth"
 import LoginPage from "./components/Login/LoginPage"
@@ -21,8 +21,8 @@ export default function Routing() {
                     </div>
                     <main className="col-sm-10 pt-3 bg-light min-vh-100">
                         <Routes>
-                            <Route path="/schedule" element={<ScheduleTagList/>}/>
-                            <Route path="/schedule/:scheduleTagId" element={<ScheduleTag/>}/>
+                            <Route path="/schedule" element={<ScheduleList/>}/>
+                            <Route path="/schedule/:scheduleId" element={<Schedule/>}/>
                             <Route path="/addressee" element={<AddresseeList/>}/>
                         </Routes>
                     </main>

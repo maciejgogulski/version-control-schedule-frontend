@@ -64,7 +64,6 @@ function AddresseeForm(props) {
     }
 
     useEffect(() => {
-        console.log(props.addressee)
         if (props.addressee) {
             updateState({
                 firstName: props.addressee.firstName,

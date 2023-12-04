@@ -1,6 +1,6 @@
 import {useTranslation} from "react-i18next"
 
-export default function ScheduleBlockDetails(props) {
+export default function BlockDetails(props) {
     const {t} = useTranslation();
 
     return (

@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from "react"
 import {Button, CloseButton, Form, Modal} from "react-bootstrap"
-import ScheduleBlock from "../../../models/ScheduleBlock"
-import {parseToServerFormat} from "../../../utils/DateTimeParser"
+import Block from "../../models/Block"
+import {parseToServerFormat} from "../../utils/DateTimeParser"
 import {format} from "date-fns"
 import {useTranslation} from "react-i18next"
-import Parameter from "../../../models/Parameter"
-import './ScheduleBlockForm.css'
-import {useDependencies} from "../../../context/Dependencies";
-import {useAuth} from "../../../context/Auth";
+import Parameter from "../../models/Parameter"
+import './BlockForm.css'
+import {useDependencies} from "../../context/Dependencies";
+import {useAuth} from "../../context/Auth";
 
-function ScheduleBlockForm(props) {
+function BlockForm(props) {
     const {t} = useTranslation()
     const token = useAuth()
     const {getApiService, getToastUtils} = useDependencies()
@@ -17,7 +17,7 @@ function ScheduleBlockForm(props) {
     const toastUtils = getToastUtils()
 
     const initialState = {
-        scheduleBlockService: apiService.getScheduleBlockService(token),
+        blockService: apiService.getBlockService(token),
         name: '',
         startDate: null,
         endDate: null,
@@ -37,7 +37,7 @@ function ScheduleBlockForm(props) {
 
     const fetchParametersForBlock = async () => {
         try {
-            const data = await state.scheduleBlockService.getParameters(props.blockToEdit.id)
+            const data = await state.blockService.getParameters(props.blockToEdit.id)
             updateState({parameters: data})
         } catch (error) {
             toastUtils.showToast(
@@ -50,8 +50,8 @@ function ScheduleBlockForm(props) {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            let block = (props.blockToEdit) ? props.blockToEdit : new ScheduleBlock()
-            block.scheduleTagId = props.scheduleTagId
+            let block = (props.blockToEdit) ? props.blockToEdit : new Block()
+            block.scheduleId = props.scheduleId
             block.name = (props.blockToEdit) ? state.parameters[0].value : state.name
 
             block.startDate = parseToServerFormat((props.blockToEdit) ? state.parameters[1].value : state.startDate)
@@ -59,18 +59,18 @@ function ScheduleBlockForm(props) {
 
             if (block.id) {
                 state.parameters.map(async (parameter) => {
-                    await state.scheduleBlockService.assignParameterToScheduleBlock(parameter)
+                    await state.blockService.assignParameterToBlock(parameter)
                 })
                 state.deletedParameters.map(async (parameter) => {
-                    await state.scheduleBlockService.deleteParameterFromScheduleBlock(parameter)
+                    await state.blockService.deleteParameterFromBlock(parameter)
                 })
-                await state.scheduleBlockService.editScheduleBlock(block)
+                await state.blockService.editBlock(block)
                 toastUtils.showToast(
                     'success',
                     t('toast.success.edit-block')
                 )
             } else {
-                await state.scheduleBlockService.addScheduleBlock(block)
+                await state.blockService.addBlock(block)
                 toastUtils.showToast(
                     'success',
                     t('toast.success.add-block')
@@ -128,7 +128,7 @@ function ScheduleBlockForm(props) {
         e.preventDefault()
 
         let newParameter = new Parameter();
-        newParameter.scheduleBlockId = props.blockToEdit.id
+        newParameter.blockId = props.blockToEdit.id
         newParameter.parameterName = state.newParameterName
         newParameter.value = state.newParameterValue
         state.newParameters.push(newParameter)
@@ -289,4 +289,4 @@ function ScheduleBlockForm(props) {
     )
 }
 
-export default ScheduleBlockForm
+export default BlockForm
