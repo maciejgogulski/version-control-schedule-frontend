@@ -1,6 +1,4 @@
-import React, {useEffect, useState} from "react"
-import {Button, Form, Modal} from "react-bootstrap"
-import {format} from "date-fns"
+import {Button, Modal} from "react-bootstrap"
 import {useTranslation} from "react-i18next"
 
 function ConfirmActionModal(props) {

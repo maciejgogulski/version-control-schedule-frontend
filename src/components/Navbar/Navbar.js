@@ -1,7 +1,6 @@
 import React from 'react';
 import {Link, useLocation} from "react-router-dom";
-import {AiOutlineHome, AiOutlineSchedule} from "react-icons/ai";
-import {HiOutlineUserGroup} from "react-icons/hi";
+import {AiOutlineSchedule} from "react-icons/ai";
 import {FaRegAddressBook} from "react-icons/fa";
 import {useTranslation} from "react-i18next";
 
@@ -20,12 +19,6 @@ const Navbar = () => {
     return (
         <nav className="navbar">
             <ul className="navbar-nav w-100">
-                <Link to="/home">
-                    <li className={`nav-item px-4 py-3 ${isActiveRoute("/home")}`}>
-                        <AiOutlineHome color={isActiveIcon("/home")} size={25}/> {t('navigation.main_page')}
-                    </li>
-                </Link>
-
                 <Link to="/schedule">
                     <li className={`nav-item px-4 py-3 ${isActiveRoute("/schedule")}`}>
                         <AiOutlineSchedule color={isActiveIcon("/schedule")} size={25}/> {t('navigation.schedules')}
@@ -34,11 +27,6 @@ const Navbar = () => {
                 <Link to="/addressee">
                     <li className={`nav-item px-4 py-3 ${isActiveRoute("/addressee")}`}>
                         <FaRegAddressBook color={isActiveIcon("/addressee")} size={25}/> {t('navigation.addressees')}
-                    </li>
-                </Link>
-                <Link to="/user">
-                    <li className={`nav-item px-4 py-3 ${isActiveRoute("/user")}`}>
-                        <HiOutlineUserGroup color={isActiveIcon("/user")} size={25}/> {t('navigation.users')}
                     </li>
                 </Link>
             </ul>

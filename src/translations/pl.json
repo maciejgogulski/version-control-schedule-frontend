@@ -7,6 +7,8 @@
     "users": "Użytkownicy"
   },
   "buttons": {
+    "login": "Zaloguj się",
+    "logout": "Wyloguj się",
     "create_block": "Stwórz blok",
     "create_schedule": "Stwórz plan",
     "close": "Zamknij",
@@ -20,12 +22,50 @@
     "edit_addressee": "Edytuj adresata",
     "delete_addressee": "Usuń adresata",
     "assign_addressees": "Przypisz adresatów",
-    "add_parameter": "Dodaj parametr"
+    "add_parameter": "Dodaj parametr",
+    "commit_version": "Zatwierdź zmiany"
+  },
+  "toast": {
+    "success": {
+      "login": "Zalogowano do serwisu",
+      "add-schedule": "Dodano nowy plan",
+      "delete-schedule": "Usunięto plan",
+      "edit-schedule": "Edytowano plan",
+      "add-block": "Dodano nowy blok",
+      "edit-block": "Edytowano block",
+      "add-addressee": "Dodano nowego adresata",
+      "edit-addressee": "Edytowano adresata",
+      "delete-addressee": "Usunięto adresata",
+      "submit-addressees": "Przypisano adresatów do planu",
+      "commit-version": "Zatwierdzono zmiany w planie"
+    },
+    "error": {
+      "login": "Nie udało się zalogwać do serwisu",
+      "submit": "Nie udało się przesłać danych formularza",
+      "fetch-parameters": "Nie udało się pobrać parametrów",
+      "fetch-params-for-block": "Nie udało się pobrać parametrów dla bloku",
+      "fetch-blocks": "Nie udało się pobrać bloków",
+      "fetch-addressees": "Nie udało się pobrać adresatów",
+      "fetch-modifications": "Nie udało się pobrać zmian",
+      "fetch-schedule": "Nie udało się pobrać planu",
+      "fetch-version": "Nie udało się pobrać wersji planu",
+      "fetch-latest-version": "Nie udało się pobrać ostatniej wersji planu",
+      "commit-version": "Nie udało się zatwierdzić zmian",
+      "delete-addressee": "Nie udało się usunąć adresata",
+      "delete-block": "Nie udało się usunąć bloku",
+      "delete-schedule": "Nie udało się usunąć planu"
+    }
   },
   "entities": {
     "schedule": {
       "title": "Plan",
-      "picking_date": "Wybór daty"
+      "picking_date": "Wybór daty",
+      "creating_new_schedule": "Tworzenie nowego planu",
+      "editing_schedule": "Edycja planu",
+      "deleting_schedule": "Usuwanie planu",
+      "delete_schedule_message": "Czy jesteś pewien, że chcesz usunąć plan {{name}}?",
+      "assigning_addressees": "Przypisanie adresatów",
+      "name": "Nazwa"
     },
     "block": {
       "title": "Blok",
@@ -39,15 +79,8 @@
       "end_date": "Data zakończenia",
       "addressees": "Adresaci",
       "addressee_groups": "Grupy",
-      "persons": "Osoby"
-    },
-    "tag": {
-      "creating_new_tag": "Tworzenie nowego planu",
-      "editing_tag": "Edycja planu",
-      "deleting_tag": "Usuwanie planu",
-      "delete_tag_message": "Czy jesteś pewien, że chcesz usunąć plan {{name}}?",
-      "assigning_addressees": "Przypisanie adresatów",
-      "name": "Nazwa"
+      "persons": "Osoby",
+      "no_blocks_in_day": "Brak bloków w tym dniu"
     },
     "addressee": {
       "creating_new_addressee": "Tworzenie nowego adresata",
@@ -61,7 +94,12 @@
     "parameter": {
       "new": "Nowy parametr",
       "name": "Nazwa",
-      "value": "Wartość"
+      "value": "Wartość",
+      "required": {
+        "name": "Nazwa",
+        "start_date": "Data rozpoczęcia",
+        "end_date": "Data zakończenia"
+      }
     },
     "modification": {
       "plural": "Zmiany",
@@ -69,11 +107,23 @@
       "parameter_name": "Nazwa parametru",
       "old_value": "Poprzednia wartość",
       "new_value": "Nowa wartość",
+      "changes_made": "Dokonano zmian",
+      "timestamp": "Czas dokonania zmiany",
       "types": {
         "CREATE_PARAMETER": "Utworzono parametr",
         "UPDATE_PARAMETER": "Zmodyfikowano parametr",
-        "DELETE_PARAMETER": "Usunięto parameter"
+        "DELETE_PARAMETER": "Usunięto parametr"
       }
+    },
+    "version": {
+      "committing_version": "Zatwierdzanie zmian",
+      "commit_version_message": "Czy na pewno chcesz zatwierdzić zmiany?"
     }
+  },
+  "auth": {
+    "username": "Nazwa użytkownika",
+    "password": "Hasło",
+    "logout-title": "Wylogowanie z serwisu",
+    "logout-message": "Czy na pewno chcesz się wylogować z serwisu?"
   }
 }

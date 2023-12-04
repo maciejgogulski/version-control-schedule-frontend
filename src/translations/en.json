@@ -7,6 +7,8 @@
     "users": "Users"
   },
   "buttons": {
+    "login": "Log in",
+    "logout": "Log out",
     "create_block": "Create block",
     "create_schedule": "Create schedule",
     "close": "Close",
@@ -19,12 +21,51 @@
     "create_addressee": "Create addressee",
     "edit_addressee": "Edit addressee",
     "delete_addressee": "Delete addressee",
-    "add_parameter": "Add parameter"
+    "assign_addressees": "Assign addressees",
+    "add_parameter": "Add parameter",
+    "commit_version": "Commit changes"
+  },
+  "toast": {
+    "success": {
+      "login": "Logged in to service",
+      "add-schedule": "Created new schedule",
+      "delete-schedule": "Deleted schedule",
+      "edit-schedule": "Edited schedule",
+      "add-block": "Created new block",
+      "edit-block": "Edited block",
+      "add-addressee": "Created new addressee",
+      "edit-addressee": "Edited addressee",
+      "delete-addressee": "Deleted addressee",
+      "submit-addressees": "Assigned addressees to schedule",
+      "commit-version": "Commited chagnes in schedule"
+    },
+    "error": {
+      "login": "Unable to login to service",
+      "submit": "Unable to send form data",
+      "fetch-parameters": "Unable to fetch parameters",
+      "fetch-params-for-block": "Unable to fetch parameters for block",
+      "fetch-blocks": "Unable to fetch blocks",
+      "fetch-addressees": "Unable to fetch addressees",
+      "fetch-modifications": "Unable to fetch modifications",
+      "fetch-schedule": "Unable to fetch schedule",
+      "fetch-schedules": "Unable to fetch schedules",
+      "fetch-version": "Unable to fetch schedule version",
+      "fetch-latest-version": "Unable to fetch latest schedule varsion",
+      "commit-version": "Unable to commit schedule version",
+      "delete-addressee": "Unable to delete addressee",
+      "delete-block": "Unable to delete block",
+      "delete-schedule": "Unable to delete schedule"
+    }
   },
   "entities": {
     "schedule": {
       "title": "Schedule",
-      "picking_date": "Pick a date"
+      "picking_date": "Pick a date",
+      "creating_new_schedule": "Creating new schedule",
+      "editing_schedule": "Editing schedule",
+      "deleting_schedule": "Deleting schedule",
+      "delete_schedule_message": "Are you sure, you want to delete schedule {{name}}?",
+      "name": "Name"
     },
     "block": {
       "title": "Block",
@@ -38,14 +79,8 @@
       "end_date": "End date",
       "addressees": "Addressees",
       "addressee_groups": "Groups",
-      "persons": "Persons"
-    },
-    "tag": {
-      "creating_new_tag": "Creating new schedule",
-      "editing_tag": "Editing schedule",
-      "deleting_tag": "Deleting schedule",
-      "delete_tag_message": "Are you sure, you want to delete schedule {{name}}?",
-      "name": "Name"
+      "persons": "Persons",
+      "no_blocks_in_day": "No blocks created in this day"
     },
     "addressee": {
       "creating_new_addressee": "Creating new addressee",
@@ -59,7 +94,12 @@
     "parameter": {
       "new": "New parameter",
       "name": "Name",
-      "value": "Value"
+      "value": "Value",
+      "required": {
+        "name": "Name",
+        "start_date": "Start date",
+        "end_date": "End date"
+      }
     },
     "modification": {
       "plural": "Modifications",
@@ -67,11 +107,23 @@
       "parameter_name": "Parameter name",
       "old_value": "Previous value",
       "new_value": "New value",
+      "changes_made": "Changes made",
+      "timestamp": "Modified at",
       "types": {
         "CREATE_PARAMETER": "Created parameter",
         "UPDATE_PARAMETER": "Updated parameter",
         "DELETE_PARAMETER": "Deleted parameter"
       }
+    },
+    "version": {
+      "committing_version": "Committing changes",
+      "commit_version_message": "Are you sure, you want to commit changes?"
     }
+  },
+  "auth": {
+    "username": "Username",
+    "password": "Password",
+    "logout-title": "Logging out",
+    "logout-message": "Are you sure, you want to log out?"
   }
 }

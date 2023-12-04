@@ -1,6 +1,6 @@
 export default class Parameter {
     id
-    scheduleBlockId
+    blockId
     parameterName
     value
 }

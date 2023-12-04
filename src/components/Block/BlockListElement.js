@@ -1,6 +1,6 @@
 import React from "react";
 
-class ScheduleBlockListElement extends React.Component {
+class BlockListElement extends React.Component {
 
     handleClick = () => {
         const { block, onClick } = this.props;
@@ -22,4 +22,4 @@ class ScheduleBlockListElement extends React.Component {
     }
 }
 
-export default ScheduleBlockListElement;
+export default BlockListElement;
