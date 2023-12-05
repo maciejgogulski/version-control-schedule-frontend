@@ -3,6 +3,7 @@ import React, {useState} from "react"
 import {useDependencies} from "../../context/Dependencies"
 import {useAuth} from "../../context/Auth"
 import {useTranslation} from "react-i18next"
+import {useNavigate} from "react-router-dom";
 
 export default function LoginPage() {
     const {getApiService, getToastUtils} = useDependencies()
@@ -10,6 +11,7 @@ export default function LoginPage() {
     const {setToken, setLoggedIn} = useAuth()
     const {t} = useTranslation()
     const toastUtils = getToastUtils()
+    const navigate = useNavigate()
 
     const initialState = {
         authService: apiService.getAuthService(),
@@ -31,6 +33,7 @@ export default function LoginPage() {
             })
             setToken(authData.getToken())
             setLoggedIn(true)
+            navigate('/schedule')
             toastUtils.showToast(
                 'info',
                 t('toast.success.login'),

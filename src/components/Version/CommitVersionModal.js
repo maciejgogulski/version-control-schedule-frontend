@@ -39,6 +39,7 @@ function CommitVersionModal(props) {
             )
         }
         props.onClose()
+        props.onConfirm()
     }
 
     const fetchVersion = async () => {

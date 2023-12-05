@@ -128,33 +128,44 @@ export default function ScheduleList() {
                     </Button>
 
                     <Table responsive hover>
-                        <thead>
-                        <tr>
-                            <th>{t('entities.schedule.name')}</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {state.schedules.map((schedule) => (
-                            <tr key={schedule.id}>
-                                <td className="user-select-none"
-                                    onClick={() => redirectToSchedule(schedule.id)}>
-                                    {schedule.name}
-                                </td>
-                                <td>
-                                    <Button variant="secondary" className="me-2"
-                                            onClick={() => handleScheduleFormButtonClick(schedule)}>
-                                        {t('buttons.edit_schedule')}
-                                    </Button>
+                        {state.schedules.length > 0
+                            ? (
+                                <>
+                                    <thead>
+                                    <tr>
+                                        <th>{t('entities.schedule.name')}</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {state.schedules.map((schedule) => (
+                                        <tr key={schedule.id}>
+                                            <td className="user-select-none"
+                                                onClick={() => redirectToSchedule(schedule.id)}>
+                                                {schedule.name}
+                                            </td>
+                                            <td>
+                                                <Button variant="secondary" className="me-2"
+                                                        onClick={() => handleScheduleFormButtonClick(schedule)}>
+                                                    {t('buttons.edit_schedule')}
+                                                </Button>
 
-                                    <Button variant="danger" className="me-2"
-                                            onClick={() => handleDeleteScheduleButtonClick(schedule)}>
-                                        {t('buttons.delete_schedule')}
-                                    </Button>
-                                </td>
-                            </tr>
-                        ))}
-                        </tbody>
+                                                <Button variant="danger" className="me-2"
+                                                        onClick={() => handleDeleteScheduleButtonClick(schedule)}>
+                                                    {t('buttons.delete_schedule')}
+                                                </Button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                    </tbody>
+                                </>
+                            ) : (
+                                <tbody>
+                                <div className="alert alert-info" role="alert">
+                                    {t('entities.schedule.no_schedules')}
+                                </div>
+                                </tbody>
+                            )}
                     </Table>
                 </div>
             </div>

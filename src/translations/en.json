@@ -1,5 +1,8 @@
 {
-  "app_name": "App Name",
+  "app_name": "Version Control Schedule",
+  "date": {
+    "format": "{{year}} {{month}} {{day}}"
+  },
   "navigation": {
     "main_page": "Home",
     "schedules": "Schedules",
@@ -28,6 +31,7 @@
   "toast": {
     "success": {
       "login": "Logged in to service",
+      "logout": "Wylogowano z serwisu",
       "add-schedule": "Created new schedule",
       "delete-schedule": "Deleted schedule",
       "edit-schedule": "Edited schedule",
@@ -65,7 +69,8 @@
       "editing_schedule": "Editing schedule",
       "deleting_schedule": "Deleting schedule",
       "delete_schedule_message": "Are you sure, you want to delete schedule {{name}}?",
-      "name": "Name"
+      "name": "Name",
+      "no_schedules": "No schedule has been created yet"
     },
     "block": {
       "title": "Block",
@@ -89,7 +94,8 @@
       "delete_addressee_message": "Are you sure, you want to delete addressee {{name}}?",
       "email": "E-mail",
       "first-name": "First name",
-      "last-name": "Last name"
+      "last-name": "Last name",
+      "no_addressees": "No addressee has been created yet"
     },
     "parameter": {
       "new": "New parameter",

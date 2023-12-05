@@ -5,6 +5,7 @@ import {useAuth} from "../../context/Auth";
 import {useTranslation} from "react-i18next";
 import {useDependencies} from "../../context/Dependencies";
 import {useNavigate} from "react-router-dom";
+import CurrentDate from "../../utils/CurrentDate";
 
 export default function Header() {
     const {t} = useTranslation()
@@ -28,7 +29,7 @@ export default function Header() {
         auth.setLoggedIn(false)
         toastUtils.showToast(
             'info',
-            t('toast.logout.success')
+            t('toast.success.logout')
         )
         navigate('/login')
     }
@@ -47,6 +48,9 @@ export default function Header() {
                     <h4 className="text-light">{t('app_name')}</h4>
                 </div>
                 <div className="col-sm-8">
+                    <h5 className={'p-3 text-primary'}>
+                        <CurrentDate/>
+                    </h5>
                 </div>
                 <div className={'col-sm-2 p-3'}>
                     {auth.loggedIn && (

@@ -1,5 +1,8 @@
 {
   "app_name": "Nazwa Aplikacji",
+  "date": {
+    "format": "{{day}} {{month}} {{year}}"
+  },
   "navigation": {
     "main_page": "Strona główna",
     "schedules": "Plany",
@@ -28,6 +31,7 @@
   "toast": {
     "success": {
       "login": "Zalogowano do serwisu",
+      "logout": "Wylogowano z serwisu",
       "add-schedule": "Dodano nowy plan",
       "delete-schedule": "Usunięto plan",
       "edit-schedule": "Edytowano plan",
@@ -65,7 +69,8 @@
       "deleting_schedule": "Usuwanie planu",
       "delete_schedule_message": "Czy jesteś pewien, że chcesz usunąć plan {{name}}?",
       "assigning_addressees": "Przypisanie adresatów",
-      "name": "Nazwa"
+      "name": "Nazwa",
+      "no_schedules": "Nie utworzono żadnego planu"
     },
     "block": {
       "title": "Blok",
@@ -89,7 +94,8 @@
       "delete_addressee_message": "Czy jesteś pewien, że chcesz usunąć adresata {{name}}?",
       "email": "E-mail",
       "first-name": "Imię",
-      "last-name": "Nazwisko"
+      "last-name": "Nazwisko",
+      "no_addressees": "Nie utworzono żadnego adresata"
     },
     "parameter": {
       "new": "Nowy parametr",

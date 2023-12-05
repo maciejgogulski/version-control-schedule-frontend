@@ -22,7 +22,7 @@ i18n
                 translation: translationsPl,
             },
         },
-        lng: 'pl',
+        lng: 'en',
         fallbackLng: 'en',
         interpolation: {
             escapeValue: false,
