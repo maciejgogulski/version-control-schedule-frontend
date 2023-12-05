@@ -131,13 +131,11 @@ function CommitVersionModal(props) {
             </Modal.Header>
             <Modal.Body>
                 <div className="mb-3">
-                    <h4>{t('entities.modification.plural')}</h4>
-                    <hr className="my-1"/>
                     {state.blocksWithModifications.map((block) => (
                         <Table responsive
                                hover
                                className={(getBlockModificationType(block) === 'CREATE_BLOCK' ? 'border-success' : 'border-primary') +
-                                   ' text-center container bg-light rounded mb-3 px-5 py-3 shadow border-top border-5'}
+                                   ' text-center container bg-light rounded mb-4 px-5 py-3 shadow border-top border-5'}
                                key={block.id}>
                             <thead>
                             <tr className={'text-start text-primary'}>

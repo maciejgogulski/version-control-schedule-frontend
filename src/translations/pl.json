@@ -133,5 +133,8 @@
     "password": "Hasło",
     "logout-title": "Wylogowanie z serwisu",
     "logout-message": "Czy na pewno chcesz się wylogować z serwisu?"
+  },
+  "form": {
+    "required": "Pole {{fieldName}} jest wymagane"
   }
 }

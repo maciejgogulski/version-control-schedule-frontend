@@ -133,5 +133,8 @@
     "password": "Password",
     "logout-title": "Logging out",
     "logout-message": "Are you sure, you want to log out?"
+  },
+  "form": {
+    "required": "is required"
   }
 }
