@@ -4,6 +4,8 @@ import {useTranslation} from "react-i18next"
 import Addressee from "../../models/Addressee";
 import {useAuth} from "../../context/Auth";
 import {useDependencies} from "../../context/Dependencies";
+import Input from "../Form/Input";
+import {FormProvider, useForm} from "react-hook-form";
 
 function AddresseeForm(props) {
     const {t} = useTranslation()
@@ -11,36 +13,31 @@ function AddresseeForm(props) {
     const {getApiService, getToastUtils} = useDependencies()
     const apiService = getApiService()
     const toastUtils = getToastUtils()
+    const addresseeService = apiService.getAddresseeService(token)
 
-    const initialState = {
-        addresseeService: apiService.getAddresseeService(token),
-        email: '',
-        firstName: '',
-        lastName: ''
-    }
+    const form = useForm({
+        defaultValues: {
+            'email': '',
+            'firstName': '',
+            'lastName': ''
+        }
+    })
 
-    const [state, setState] = useState(initialState)
-
-    const updateState = (updates) => {
-        setState((prevState) => ({...prevState, ...updates}))
-    }
-
-    const handleSubmit = async (e) => {
-        e.preventDefault()
+    const onSubmit = async (data) => {
         try {
             let addressee = (props.addressee) ? props.addressee : new Addressee()
-            addressee.firstName = state.firstName
-            addressee.lastName = state.lastName
-            addressee.email = state.email
+            addressee.firstName = data.firstName
+            addressee.lastName = data.lastName
+            addressee.email = data.email
 
             if (addressee.id) {
-                await state.addresseeService.editAddressee(addressee)
+                await addresseeService.editAddressee(addressee)
                 toastUtils.showToast(
                     'success',
                     t('toast.success.edit-addressee')
                 )
             } else {
-                await state.addresseeService.addAddressee(addressee)
+                await addresseeService.addAddressee(addressee)
                 toastUtils.showToast(
                     'success',
                     t('toast.success.add-addressee')
@@ -53,29 +50,19 @@ function AddresseeForm(props) {
             )
         }
 
-        updateState({
-            firstName: '',
-            lastName: '',
-            email: ''
-        })
-
         props.onClose()
         props.onFormSubmit()
     }
 
     useEffect(() => {
         if (props.addressee) {
-            updateState({
-                firstName: props.addressee.firstName,
-                lastName: props.addressee.lastName,
-                email: props.addressee.email
-            })
+            form.setValue('firstName', props.addressee.firstName)
+            form.setValue('lastName', props.addressee.lastName)
+            form.setValue('email', props.addressee.email)
         } else {
-            updateState({
-                firstName: '',
-                lastName: '',
-                email: ''
-            })
+            form.setValue('firstName', '')
+            form.setValue('lastName', '')
+            form.setValue('email', '')
         }
     }, [props.addressee])
 
@@ -85,35 +72,38 @@ function AddresseeForm(props) {
                 <Modal.Title>{(props.addressee) ? t('entities.addressee.editing_addressee') + ': ' + props.addressee.firstName + ' ' + props.addressee.lastName : t('entities.addressee.creating_new_addressee')}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Form onSubmit={handleSubmit}>
-                    <Form.Group controlId="email">
-                        <Form.Label>{t('entities.addressee.email')}:</Form.Label>
-                        <Form.Control
-                            type="text"
-                            value={state.email}
-                            onChange={(e) => updateState({email: e.target.value})}
+                <FormProvider {...form}>
+                    <Form onSubmit={form.handleSubmit(onSubmit)}>
+                        <Input
+                            name={'email'}
+                            label={t('entities.addressee.email')}
+                            rules={{
+                                required: t('form.required', {fieldName: `"${t('auth.email')}"`}),
+                                pattern: {
+                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+                                    message: t('form.invalid-pattern', {fieldName: `"${t('auth.email')}"`})
+                                }
+                            }}
                         />
-                    </Form.Group>
-                    <Form.Group controlId="firstName">
-                        <Form.Label>{t('entities.addressee.first-name')}:</Form.Label>
-                        <Form.Control
-                            type="text"
-                            value={state.firstName}
-                            onChange={(e) => updateState({firstName: e.target.value})}
+                        <Input
+                            name={'firstName'}
+                            label={t('entities.addressee.first-name')}
+                            rules={{
+                                required: t('form.required', {fieldName: `"${t('auth.email')}"`}),
+                            }}
                         />
-                    </Form.Group>
-                    <Form.Group controlId="lastName">
-                        <Form.Label>{t('entities.addressee.last-name')}:</Form.Label>
-                        <Form.Control
-                            type="text"
-                            value={state.lastName}
-                            onChange={(e) => updateState({lastName: e.target.value})}
+                        <Input
+                            name={'lastName'}
+                            label={t('entities.addressee.last-name')}
+                            rules={{
+                                required: t('form.required', {fieldName: `"${t('auth.email')}"`}),
+                            }}
                         />
-                    </Form.Group>
-                </Form>
+                    </Form>
+                </FormProvider>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant={(props.addressee) ? "primary" : "success"} onClick={handleSubmit}>
+                <Button variant={(props.addressee) ? "primary" : "success"} onClick={onSubmit}>
                     {(props.addressee) ? t('buttons.edit_addressee') : t('buttons.create_addressee')}
                 </Button>
                 <Button variant="secondary" onClick={props.onClose}>
