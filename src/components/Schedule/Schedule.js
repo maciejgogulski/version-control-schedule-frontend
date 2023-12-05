@@ -195,6 +195,7 @@ function Schedule() {
                 show={state.showCommitVersionModal}
                 scheduleId={state.scheduleId}
                 modifications={state.modifications}
+                blocks={state.blocks}
                 onClose={() => updateState({showCommitVersionModal: false})}
                 onConfirm={() => fetchModifications()}
             />

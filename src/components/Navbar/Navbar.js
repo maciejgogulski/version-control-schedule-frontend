@@ -17,7 +17,7 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="navbar">
+        <nav className="navbar p-0">
             <ul className="navbar-nav w-100">
                 <Link to="/schedule">
                     <li className={`nav-item px-4 py-3 ${isActiveRoute("/schedule")}`}>

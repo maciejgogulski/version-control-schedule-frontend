@@ -118,7 +118,9 @@
       "types": {
         "CREATE_PARAMETER": "Utworzono parametr",
         "UPDATE_PARAMETER": "Zmodyfikowano parametr",
-        "DELETE_PARAMETER": "Usunięto parametr"
+        "DELETE_PARAMETER": "Usunięto parametr",
+        "CREATE_BLOCK": "Utworzono blok",
+        "UPDATE_BLOCK": "Zmodyfikowano blok"
       }
     },
     "version": {

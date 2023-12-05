@@ -100,10 +100,6 @@ function AddresseeList() {
         })
     }
 
-    const redirectToAddressee = (addresseeId) => {
-        navigate(`/addressee/${addresseeId}`)
-    }
-
     return (
         <div className="container">
             <AddresseeForm show={state.showAddresseeForm}
@@ -145,16 +141,13 @@ function AddresseeList() {
                                     <tbody>
                                     {state.addressees.map((addressee) => (
                                         <tr key={addressee.id}>
-                                            <td className="user-select-none"
-                                                onClick={() => redirectToAddressee(addressee.id)}>
+                                            <td className="user-select-none">
                                                 {addressee.email}
                                             </td>
-                                            <td className="user-select-none"
-                                                onClick={() => redirectToAddressee(addressee.id)}>
+                                            <td className="user-select-none">
                                                 {addressee.firstName}
                                             </td>
-                                            <td className="user-select-none"
-                                                onClick={() => redirectToAddressee(addressee.id)}>
+                                            <td className="user-select-none">
                                                 {addressee.lastName}
                                             </td>
                                             <td>
