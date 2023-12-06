@@ -135,6 +135,7 @@
     "logout-message": "Czy na pewno chcesz się wylogować z serwisu?"
   },
   "form": {
-    "required": "Pole {{fieldName}} jest wymagane"
+    "required": "Pole {{fieldName}} jest wymagane",
+    "invalid-pattern": "Pole {{fieldName}} ma niewłaściwy format"
   }
 }

@@ -135,6 +135,7 @@
     "logout-message": "Are you sure, you want to log out?"
   },
   "form": {
-    "required": "is required"
+    "required": "Field {{fieldName}} is required",
+    "invalid-pattern": "Field {{fieldName}} has invalid pattern"
   }
 }

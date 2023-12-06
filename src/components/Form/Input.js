@@ -1,27 +1,27 @@
 import {Form} from "react-bootstrap";
-import React from "react";
-import {useController} from "react-hook-form";
+import {useFormContext} from "react-hook-form";
 
-const Input = ({label, name, rules, ...rest}) => {
-    const {field, fieldState} = useController({
-        name,
-        rules
-    })
+export default function Input(props) {
+    const {register, formState: {errors}, setValue} = useFormContext()
+
+    const handleChange = (event) => {
+        setValue(props.name, event.target.value, {shouldValidate: true})
+    }
 
     return (
-        <Form.Group controlId={name}>
-            <Form.Label>{label}</Form.Label>
+        <Form.Group controlId={props.name}>
+            <Form.Label>{props.label}</Form.Label>
             <Form.Control
-                {...field}
-                {...rest}
-                isInvalid={fieldState.invalid}
-                isValid={fieldState.isVaearid}
+                {...register(props.name, props.rules)}
+                onChange={handleChange}
+                isInvalid={!!errors[props.name]}
             />
             <Form.Control.Feedback type="invalid">
-                {fieldState?.error?.message}
+                {errors[props.name]?.message || (
+                    errors[props.name]?.types?.pattern?.message
+                )}
             </Form.Control.Feedback>
         </Form.Group>
     );
 }
 
-export default Input

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react"
+import React, {useEffect} from "react"
 import {Button, Form, Modal} from "react-bootstrap"
 import {useTranslation} from "react-i18next"
 import Addressee from "../../models/Addressee";
@@ -26,9 +26,9 @@ function AddresseeForm(props) {
     const onSubmit = async (data) => {
         try {
             let addressee = (props.addressee) ? props.addressee : new Addressee()
-            addressee.firstName = data.firstName
-            addressee.lastName = data.lastName
-            addressee.email = data.email
+            addressee.firstName = data.firstName.trim()
+            addressee.lastName = data.lastName.trim()
+            addressee.email = data.email.trim()
 
             if (addressee.id) {
                 await addresseeService.editAddressee(addressee)
@@ -64,24 +64,24 @@ function AddresseeForm(props) {
             form.setValue('lastName', '')
             form.setValue('email', '')
         }
-    }, [props.addressee])
+    }, [props.addressee, form])
 
     return (
         <Modal show={props.show} onHide={props.onClose}>
-            <Modal.Header closeButton>
-                <Modal.Title>{(props.addressee) ? t('entities.addressee.editing_addressee') + ': ' + props.addressee.firstName + ' ' + props.addressee.lastName : t('entities.addressee.creating_new_addressee')}</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <FormProvider {...form}>
-                    <Form onSubmit={form.handleSubmit(onSubmit)}>
+            <FormProvider {...form}>
+                <Form onSubmit={form.handleSubmit(onSubmit)}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>{(props.addressee) ? t('entities.addressee.editing_addressee') + ': ' + props.addressee.firstName + ' ' + props.addressee.lastName : t('entities.addressee.creating_new_addressee')}</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
                         <Input
                             name={'email'}
                             label={t('entities.addressee.email')}
                             rules={{
-                                required: t('form.required', {fieldName: `"${t('auth.email')}"`}),
+                                required: t('form.required', {fieldName: `"${t('entities.addressee.email')}"`}),
                                 pattern: {
                                     value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                                    message: t('form.invalid-pattern', {fieldName: `"${t('auth.email')}"`})
+                                    message: t('form.invalid-pattern', {fieldName: `"${t('entities.addressee.email')}"`})
                                 }
                             }}
                         />
@@ -89,29 +89,32 @@ function AddresseeForm(props) {
                             name={'firstName'}
                             label={t('entities.addressee.first-name')}
                             rules={{
-                                required: t('form.required', {fieldName: `"${t('auth.email')}"`}),
+                                required: t('form.required', {fieldName: `"${t('entities.addressee.first-name')}"`}),
                             }}
                         />
                         <Input
                             name={'lastName'}
                             label={t('entities.addressee.last-name')}
                             rules={{
-                                required: t('form.required', {fieldName: `"${t('auth.email')}"`}),
+                                required: t('form.required', {fieldName: `"${t('entities.addressee.last-name')}"`}),
                             }}
                         />
-                    </Form>
-                </FormProvider>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant={(props.addressee) ? "primary" : "success"} onClick={onSubmit}>
-                    {(props.addressee) ? t('buttons.edit_addressee') : t('buttons.create_addressee')}
-                </Button>
-                <Button variant="secondary" onClick={props.onClose}>
-                    {t('buttons.close')}
-                </Button>
-            </Modal.Footer>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button
+                            type="submit"
+                            variant={(props.addressee) ? "primary" : "success"}
+                        >
+                            {(props.addressee) ? t('buttons.edit_addressee') : t('buttons.create_addressee')}
+                        </Button>
+                        <Button variant="secondary" onClick={props.onClose}>
+                            {t('buttons.close')}
+                        </Button>
+                    </Modal.Footer>
+                </Form>
+            </FormProvider>
         </Modal>
-    );
+    )
 }
 
 export default AddresseeForm

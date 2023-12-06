@@ -126,53 +126,49 @@ function AddresseeList() {
                         {t('buttons.create_addressee')}
                     </Button>
 
-                    <Table responsive hover>
-                        {state.addressees.length > 0
-                            ? (
-                                <>
-                                    <thead>
-                                    <tr>
-                                        <th>{t('entities.addressee.email')}</th>
-                                        <th>{t('entities.addressee.first-name')}</th>
-                                        <th>{t('entities.addressee.last-name')}</th>
-                                        <th></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {state.addressees.map((addressee) => (
-                                        <tr key={addressee.id}>
-                                            <td className="user-select-none">
-                                                {addressee.email}
-                                            </td>
-                                            <td className="user-select-none">
-                                                {addressee.firstName}
-                                            </td>
-                                            <td className="user-select-none">
-                                                {addressee.lastName}
-                                            </td>
-                                            <td>
-                                                <Button variant="secondary" className="me-2"
-                                                        onClick={() => handleAddresseeFormButtonClick(addressee)}>
-                                                    {t('buttons.edit_addressee')}
-                                                </Button>
-
-                                                <Button variant="danger" className="me-2"
-                                                        onClick={() => handleDeleteAddresseeButtonClick(addressee)}>
-                                                    {t('buttons.delete_addressee')}
-                                                </Button>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                    </tbody>
-                                </>
-                            ) : (
+                    {state.addressees.length > 0
+                        ? (
+                            <Table responsive hover>
+                                <thead>
+                                <tr>
+                                    <th>{t('entities.addressee.email')}</th>
+                                    <th>{t('entities.addressee.first-name')}</th>
+                                    <th>{t('entities.addressee.last-name')}</th>
+                                    <th></th>
+                                </tr>
+                                </thead>
                                 <tbody>
-                                <div className="alert alert-info" role="alert">
-                                    {t('entities.addressee.no_addressees')}
-                                </div>
+                                {state.addressees.map((addressee) => (
+                                    <tr key={addressee.id}>
+                                        <td className="user-select-none">
+                                            {addressee.email}
+                                        </td>
+                                        <td className="user-select-none">
+                                            {addressee.firstName}
+                                        </td>
+                                        <td className="user-select-none">
+                                            {addressee.lastName}
+                                        </td>
+                                        <td>
+                                            <Button variant="secondary" className="me-2"
+                                                    onClick={() => handleAddresseeFormButtonClick(addressee)}>
+                                                {t('buttons.edit_addressee')}
+                                            </Button>
+
+                                            <Button variant="danger" className="me-2"
+                                                    onClick={() => handleDeleteAddresseeButtonClick(addressee)}>
+                                                {t('buttons.delete_addressee')}
+                                            </Button>
+                                        </td>
+                                    </tr>
+                                ))}
                                 </tbody>
-                            )}
-                    </Table>
+                            </Table>
+                        ) : (
+                            <div className="alert alert-info" role="alert">
+                                {t('entities.addressee.no_addressees')}
+                            </div>
+                        )}
                 </div>
             </div>
         </div>
