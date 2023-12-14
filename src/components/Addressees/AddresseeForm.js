@@ -76,6 +76,7 @@ function AddresseeForm(props) {
                     <Modal.Body>
                         <Input
                             name={'email'}
+                            type={'email'}
                             label={t('entities.addressee.email')}
                             rules={{
                                 required: t('form.required', {fieldName: `"${t('entities.addressee.email')}"`}),
@@ -88,6 +89,7 @@ function AddresseeForm(props) {
                         <Input
                             name={'firstName'}
                             label={t('entities.addressee.first-name')}
+                            type={'text'}
                             rules={{
                                 required: t('form.required', {fieldName: `"${t('entities.addressee.first-name')}"`}),
                             }}
@@ -95,6 +97,7 @@ function AddresseeForm(props) {
                         <Input
                             name={'lastName'}
                             label={t('entities.addressee.last-name')}
+                            type={'text'}
                             rules={{
                                 required: t('form.required', {fieldName: `"${t('entities.addressee.last-name')}"`}),
                             }}

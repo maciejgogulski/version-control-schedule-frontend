@@ -1,10 +1,11 @@
 import {Button, Form} from "react-bootstrap"
 import React from "react"
-import {useForm, Controller} from "react-hook-form"
+import {useForm, Controller, FormProvider} from "react-hook-form"
 import {useDependencies} from "../../context/Dependencies"
 import {useAuth} from "../../context/Auth"
 import {useTranslation} from "react-i18next"
 import {useNavigate} from "react-router-dom"
+import Input from "../Form/Input";
 
 export default function LoginPage() {
     const {getApiService, getToastUtils} = useDependencies()
@@ -14,7 +15,12 @@ export default function LoginPage() {
     const toastUtils = getToastUtils()
     const navigate = useNavigate()
 
-    const {control, handleSubmit} = useForm()
+    const form = useForm({
+        defaultValues: {
+            'username': '',
+            'password': ''
+        }
+    })
 
     const onSubmit = async (data) => {
         try {
@@ -32,61 +38,29 @@ export default function LoginPage() {
     }
 
     return (
-        <Form onSubmit={handleSubmit(onSubmit)}>
-            <Form.Group controlId="username">
-                <Form.Label>{t("auth.username")}:</Form.Label>
-                <Controller
-                    name="username"
-                    control={control}
-                    defaultValue=""
+        <FormProvider {...form}>
+            <Form onSubmit={form.handleSubmit(onSubmit)}>
+                <Input
+                    name={'username'}
+                    label={t("auth.username")}
+                    type={'text'}
                     rules={{
                         required: t('form.required', {fieldName: `"${t('auth.username')}"`})
                     }}
-                    render={({field, fieldState}) => (
-                        <>
-                            <Form.Control
-                                type="text"
-                                {...field}
-                                isInvalid={fieldState.invalid}
-                            />
-                            {fieldState.error && (
-                                <Form.Control.Feedback type="invalid">
-                                    {fieldState.error.message}
-                                </Form.Control.Feedback>
-                            )}
-                        </>
-                    )}
                 />
-            </Form.Group>
-            <Form.Group controlId="password">
-                <Form.Label>{t("auth.password")}:</Form.Label>
-                <Controller
-                    name="password"
-                    control={control}
-                    defaultValue=""
+                <Input
+                    name={'password'}
+                    label={t('auth.password')}
+                    type={'password'}
                     rules={{
                         required: t('form.required', {fieldName: `"${t('auth.password')}"`})
                     }}
-                    render={({field, fieldState}) => (
-                        <>
-                            <Form.Control
-                                type="password"
-                                {...field}
-                                isInvalid={fieldState.invalid}
-                            />
-                            {fieldState.error && (
-                                <Form.Control.Feedback type="invalid">
-                                    {fieldState.error.message}
-                                </Form.Control.Feedback>
-                            )}
-                        </>
-                    )}
                 />
-            </Form.Group>
-            <Button className={"mt-3"} variant={"primary"} type="submit">
-                {t("buttons.login")}
-            </Button>
-        </Form>
+                <Button className={"mt-3"} variant={"primary"} type="submit">
+                    {t("buttons.login")}
+                </Button>
+            </Form>
+        </FormProvider>
     )
 }
 

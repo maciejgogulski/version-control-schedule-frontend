@@ -12,6 +12,7 @@ export default function Input(props) {
         <Form.Group controlId={props.name}>
             <Form.Label>{props.label}</Form.Label>
             <Form.Control
+                type={props.type}
                 {...register(props.name, props.rules)}
                 onChange={handleChange}
                 isInvalid={!!errors[props.name]}
