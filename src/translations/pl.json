@@ -19,6 +19,7 @@
     "edit_schedule": "Edytuj plan",
     "delete_schedule": "Usuń plan",
     "edit_block": "Edytuj blok",
+    "multiply-block": "Rozmnóż blok",
     "delete_block": "Usuń blok",
     "confirm": "Potwierdź",
     "create_addressee": "Stwórz adresata",
@@ -26,7 +27,8 @@
     "delete_addressee": "Usuń adresata",
     "assign_addressees": "Przypisz adresatów",
     "add_parameter": "Dodaj parametr",
-    "commit_version": "Zatwierdź zmiany"
+    "commit_version": "Zatwierdź zmiany",
+    "add-another-multiplication": "Dodaj kolejną kopię"
   },
   "toast": {
     "success": {
@@ -78,6 +80,7 @@
       "creating_new_block": "Tworzenie nowego bloku",
       "editing_block": "Edycja bloku",
       "deleting_block": "Usuwanie bloku",
+      "multiplying-block": "Rozmnażanie bloku {{name}}",
       "delete_block_message": "Czy jesteś pewien, że chcesz usunąć blok {{name}}?",
       "name": "Nazwa",
       "start_date": "Data rozpoczęcia",

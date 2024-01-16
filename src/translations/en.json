@@ -19,6 +19,7 @@
     "edit_schedule": "Edit schedule",
     "delete_schedule": "Delete schedule",
     "edit_block": "Edit block",
+    "multiply-block": "Multiply block",
     "delete_block": "Delete block",
     "confirm": "Confirm",
     "create_addressee": "Create addressee",
@@ -26,7 +27,8 @@
     "delete_addressee": "Delete addressee",
     "assign_addressees": "Assign addressees",
     "add_parameter": "Add parameter",
-    "commit_version": "Commit changes"
+    "commit_version": "Commit changes",
+    "add-another-multiplication": "Add another multiplication"
   },
   "toast": {
     "success": {
@@ -78,6 +80,7 @@
       "creating_new_block": "Creating new block",
       "editing_block": "Editing block",
       "deleting_block": "Deleting block",
+      "multiplying-block": "Multiplying block {{name}}",
       "delete_block_message": "Are you sure, you want to delete block {{name}}?",
       "name": "Name",
       "start_date": "Start date",

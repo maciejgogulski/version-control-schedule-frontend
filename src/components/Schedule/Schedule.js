@@ -12,6 +12,7 @@ import ConfirmActionModal from "../Modals/ConfirmActionModal"
 import CommitVersionModal from "../Version/CommitVersionModal"
 import {useAuth} from "../../context/Auth"
 import {useDependencies} from "../../context/Dependencies"
+import MultiplyBlockForm from "../Block/MultiplyBlockForm"
 
 function Schedule() {
     const {getApiService, getToastUtils} = useDependencies()
@@ -35,6 +36,8 @@ function Schedule() {
         blockToEdit: null,
         modifications: [],
         parameters: [],
+        blockToMultiply: null,
+        showMultiplyBlockForm: false
     };
 
     const [state, setState] = useState(initialState);
@@ -200,6 +203,26 @@ function Schedule() {
                 onConfirm={() => fetchModifications()}
             />
 
+            <MultiplyBlockForm
+                show={state.showMultiplyBlockForm}
+                onClose={() => {
+                    updateState({
+                        showMultiplyBlockForm: false,
+                        blockToMultiply: null
+                    })
+                }}
+                onFormSubmit={async () => {
+                    await fetchBlocks()
+                    await fetchModifications()
+                    await fetchParameters()
+                    updateState({
+                        blockToMultiply: null
+                    })
+                }}
+                scheduleId={state.scheduleId}
+                blockToMultiply={state.blockToMultiply}
+            />
+
             <div className="row">
                 <h2>
                     {t("entities.schedule.title")} {state.schedule ? state.schedule.name : null}
@@ -276,8 +299,17 @@ function Schedule() {
                     {state.selectedBlock &&
                         <div>
                             <div className="row">
-                                <h2 className="col-md-6">{t("entities.block.details")}</h2>
-                                <div className="col-md-6">
+                                <h2 className="col-md-5">{t("entities.block.details")}</h2>
+                                <div className="col-md-7">
+                                    <Button variant="success" className="me-2"
+                                            onClick={() => {
+                                                updateState({
+                                                    blockToMultiply: state.selectedBlock,
+                                                    showMultiplyBlockForm: true
+                                                })
+                                            }}>
+                                        {t('buttons.multiply-block')}
+                                    </Button>
                                     <Button variant="secondary" className="me-2"
                                             onClick={() => {
                                                 updateState({
