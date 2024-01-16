@@ -11,14 +11,20 @@ export default class VersionService {
     }
 
     async getModificationsForVersion(versionId) {
-        return await this.apiService.get(`${this.url}/${versionId}/modification`)
+        return await this.apiService.get(
+            `${this.url}/${versionId}/modification`
+        )
     }
 
     async getLatestVersionForSchedule(scheduleId) {
-        return await this.apiService.get(`${this.url}/schedule/${scheduleId}/latest`)
+        return await this.apiService.get(
+            `${this.url}/schedule/${scheduleId}/latest`
+        )
     }
 
     async commitVersion(versionId) {
-        return await this.apiService.put(`${this.url}/${versionId}/commit`)
+        return await this.apiService.put(
+            `${this.url}/${versionId}/commit`
+        )
     }
 }

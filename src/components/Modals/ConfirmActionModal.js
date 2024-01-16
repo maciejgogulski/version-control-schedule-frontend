@@ -18,7 +18,8 @@ function ConfirmActionModal(props) {
                 {props.message}
             </Modal.Body>
             <Modal.Footer>
-                <Button variant={props.variant} onClick={handleConfirmation}>
+                <Button variant={props.variant}
+                        onClick={handleConfirmation}>
                     {t('buttons.confirm')}
                 </Button>
                 <Button variant="secondary" onClick={props.onClose}>

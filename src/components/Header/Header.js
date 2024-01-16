@@ -21,7 +21,11 @@ export default function Header() {
     const [state, setState] = useState(initialState)
 
     const updateState = (updates) => {
-        setState((prevState) => ({...prevState, ...updates}))
+        setState(
+            (prevState) => (
+                {...prevState, ...updates}
+            )
+        )
     }
 
     const confirmLogout = () => {
@@ -42,7 +46,9 @@ export default function Header() {
                     title={t('auth.logout-title')}
                     message={t('auth.logout-message')}
                     action={confirmLogout}
-                    onClose={() => updateState({showLogoutModal: false})}
+                    onClose={() => updateState({
+                        showLogoutModal: false
+                    })}
                 />
                 <div className="col-sm-2 bg-primary p-3">
                     <h4 className="text-light">{t('app_name')}</h4>
@@ -54,7 +60,9 @@ export default function Header() {
                 </div>
                 <div className={'col-sm-2 p-3'}>
                     {auth.loggedIn && (
-                        <Button onClick={() => updateState({showLogoutModal: true})}
+                        <Button onClick={() => updateState({
+                            showLogoutModal: true
+                        })}
                                 variant={'outline-primary'}>
                             {t('buttons.logout')}
                         </Button>

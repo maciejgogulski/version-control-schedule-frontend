@@ -45,7 +45,9 @@ export default function LoginPage() {
                     label={t("auth.username")}
                     type={'text'}
                     rules={{
-                        required: t('form.required', {fieldName: `"${t('auth.username')}"`})
+                        required: t('form.required', {
+                                fieldName: `"${t('auth.username')}"`
+                            })
                     }}
                 />
                 <Input
@@ -53,10 +55,13 @@ export default function LoginPage() {
                     label={t('auth.password')}
                     type={'password'}
                     rules={{
-                        required: t('form.required', {fieldName: `"${t('auth.password')}"`})
+                        required: t('form.required', {
+                            fieldName: `"${t('auth.password')}"`
+                        })
                     }}
                 />
-                <Button className={"mt-3"} variant={"primary"} type="submit">
+                <Button className={"mt-3"} variant={"primary"}
+                        type="submit">
                     {t("buttons.login")}
                 </Button>
             </Form>
