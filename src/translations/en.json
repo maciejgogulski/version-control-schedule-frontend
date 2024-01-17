@@ -43,7 +43,8 @@
       "edit-addressee": "Edited addressee",
       "delete-addressee": "Deleted addressee",
       "submit-addressees": "Assigned addressees to schedule",
-      "commit-version": "Commited chagnes in schedule"
+      "commit-version": "Commited chagnes in schedule",
+      "multiply-block": "Multiplied block"
     },
     "error": {
       "login": "Unable to login to service",

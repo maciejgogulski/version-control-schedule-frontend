@@ -49,69 +49,33 @@ function MultiplyBlockForm(props) {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            console.log('DatesOfNewBlocks', state.datesOfNewBlocks)
-            console.log('BlockToMultiply', props.blockToMultiply)
-            console.log('Parameters', state.parameters)
-
             let blocksWithParameters = []
 
             let parametersWithoutDates = state.parameters.filter(
-                parameter => !(parameter.parameterName === 'Start date' || parameter.parameterName === 'End date')
-            ).map(({id, ...rest}) => rest)
-
-            console.log('ParametersWithoutDates', parametersWithoutDates)
+                parameter => !(parameter.parameterName === 'Name' || parameter.parameterName === 'Start date' || parameter.parameterName === 'End date')
+            ).map(({id, blockId, ...rest}) => rest)
 
             state.datesOfNewBlocks.map((dates) => {
                 blocksWithParameters = [
                     ...blocksWithParameters,
                     {
+                        scheduleId: props.blockToMultiply.scheduleId,
                         name: props.blockToMultiply.name,
                         startDate: parseToServerFormat(dates.startDate),
                         endDate: parseToServerFormat(dates.endDate),
-                        parameters: [
-                            ...parametersWithoutDates,
-                            {
-                                blockId: props.blockToMultiply.id,
-                                parameterName: 'Start Date',
-                                value: parseToServerFormat(dates.startDate),
-                            },
-                            {
-                                blockId: props.blockToMultiply.id,
-                                parameterName: 'End Date',
-                                value: parseToServerFormat(dates.endDate),
-                            }
-                        ]
+                        parameters: [...parametersWithoutDates]
                     }
                 ]
             })
 
             console.log('BlocksWithParameters', blocksWithParameters)
-            // let block = (props.blockToMultiply) ? props.blockToMultiply : new Block()
-            // block.scheduleId = props.scheduleId
-            // block.name = (props.blockToMultiply) ? state.parameters[0].value : state.name
-            //
-            // block.startDate = parseToServerFormat((props.blockToMultiply) ? state.parameters[1].value : state.startDate)
-            // block.endDate = parseToServerFormat((props.blockToMultiply) ? state.parameters[2].value : state.endDate)
-            //
-            // if (block.id) {
-            //     state.parameters.map(async (parameter) => {
-            //         await state.blockService.assignParameterToBlock(parameter)
-            //     })
-            //     state.deletedParameters.map(async (parameter) => {
-            //         await state.blockService.deleteParameterFromBlock(parameter)
-            //     })
-            //     await state.blockService.editBlock(block)
-            //     toastUtils.showToast(
-            //         'success',
-            //         t('toast.success.edit-block')
-            //     )
-            // } else {
-            //     await state.blockService.addBlock(block)
-            //     toastUtils.showToast(
-            //         'success',
-            //         t('toast.success.add-block')
-            //     )
-            // }
+
+            await state.blockService.addMultipleBlocks(blocksWithParameters)
+
+            toastUtils.showToast(
+                'success',
+                t('toast.success.multiply-block')
+            )
         } catch (error) {
             toastUtils.showToast(
                 'error',

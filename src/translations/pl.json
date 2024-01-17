@@ -38,12 +38,13 @@
       "delete-schedule": "Usunięto plan",
       "edit-schedule": "Edytowano plan",
       "add-block": "Dodano nowy blok",
-      "edit-block": "Edytowano block",
+      "edit-block": "Edytowano blok",
       "add-addressee": "Dodano nowego adresata",
       "edit-addressee": "Edytowano adresata",
       "delete-addressee": "Usunięto adresata",
       "submit-addressees": "Przypisano adresatów do planu",
-      "commit-version": "Zatwierdzono zmiany w planie"
+      "commit-version": "Zatwierdzono zmiany w planie",
+      "multiply-block": "Rozmnożono blok"
     },
     "error": {
       "login": "Nie udało się zalogwać do serwisu",

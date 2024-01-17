@@ -29,6 +29,13 @@ export default class BlockService {
         )
     }
 
+    async addMultipleBlocks(blocks) {
+        return await this.apiService.post(
+            `${this.blockUrl}/multiple`,
+            blocks,
+        )
+    }
+
     async editBlock(block) {
         return await this.apiService.put(
             this.blockUrl,
