@@ -124,7 +124,8 @@
         "UPDATE_PARAMETER": "Updated parameter",
         "DELETE_PARAMETER": "Deleted parameter",
         "CREATE_BLOCK": "Created block",
-        "UPDATE_BLOCK": "Updated block"
+        "UPDATE_BLOCK": "Updated block",
+        "DELETE_BLOCK": "Deleted block"
       }
     },
     "version": {

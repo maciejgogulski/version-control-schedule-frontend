@@ -140,6 +140,8 @@ function Schedule() {
                 'success',
                 t('toast.success.delete-block')
             )
+
+            await fetchModifications()
         } catch (error) {
             toastUtils.showToast(
                 'error',

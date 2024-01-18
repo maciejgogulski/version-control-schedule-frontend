@@ -113,15 +113,40 @@ function CommitVersionModal(props) {
     }
 
     const getBlockModificationType = (block) => {
-        let isBlockCreated = false
-        block.modifications.map((modification) => {
+        let type = 'UPDATE_BLOCK'
+
+        block.modifications.some((modification) => {
             if (modification.parameterName === 'Name' && modification.type === 'CREATE_PARAMETER') {
-                isBlockCreated = true
+                type = 'CREATE_BLOCK'
+                return true
             }
+            if (modification.parameterName === 'Name' && modification.type === 'DELETE_PARAMETER') {
+                type = 'DELETE_BLOCK'
+                return true
+            }
+            return false
         })
-        return isBlockCreated
-            ? 'CREATE_BLOCK'
-            : 'UPDATE_BLOCK'
+
+        return type
+    }
+
+    const getBlockModificationTableClassName = (block) => {
+        let colorClass = ''
+        switch (getBlockModificationType(block)) {
+            case 'CREATE_BLOCK':
+                colorClass = 'border-success'
+                break
+            case 'UPDATE_BLOCK':
+                colorClass = 'border-primary'
+                break
+            case 'DELETE_BLOCK':
+                colorClass = 'border-danger'
+                break
+            default:
+        }
+        console.log(getBlockModificationType(block))
+
+        return colorClass + ' text-center container bg-light rounded mb-4 px-5 py-3 shadow border-top border-5'
     }
 
     return (
@@ -134,8 +159,7 @@ function CommitVersionModal(props) {
                     {state.blocksWithModifications.map((block) => (
                         <Table responsive
                                hover
-                               className={(getBlockModificationType(block) === 'CREATE_BLOCK' ? 'border-success' : 'border-primary') +
-                                   ' text-center container bg-light rounded mb-4 px-5 py-3 shadow border-top border-5'}
+                               className={getBlockModificationTableClassName(block)}
                                key={block.id}>
                             <thead>
                             <tr className={'text-start text-primary'}>
