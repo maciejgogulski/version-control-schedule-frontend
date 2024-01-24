@@ -13,6 +13,7 @@ import CommitVersionModal from "../Version/CommitVersionModal"
 import {useAuth} from "../../context/Auth"
 import {useDependencies} from "../../context/Dependencies"
 import MultiplyBlockForm from "../Block/MultiplyBlockForm"
+import MassEditRelatedBlocksForm from "../Block/MassEditRelatedBlocksForm";
 
 function Schedule() {
     const {getApiService, getToastUtils} = useDependencies()
@@ -37,7 +38,9 @@ function Schedule() {
         modifications: [],
         parameters: [],
         blockToMultiply: null,
-        showMultiplyBlockForm: false
+        showMultiplyBlockForm: false,
+        blockToMassEdit: null,
+        showMassEditRelatedBlocksForm: false
     };
 
     const [state, setState] = useState(initialState);
@@ -225,57 +228,74 @@ function Schedule() {
                 blockToMultiply={state.blockToMultiply}
             />
 
+            <MassEditRelatedBlocksForm
+                show={state.showMassEditRelatedBlocksForm}
+                onClose={() => {
+                    updateState({
+                        showMassEditRelatedBlocksForm: false,
+                        blockToMassEdit: null
+                    })
+                }}
+                onFormSubmit={async () => {
+                    await fetchBlocks()
+                    await fetchModifications()
+                    await fetchParameters()
+                    updateState({
+                        blockToMassEdit: null
+                    })
+                }}
+                scheduleId={state.scheduleId}
+                blockToMassEdit={state.blockToMassEdit}
+            />
+
             <div className="row">
                 <h2>
                     {t("entities.schedule.title")} {state.schedule ? state.schedule.name : null}
                 </h2>
 
                 <div className="container">
-                    <Button
-                        variant="success"
-                        className="me-2"
-                        onClick={() => {
-                            updateState({
-                                blockToEdit: null,
-                                showBlockForm: true
-                            })
-                        }}
-                    >
-                        {t("buttons.create_block")}
-                    </Button>
+                    <div className="btn-group">
+                        <Button
+                            variant="success"
+                            onClick={() => {
+                                updateState({
+                                    blockToEdit: null,
+                                    showBlockForm: true
+                                })
+                            }}
+                        >
+                            {t("buttons.create_block")}
+                        </Button>
+                        <Button
+                            variant="outline-secondary"
+                            onClick={() => {
+                                updateState({
+                                    pickedDay: subDays(state.pickedDay, 1),
+                                    selectedBlock: null
+                                })
+                            }}
+                        >
+                            &lt;&lt;
+                        </Button>
 
-                    <Button
-                        variant="outline-secondary"
-                        className="me-2"
-                        onClick={() => {
-                            updateState({
-                                pickedDay: subDays(state.pickedDay, 1),
-                                selectedBlock: null
-                            })
-                        }}
-                    >
-                        &lt;&lt;
-                    </Button>
+                        <Button
+                            variant="secondary"
+                            onClick={() => updateState({showDayPicker: true})}
+                        >
+                            {format(state.pickedDay, "dd-MM-yyyy")}
+                        </Button>
 
-                    <Button
-                        variant="secondary"
-                        className="me-2"
-                        onClick={() => updateState({showDayPicker: true})}
-                    >
-                        {format(state.pickedDay, "dd-MM-yyyy")}
-                    </Button>
-
-                    <Button
-                        variant="outline-secondary"
-                        className="me-2"
-                        onClick={() => {
-                            updateState({
-                                pickedDay: addDays(state.pickedDay, 1),
-                                selectedBlock: null
-                            })
-                        }}>
-                        &gt;&gt;
-                    </Button>
+                        <Button
+                            variant="outline-secondary"
+                            onClick={() => {
+                                updateState({
+                                    pickedDay: addDays(state.pickedDay, 1),
+                                    selectedBlock: null
+                                })
+                            }}>
+                            &gt;&gt;
+                        </Button>
+                    </div>
                 </div>
             </div>
             <div className="row mb-4">
@@ -303,15 +323,6 @@ function Schedule() {
                             <div className="row">
                                 <h2 className="col-md-5">{t("entities.block.details")}</h2>
                                 <div className="col-md-7">
-                                    <Button variant="success" className="me-2"
-                                            onClick={() => {
-                                                updateState({
-                                                    blockToMultiply: state.selectedBlock,
-                                                    showMultiplyBlockForm: true
-                                                })
-                                            }}>
-                                        {t('buttons.multiply-block')}
-                                    </Button>
                                     <Button variant="secondary" className="me-2"
                                             onClick={() => {
                                                 updateState({
@@ -327,8 +338,31 @@ function Schedule() {
                                     </Button>
                                 </div>
                             </div>
+
                             <BlockDetails block={state.selectedBlock}
                                           parameters={state.parameters}/>
+
+                            <div className="btn-group">
+                                <Button variant="outline-success"
+                                        onClick={() => {
+                                            updateState({
+                                                blockToMultiply: state.selectedBlock,
+                                                showMultiplyBlockForm: true
+                                            })
+                                        }}>
+                                    {t('buttons.multiply-block')}
+                                </Button>
+
+                                <Button variant="outline-secondary"
+                                        onClick={() => {
+                                            updateState({
+                                                blockToMassEdit: state.selectedBlock,
+                                                showMassEditRelatedBlocksForm: true
+                                            })
+                                        }}>
+                                    {t('buttons.edit-related-blocks')}
+                                </Button>
+                            </div>
                         </div>
                     }
                 </div>

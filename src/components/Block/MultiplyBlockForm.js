@@ -68,8 +68,6 @@ function MultiplyBlockForm(props) {
                 ]
             })
 
-            console.log('BlocksWithParameters', blocksWithParameters)
-
             await state.blockService.addMultipleBlocks(blocksWithParameters)
 
             toastUtils.showToast(
@@ -99,7 +97,6 @@ function MultiplyBlockForm(props) {
 
     useEffect(() => {
         if (props.blockToMultiply) {
-            console.log('BlockToMultiply', props.blockToMultiply)
             updateState({
                 datesOfNewBlocks: [
                     {

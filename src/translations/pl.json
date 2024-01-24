@@ -28,7 +28,8 @@
     "assign_addressees": "Przypisz adresatów",
     "add_parameter": "Dodaj parametr",
     "commit_version": "Zatwierdź zmiany",
-    "add-another-multiplication": "Dodaj kolejną kopię"
+    "add-another-multiplication": "Dodaj kolejną kopię",
+    "edit-related-blocks": "Edytuj powiązane bloki"
   },
   "toast": {
     "success": {
@@ -82,14 +83,18 @@
       "editing_block": "Edycja bloku",
       "deleting_block": "Usuwanie bloku",
       "multiplying-block": "Powielanie bloku {{name}}",
+      "mass-editing-related-blocks": "Masowa edycja powiązanych bloków - {{name}}",
       "delete_block_message": "Czy jesteś pewien, że chcesz usunąć blok {{name}}?",
       "name": "Nazwa",
       "start_date": "Data rozpoczęcia",
       "end_date": "Data zakończenia",
+      "start-hour": "Godzina rozpoczęcia",
+      "end-hour": "Godzina zakończenia",
       "addressees": "Adresaci",
       "addressee_groups": "Grupy",
       "persons": "Osoby",
-      "no_blocks_in_day": "Brak bloków w tym dniu"
+      "no_blocks_in_day": "Brak bloków w tym dniu",
+      "move-day": "Przesuń dzień"
     },
     "addressee": {
       "creating_new_addressee": "Tworzenie nowego adresata",

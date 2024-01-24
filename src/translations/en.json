@@ -28,7 +28,8 @@
     "assign_addressees": "Assign addressees",
     "add_parameter": "Add parameter",
     "commit_version": "Commit changes",
-    "add-another-multiplication": "Add another multiplication"
+    "add-another-multiplication": "Add another multiplication",
+    "edit-related-blocks": "Edit related blocks"
   },
   "toast": {
     "success": {
@@ -82,14 +83,18 @@
       "editing_block": "Editing block",
       "deleting_block": "Deleting block",
       "multiplying-block": "Multiplying block {{name}}",
+      "mass-editing-related-blocks": "Mass editing related blocks {{name}}",
       "delete_block_message": "Are you sure, you want to delete block {{name}}?",
       "name": "Name",
       "start_date": "Start date",
       "end_date": "End date",
+      "start-hour": "Start hour",
+      "end-hour": "End hour",
       "addressees": "Addressees",
       "addressee_groups": "Groups",
       "persons": "Persons",
-      "no_blocks_in_day": "No blocks created in this day"
+      "no_blocks_in_day": "No blocks created in this day",
+      "move-day": "Move day"
     },
     "addressee": {
       "creating_new_addressee": "Creating new addressee",

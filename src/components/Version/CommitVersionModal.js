@@ -38,7 +38,6 @@ function CommitVersionModal(props) {
 
             groupedData[blockId].modifications.push(modificationData)
         })
-        console.log(Object.values(groupedData))
         updateState({
             blocksWithModifications: Object.values(groupedData)
         })
