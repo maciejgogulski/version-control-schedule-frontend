@@ -19,7 +19,7 @@
     "edit_schedule": "Edytuj plan",
     "delete_schedule": "Usuń plan",
     "edit_block": "Edytuj blok",
-    "multiply-block": "Rozmnóż blok",
+    "multiply-block": "Powiel blok",
     "delete_block": "Usuń blok",
     "confirm": "Potwierdź",
     "create_addressee": "Stwórz adresata",
@@ -44,7 +44,7 @@
       "delete-addressee": "Usunięto adresata",
       "submit-addressees": "Przypisano adresatów do planu",
       "commit-version": "Zatwierdzono zmiany w planie",
-      "multiply-block": "Rozmnożono blok"
+      "multiply-block": "Powielono blok"
     },
     "error": {
       "login": "Nie udało się zalogwać do serwisu",
@@ -81,7 +81,7 @@
       "creating_new_block": "Tworzenie nowego bloku",
       "editing_block": "Edycja bloku",
       "deleting_block": "Usuwanie bloku",
-      "multiplying-block": "Rozmnażanie bloku {{name}}",
+      "multiplying-block": "Powielanie bloku {{name}}",
       "delete_block_message": "Czy jesteś pewien, że chcesz usunąć blok {{name}}?",
       "name": "Nazwa",
       "start_date": "Data rozpoczęcia",
@@ -117,7 +117,7 @@
       "parameter_name": "Nazwa parametru",
       "old_value": "Poprzednia wartość",
       "new_value": "Nowa wartość",
-      "changes_made": "Dokonano zmian",
+      "parameter_changes_made": "Dokonano zmian parametrów",
       "timestamp": "Czas dokonania zmiany",
       "types": {
         "CREATE_PARAMETER": "Utworzono parametr",
@@ -126,11 +126,13 @@
         "CREATE_BLOCK": "Utworzono blok",
         "UPDATE_BLOCK": "Zmodyfikowano blok",
         "DELETE_BLOCK": "Usunięto blok"
-      }
+      },
+      "no-additional-param-changes" : "Brak dodatkowych zmian parametrów do wyświetlenia"
     },
     "version": {
       "committing_version": "Zatwierdzanie zmian",
-      "commit_version_message": "Czy na pewno chcesz zatwierdzić zmiany?"
+      "commit_version_message": "Czy na pewno chcesz zatwierdzić zmiany?",
+      "changes-made": "Dokonano zmian w tej wersji planu"
     }
   },
   "auth": {

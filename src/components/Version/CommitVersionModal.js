@@ -144,9 +144,27 @@ function CommitVersionModal(props) {
                 break
             default:
         }
-        console.log(getBlockModificationType(block))
 
         return colorClass + ' text-center container bg-light rounded mb-4 px-5 py-3 shadow border-top border-5'
+    }
+
+    const filterOutDefaultParamsForCreateBlock = (modification) => {
+        return !(modification.type === 'CREATE_PARAMETER' &&
+            (
+                modification.parameterName === 'Name' ||
+                modification.parameterName === 'Start date' ||
+                modification.parameterName === 'End date'
+            )
+        )
+    }
+
+    const dontDisplayColumnHeadersForModifications = (block) => {
+        const blockModificationType = getBlockModificationType(block)
+        return blockModificationType === 'DELETE_BLOCK' ||
+            (
+                blockModificationType === 'CREATE_BLOCK' &&
+                block.modifications.length < 4
+            )
     }
 
     return (
@@ -163,8 +181,9 @@ function CommitVersionModal(props) {
                                key={block.id}>
                             <thead>
                             <tr className={'text-start text-primary'}>
-                                <th colSpan={3}>
-                                    <span className={'fw-lighter'}>{t(`entities.modification.types.${getBlockModificationType(block)}`)}: </span>
+                                <th colSpan={2}>
+                                    <span
+                                        className={'fw-lighter'}>{t(`entities.modification.types.${getBlockModificationType(block)}`)}: </span>
                                     {block.modifications[0].blockName}</th>
                                 <th>
                                     <span className={'fw-lighter'}>{t('entities.block.start_date')}: </span>
@@ -175,26 +194,31 @@ function CommitVersionModal(props) {
                                     {parseToServerFormat(block.modifications[0].blockEndDate)}
                                 </th>
                             </tr>
-                            <tr>
-                                <th>{t('entities.modification.timestamp')}</th>
-                                <th>{t('entities.modification.type')}</th>
-                                <th>{t('entities.modification.parameter_name')}</th>
-                                <th>{t('entities.modification.new_value')}</th>
-                                <th>{t('entities.modification.old_value')}</th>
-
-                            </tr>
+                            {!dontDisplayColumnHeadersForModifications(block) && (
+                                <tr>
+                                    <th>{t('entities.modification.type')}</th>
+                                    <th>{t('entities.modification.parameter_name')}</th>
+                                    <th>{t('entities.modification.new_value')}</th>
+                                    <th>{t('entities.modification.old_value')}</th>
+                                </tr>
+                            )}
                             </thead>
                             <tbody className={'border-light'}>
-                            {block.modifications.map((modification) => (
-                                <tr key={modification.id}
-                                    className={pickModificationRowFontColor(modification.type)}>
-                                    <td>{parseToServerFormat(modification.timestamp)}</td>
-                                    <td>{t('entities.modification.types.' + modification.type)}</td>
-                                    <td>{translateParameterName(modification.parameterName)}</td>
-                                    <td>{translateParameterValue(modification.parameterName, modification.newValue)}</td>
-                                    <td>{translateParameterValue(modification.parameterName, modification.oldValue)}</td>
+                            {dontDisplayColumnHeadersForModifications(block) ? (
+                                <tr>
+                                    <td colSpan={4}>{t('entities.modification.no-additional-param-changes')}</td>
                                 </tr>
-                            ))}
+                            ) : (block.modifications.map((modification) => (
+                                filterOutDefaultParamsForCreateBlock(modification) && (
+                                    <tr key={modification.id}
+                                        className={pickModificationRowFontColor(modification.type)}>
+                                        <td>{t('entities.modification.types.' + modification.type)}</td>
+                                        <td>{translateParameterName(modification.parameterName)}</td>
+                                        <td>{translateParameterValue(modification.parameterName, modification.newValue)}</td>
+                                        <td>{translateParameterValue(modification.parameterName, modification.oldValue)}</td>
+                                    </tr>
+                                )
+                            )))}
                             </tbody>
                         </Table>
                     ))}

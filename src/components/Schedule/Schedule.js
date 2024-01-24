@@ -337,7 +337,7 @@ function Schedule() {
                 <div className="alert alert-warning" role="alert">
                     <div className="d-flex flex-row">
                         <div
-                            className="me-2 align-self-center">{t('entities.modification.changes_made') + ': '}<strong>{state.modifications.length}</strong>
+                            className="me-2 align-self-center">{t('entities.version.changes-made')}
                         </div>
                         <Button variant="success"
                                 onClick={() => updateState({showCommitVersionModal: true})}>

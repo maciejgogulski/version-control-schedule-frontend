@@ -117,7 +117,7 @@
       "parameter_name": "Parameter name",
       "old_value": "Previous value",
       "new_value": "New value",
-      "changes_made": "Changes made",
+      "parameter_changes_made": "Changed parameters",
       "timestamp": "Modified at",
       "types": {
         "CREATE_PARAMETER": "Created parameter",
@@ -126,11 +126,13 @@
         "CREATE_BLOCK": "Created block",
         "UPDATE_BLOCK": "Updated block",
         "DELETE_BLOCK": "Deleted block"
-      }
+      },
+      "no-additional-param-changes" : "No additional changes to display"
     },
     "version": {
       "committing_version": "Committing changes",
-      "commit_version_message": "Are you sure, you want to commit changes?"
+      "commit_version_message": "Are you sure, you want to commit changes?",
+      "changes-made": "Changes made in this version"
     }
   },
   "auth": {
