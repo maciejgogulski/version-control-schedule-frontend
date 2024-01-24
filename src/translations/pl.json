@@ -52,6 +52,7 @@
       "submit": "Nie udało się przesłać danych formularza",
       "fetch-parameters": "Nie udało się pobrać parametrów",
       "fetch-params-for-block": "Nie udało się pobrać parametrów dla bloku",
+      "fetch-related-blocks": "Nie udało się pobrać powiązanych bloków",
       "fetch-blocks": "Nie udało się pobrać bloków",
       "fetch-addressees": "Nie udało się pobrać adresatów",
       "fetch-modifications": "Nie udało się pobrać zmian",
@@ -149,5 +150,8 @@
   "form": {
     "required": "Pole {{fieldName}} jest wymagane",
     "invalid-pattern": "Pole {{fieldName}} ma niewłaściwy format"
+  },
+  "alerts": {
+    "mass-edit-instruction": "Tylko zaznaczone bloki podlegają edycji"
   }
 }

@@ -39,7 +39,7 @@ function MassEditRelatedBlocksForm(props) {
 
     const initialState = {
         blockService: apiService.getBlockService(token),
-        relatedBlocks: tmpInitialRelatedBlocks,
+        relatedBlocks: [],
         startTime: null,
         endTime: null
     }
@@ -50,14 +50,14 @@ function MassEditRelatedBlocksForm(props) {
         setState((prevState) => ({...prevState, ...updates}));
     };
 
-    const fetchParametersForBlock = async () => {
+    const fetchRelatedBlocks = async () => {
         try {
-            const data = await state.blockService.getParameters(props.blockToMassEdit.id)
-            updateState({parameters: data})
+            const data = await state.blockService.getRelatedBlocks(props.blockToMassEdit.id)
+            updateState({relatedBlocks: data})
         } catch (error) {
             toastUtils.showToast(
                 'error',
-                t('toast.error.fetch-params-for-block')
+                t('toast.error.fetch-related-blocks')
             )
         }
     }
@@ -68,6 +68,7 @@ function MassEditRelatedBlocksForm(props) {
 
     useEffect(() => {
         if (props.blockToMassEdit) {
+            fetchRelatedBlocks()
             updateState({
                 startTime: extractTimeFromDateTimeString(props.blockToMassEdit.startDate),
                 endTime: extractTimeFromDateTimeString(props.blockToMassEdit.endDate)
@@ -176,20 +177,6 @@ function MassEditRelatedBlocksForm(props) {
         props.onClose()
     }
 
-    const translateParameterName = (parameterName) => {
-        switch (parameterName) {
-            case 'Name':
-                return t('entities.parameter.required.name')
-            case 'Start date':
-                return t('entities.parameter.required.start_date')
-            case 'End date':
-                return t('entities.parameter.required.end_date')
-            default:
-                return parameterName
-        }
-    }
-
-
     return (
         <Modal show={props.show}
                onHide={handleFormClose}
@@ -199,6 +186,10 @@ function MassEditRelatedBlocksForm(props) {
                 <Modal.Title>{t('entities.block.mass-editing-related-blocks', {name: props.blockToMassEdit?.name})}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
+                <div className="alert alert-info" role="info">
+                    {t('alerts.mass-edit-instruction')}
+                </div>
+
                 <Form onSubmit={handleSubmit}>
                     <div className="row my-2">
                         <Form.Group controlId={`startHour`}

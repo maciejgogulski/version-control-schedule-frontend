@@ -52,6 +52,7 @@
       "submit": "Unable to send form data",
       "fetch-parameters": "Unable to fetch parameters",
       "fetch-params-for-block": "Unable to fetch parameters for block",
+      "fetch-related-blocks": "Unable to fetch related blocks",
       "fetch-blocks": "Unable to fetch blocks",
       "fetch-addressees": "Unable to fetch addressees",
       "fetch-modifications": "Unable to fetch modifications",
@@ -149,5 +150,8 @@
   "form": {
     "required": "Field {{fieldName}} is required",
     "invalid-pattern": "Field {{fieldName}} has invalid pattern"
+  },
+  "alerts": {
+    "mass-edit-instruction": "Only checked blocks will be edited"
   }
 }

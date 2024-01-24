@@ -62,4 +62,8 @@ export default class BlockService {
         return await this.apiService.delete(`${this.blockUrl}/parameter/${parameter.id}`)
     }
 
+    async getRelatedBlocks(blockId) {
+        return await this.apiService.get(`${this.blockUrl}/${blockId}/related`)
+    }
+
 }
