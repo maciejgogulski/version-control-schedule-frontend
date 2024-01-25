@@ -1,10 +1,8 @@
 import React, {useEffect, useState} from "react"
 import {Button, CloseButton, Form, Modal} from "react-bootstrap"
-import Block from "../../models/Block"
 import {extractTimeFromDateTimeString, parseToServerFormat} from "../../utils/DateTimeParser"
 import {addDays, format, parseISO, subDays} from "date-fns"
 import {useTranslation} from "react-i18next"
-import Parameter from "../../models/Parameter"
 import './BlockForm.css'
 import {useDependencies} from "../../context/Dependencies";
 import {useAuth} from "../../context/Auth";
@@ -15,27 +13,6 @@ function MassEditRelatedBlocksForm(props) {
     const {getApiService, getToastUtils} = useDependencies()
     const apiService = getApiService()
     const toastUtils = getToastUtils()
-
-    const tmpInitialRelatedBlocks = [
-        {
-            name: 'Test block',
-            startDate: '2024-01-04 13:00',
-            endDate: '2024-01-04 15:00',
-            disabled: true
-        },
-        {
-            name: 'Test block',
-            startDate: '2024-01-12 13:00',
-            endDate: '2024-01-12 15:00',
-            disabled: false
-        },
-        {
-            name: 'Test block',
-            startDate: '2024-01-20 13:00',
-            endDate: '2024-01-20 15:00',
-            disabled: true
-        }
-    ]
 
     const initialState = {
         blockService: apiService.getBlockService(token),
@@ -53,6 +30,12 @@ function MassEditRelatedBlocksForm(props) {
     const fetchRelatedBlocks = async () => {
         try {
             const data = await state.blockService.getRelatedBlocks(props.blockToMassEdit.id)
+            data.map((block) => {
+                block.disabled = (
+                    extractTimeFromDateTimeString(block.startDate) === extractTimeFromDateTimeString(props.blockToMassEdit.startDate) &&
+                    extractTimeFromDateTimeString(block.endDate) === extractTimeFromDateTimeString(props.blockToMassEdit.endDate)
+                )
+            })
             updateState({relatedBlocks: data})
         } catch (error) {
             toastUtils.showToast(
@@ -64,6 +47,34 @@ function MassEditRelatedBlocksForm(props) {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        try {
+            const editedBlocks = []
+            state.relatedBlocks.map((block) => {
+                if (!block.disabled) {
+                    editedBlocks.push(block)
+                }
+            })
+
+            await state.blockService.massEditBlocks(editedBlocks)
+            toastUtils.showToast(
+                'success',
+                t('toast.success.mass-edit-blocks')
+            )
+        } catch (error) {
+            toastUtils.showToast(
+                'error',
+                t('toast.error.submit')
+            )
+        }
+
+        updateState({
+            relatedBlocks: [],
+            startTime: null,
+            endTime: null
+        })
+
+        props.onClose()
+        props.onFormSubmit()
     }
 
     useEffect(() => {
@@ -172,7 +183,9 @@ function MassEditRelatedBlocksForm(props) {
 
     const handleFormClose = () => {
         updateState({
-            parameters: [],
+            relatedBlocks: [],
+            startTime: null,
+            endTime: null
         })
         props.onClose()
     }
@@ -195,7 +208,7 @@ function MassEditRelatedBlocksForm(props) {
                         <Form.Group controlId={`startHour`}
                                     className="col-md-4"
                         >
-                            <Form.Label>{t('entities.block.start-hour')}:</Form.Label>
+                            <Form.Label>{t('entities.block.change-start-hour')}:</Form.Label>
                             <Form.Control
                                 type="time"
                                 value={state.startTime}
@@ -205,7 +218,7 @@ function MassEditRelatedBlocksForm(props) {
                         <Form.Group controlId={`endHour`}
                                     className="col-md-4"
                         >
-                            <Form.Label>{t('entities.block.end-hour')}:</Form.Label>
+                            <Form.Label>{t('entities.block.change-end-hour')}:</Form.Label>
                             <Form.Control
                                 type="time"
                                 value={state.endTime}
@@ -231,7 +244,7 @@ function MassEditRelatedBlocksForm(props) {
                                     type="button"
                                     variant="outline-secondary"
                                     onClick={() => handleMoveDayChange('forwards')}
-                                    >
+                                >
                                     &gt;&gt;
                                 </Button>
                             </div>

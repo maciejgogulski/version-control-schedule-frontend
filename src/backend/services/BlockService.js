@@ -36,6 +36,13 @@ export default class BlockService {
         )
     }
 
+    async massEditBlocks(blocks) {
+        return await this.apiService.put(
+            `${this.blockUrl}/mass-edit`,
+            blocks,
+        )
+    }
+
     async editBlock(block) {
         return await this.apiService.put(
             this.blockUrl,

@@ -45,7 +45,8 @@
       "delete-addressee": "Deleted addressee",
       "submit-addressees": "Assigned addressees to schedule",
       "commit-version": "Commited chagnes in schedule",
-      "multiply-block": "Multiplied block"
+      "multiply-block": "Multiplied block",
+      "mass-edit-blocks": "Mass edited related blocks"
     },
     "error": {
       "login": "Unable to login to service",
@@ -95,7 +96,9 @@
       "addressee_groups": "Groups",
       "persons": "Persons",
       "no_blocks_in_day": "No blocks created in this day",
-      "move-day": "Move day"
+      "move-day": "Move day",
+      "change-start-hour": "Change start hour",
+      "change-end-hour": "Change end hour"
     },
     "addressee": {
       "creating_new_addressee": "Creating new addressee",
@@ -152,6 +155,6 @@
     "invalid-pattern": "Field {{fieldName}} has invalid pattern"
   },
   "alerts": {
-    "mass-edit-instruction": "Only checked blocks will be edited"
+    "mass-edit-instruction": "Only checked blocks will be edited. By default, blocks with the same hour are checked."
   }
 }

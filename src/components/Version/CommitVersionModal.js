@@ -148,7 +148,7 @@ function CommitVersionModal(props) {
     }
 
     const filterOutDefaultParamsForCreateBlock = (modification) => {
-        return !(modification.type === 'CREATE_PARAMETER' &&
+        return (modification.type === 'CREATE_PARAMETER' &&
             (
                 modification.parameterName === 'Name' ||
                 modification.parameterName === 'Start date' ||
@@ -208,7 +208,7 @@ function CommitVersionModal(props) {
                                     <td colSpan={4}>{t('entities.modification.no-additional-param-changes')}</td>
                                 </tr>
                             ) : (block.modifications.map((modification) => (
-                                filterOutDefaultParamsForCreateBlock(modification) && (
+                                !filterOutDefaultParamsForCreateBlock(modification) && (
                                     <tr key={modification.id}
                                         className={pickModificationRowFontColor(modification.type)}>
                                         <td>{t('entities.modification.types.' + modification.type)}</td>
