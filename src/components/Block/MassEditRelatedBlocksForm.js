@@ -32,8 +32,8 @@ function MassEditRelatedBlocksForm(props) {
             const data = await state.blockService.getRelatedBlocks(props.blockToMassEdit.id)
             data.map((block) => {
                 block.disabled = (
-                    extractTimeFromDateTimeString(block.startDate) === extractTimeFromDateTimeString(props.blockToMassEdit.startDate) &&
-                    extractTimeFromDateTimeString(block.endDate) === extractTimeFromDateTimeString(props.blockToMassEdit.endDate)
+                    extractTimeFromDateTimeString(block.startDate) !== extractTimeFromDateTimeString(props.blockToMassEdit.startDate) &&
+                    extractTimeFromDateTimeString(block.endDate) !== extractTimeFromDateTimeString(props.blockToMassEdit.endDate)
                 )
             })
             updateState({relatedBlocks: data})
