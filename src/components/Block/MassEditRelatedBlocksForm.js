@@ -160,7 +160,7 @@ function MassEditRelatedBlocksForm(props) {
         updateState({
             relatedBlocks: state.relatedBlocks.map((block) => {
                 if (!block.disabled) {
-                    const parsedStartDate = parseISO(block.endDate)
+                    const parsedStartDate = parseISO(block.startDate)
                     const movedStartDate = direction === 'forwards'
                         ? addDays(parsedStartDate, 1)
                         : subDays(parsedStartDate, 1)
