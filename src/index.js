@@ -22,7 +22,7 @@ i18n
                 translation: translationsPl,
             },
         },
-        lng: 'pl',
+        lng: process.env.REACT_APP_LANGUAGE,
         fallbackLng: 'en',
         interpolation: {
             escapeValue: false,

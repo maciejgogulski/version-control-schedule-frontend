@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export default class ApiService {
 
-    backendUrl = 'http://localhost:8080'
+    backendUrl = process.env.REACT_APP_BACKEND_URL
 
     token
 

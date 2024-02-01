@@ -51,7 +51,7 @@ export default function Header() {
                     })}
                 />
                 <div className="col-sm-2 bg-primary p-3">
-                    <h4 className="text-light">{t('app_name')}</h4>
+                    <h4 className="text-light">{process.env.REACT_APP_NAME}</h4>
                 </div>
                 <div className="col-sm-8">
                     <h5 className={'p-3 text-primary'}>
