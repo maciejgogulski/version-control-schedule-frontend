@@ -64,7 +64,8 @@
       "commit-version": "Nie udało się zatwierdzić zmian",
       "delete-addressee": "Nie udało się usunąć adresata",
       "delete-block": "Nie udało się usunąć bloku",
-      "delete-schedule": "Nie udało się usunąć planu"
+      "delete-schedule": "Nie udało się usunąć planu",
+      "date-end-before-start": "Data zakończenia nie może być przed datą rozpoczęcia"
     }
   },
   "entities": {

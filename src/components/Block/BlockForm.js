@@ -2,12 +2,13 @@ import React, {useEffect, useState} from "react"
 import {Button, CloseButton, Form, Modal} from "react-bootstrap"
 import Block from "../../models/Block"
 import {parseToServerFormat} from "../../utils/DateTimeParser"
-import {format} from "date-fns"
+import {format, isBefore, parseISO} from "date-fns"
 import {useTranslation} from "react-i18next"
 import Parameter from "../../models/Parameter"
 import './BlockForm.css'
 import {useDependencies} from "../../context/Dependencies";
 import {useAuth} from "../../context/Auth";
+import DateRangeError from "../../errors/DateRangeError";
 
 function BlockForm(props) {
     const {t} = useTranslation()
@@ -57,6 +58,10 @@ function BlockForm(props) {
             block.startDate = parseToServerFormat((props.blockToEdit) ? state.parameters[1].value : state.startDate)
             block.endDate = parseToServerFormat((props.blockToEdit) ? state.parameters[2].value : state.endDate)
 
+            if (isBefore(parseISO(block.endDate), parseISO(block.startDate))) {
+                throw new DateRangeError(t('toast.error.date-end-before-start'))
+            }
+
             if (block.id) {
                 state.parameters.map(async (parameter) => {
                     await state.blockService.assignParameterToBlock(parameter)
@@ -77,10 +82,19 @@ function BlockForm(props) {
                 )
             }
         } catch (error) {
-            toastUtils.showToast(
-                'error',
-                t('toast.error.submit')
-            )
+            if (error instanceof DateRangeError) {
+                toastUtils.showToast(
+                    'error',
+                    t('toast.error.date-end-before-start')
+                )
+            } else {
+                toastUtils.showToast(
+                    'error',
+                    error.message() ?? t('toast.error.submit')
+                )
+            }
+            props.onClose()
+            return
         }
 
         updateState({

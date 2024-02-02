@@ -2,12 +2,13 @@ import React, {useEffect, useState} from "react"
 import {Button, CloseButton, Form, Modal} from "react-bootstrap"
 import Block from "../../models/Block"
 import {parseToServerFormat} from "../../utils/DateTimeParser"
-import {addDays, format, parseISO} from "date-fns"
+import {addDays, format, isBefore, parseISO} from "date-fns"
 import {useTranslation} from "react-i18next"
 import Parameter from "../../models/Parameter"
 import './BlockForm.css'
 import {useDependencies} from "../../context/Dependencies";
 import {useAuth} from "../../context/Auth";
+import DateRangeError from "../../errors/DateRangeError";
 
 function MultiplyBlockForm(props) {
     const {t} = useTranslation()
@@ -56,6 +57,9 @@ function MultiplyBlockForm(props) {
             ).map(({id, blockId, ...rest}) => rest)
 
             state.datesOfNewBlocks.map((dates) => {
+                if (isBefore(parseISO(dates.endDate), parseISO(dates.startDate))) {
+                    throw new DateRangeError(t('toast.error.date-end-before-start'))
+                }
                 blocksWithParameters = [
                     ...blocksWithParameters,
                     {
@@ -75,10 +79,18 @@ function MultiplyBlockForm(props) {
                 t('toast.success.multiply-block')
             )
         } catch (error) {
-            toastUtils.showToast(
-                'error',
-                t('toast.error.submit')
-            )
+            if (error instanceof DateRangeError) {
+                toastUtils.showToast(
+                    'error',
+                    t('toast.error.date-end-before-start')
+                )
+            } else {
+                toastUtils.showToast(
+                    'error',
+                    t('toast.error.submit')
+                )
+            }
+            props.onClose()
         }
 
         updateState({

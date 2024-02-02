@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from "react"
-import {Button, CloseButton, Form, Modal} from "react-bootstrap"
+import {Button, Form, Modal} from "react-bootstrap"
 import {extractTimeFromDateTimeString, parseToServerFormat} from "../../utils/DateTimeParser"
-import {addDays, format, parseISO, subDays} from "date-fns"
+import {addDays, format, isBefore, parseISO, subDays} from "date-fns"
 import {useTranslation} from "react-i18next"
 import './BlockForm.css'
 import {useDependencies} from "../../context/Dependencies";
 import {useAuth} from "../../context/Auth";
+import DateRangeError from "../../errors/DateRangeError";
 
 function MassEditRelatedBlocksForm(props) {
     const {t} = useTranslation()
@@ -51,6 +52,9 @@ function MassEditRelatedBlocksForm(props) {
             const editedBlocks = []
             state.relatedBlocks.map((block) => {
                 if (!block.disabled) {
+                    if (isBefore(parseISO(block.endDate), parseISO(block.startDate))) {
+                        throw new DateRangeError(t('toast.error.date-end-before-start'))
+                    }
                     editedBlocks.push(block)
                 }
             })
@@ -61,10 +65,18 @@ function MassEditRelatedBlocksForm(props) {
                 t('toast.success.mass-edit-blocks')
             )
         } catch (error) {
-            toastUtils.showToast(
-                'error',
-                t('toast.error.submit')
-            )
+            if (error instanceof DateRangeError) {
+                toastUtils.showToast(
+                    'error',
+                    t('toast.error.date-end-before-start')
+                )
+            } else {
+                toastUtils.showToast(
+                    'error',
+                    t('toast.error.submit')
+                )
+            }
+            props.onClose()
         }
 
         updateState({
@@ -127,7 +139,7 @@ function MassEditRelatedBlocksForm(props) {
         updateState({
             relatedBlocks: state.relatedBlocks.map((blocks, i) => {
                 if (index === i) {
-                    return {...blocks, startDate}
+                    return {...blocks, startDate: parseToServerFormat(startDate)}
                 }
                 return blocks
             })
@@ -138,7 +150,7 @@ function MassEditRelatedBlocksForm(props) {
         updateState({
             relatedBlocks: state.relatedBlocks.map((blocks, i) => {
                 if (index === i) {
-                    return {...blocks, endDate}
+                    return {...blocks, endDate: parseToServerFormat(endDate)}
                 }
                 return blocks
             })

@@ -65,7 +65,8 @@
       "commit-version": "Unable to commit schedule version",
       "delete-addressee": "Unable to delete addressee",
       "delete-block": "Unable to delete block",
-      "delete-schedule": "Unable to delete schedule"
+      "delete-schedule": "Unable to delete schedule",
+      "date-end-before-start": "End date can't be before start date"
     }
   },
   "entities": {
